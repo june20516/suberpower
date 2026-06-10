@@ -1,6 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "suberpower",
+  "description": "superpowers의 한국어 포크 마켓플레이스 — 워크플로우 스킬 모음 (개인 커스터마이징판)",
   "owner": {
     "name": "june20516"
   },
