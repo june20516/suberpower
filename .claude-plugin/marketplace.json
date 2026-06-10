@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "suberpower",
+  "owner": {
+    "name": "june20516"
+  },
+  "plugins": [
+    {
+      "name": "suberpower",
+      "source": "./plugins/suberpower",
+      "description": "superpowers 스킬 라이브러리의 한국어 포크 — TDD, 디버깅, 협업 패턴, worktree 등 핵심 워크플로우 스킬 모음 (개인 커스터마이징판)",
+      "version": "1.0.0",
+      "author": {
+        "name": "june20516"
+      },
+      "category": "development",
+      "homepage": "https://github.com/june20516/suberpower"
+    }
+  ]
+}
