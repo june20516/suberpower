@@ -180,7 +180,7 @@ WORKTREE_PATH=$(git rev-parse --show-toplevel)
 
 **`GIT_DIR == GIT_COMMON`인 경우:** 일반 repo이며 정리할 worktree가 없습니다. 완료.
 
-**worktree 경로가 `.worktrees/`, `worktrees/`, 또는 `~/.claude/suberpowers/worktrees/` 하위에 있는 경우:** Superpowers가 이 worktree를 생성했으므로 — 정리는 우리의 책임입니다.
+**worktree 경로가 `.worktrees/`, `worktrees/`, 또는 `~/.claude/suberpowers/worktrees/` 하위에 있는 경우:** Superpowers(suberpowers 포크)가 이 worktree를 생성했으므로 — 정리는 우리의 책임입니다.
 
 ```bash
 MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
