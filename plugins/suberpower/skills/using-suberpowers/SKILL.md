@@ -1,5 +1,5 @@
 ---
-name: using-superpowers
+name: using-suberpowers
 description: 모든 대화를 시작할 때 사용합니다 - skill을 찾고 사용하는 방법을 확립하며, 명확화 질문을 포함한 어떤 응답이라도 하기 전에 Skill tool 호출을 요구합니다
 ---
 
@@ -17,10 +17,10 @@ skill이 작업에 적용된다면, 선택의 여지는 없습니다. 반드시 
 
 ## 지시 우선순위
 
-Superpowers skill은 기본 시스템 prompt 동작을 override하지만, **사용자 지시가 항상 우선합니다**:
+Superpowers skill(이 포크 suberpowers)은 기본 시스템 prompt 동작을 override하지만, **사용자 지시가 항상 우선합니다**:
 
 1. **사용자의 명시적 지시** (CLAUDE.md, GEMINI.md, AGENTS.md, 직접 요청) — 최우선
-2. **Superpowers skill** — 충돌하는 경우 기본 시스템 동작을 override
+2. **Superpowers skill(suberpowers)** — 충돌하는 경우 기본 시스템 동작을 override
 3. **기본 시스템 prompt** — 최하위
 
 CLAUDE.md, GEMINI.md, AGENTS.md에서 "TDD를 사용하지 마라"고 하고 skill에서 "항상 TDD를 사용하라"고 하면, 사용자 지시를 따르세요. 사용자가 통제권을 갖습니다.
