@@ -4,7 +4,7 @@ spec 문서 reviewer subagent를 dispatch할 때 이 템플릿을 사용하세�
 
 **목적:** spec이 완전하고 일관되며 implementation planning을 위한 준비가 되었는지 검증합니다.
 
-**Dispatch 시점:** spec 문서가 docs/superpowers/specs/에 작성된 후
+**Dispatch 시점:** spec 문서가 docs/suberpowers/specs/에 작성된 후
 
 ```
 Task tool (general-purpose):

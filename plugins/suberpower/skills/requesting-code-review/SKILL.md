@@ -57,7 +57,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 [code reviewer subagent dispatch]
   DESCRIPTION: 4가지 이슈 타입을 가진 verifyIndex()와 repairIndex() 추가
-  PLAN_OR_REQUIREMENTS: docs/superpowers/plans/deployment-plan.md의 Task 2
+  PLAN_OR_REQUIREMENTS: docs/suberpowers/plans/deployment-plan.md의 Task 2
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
 

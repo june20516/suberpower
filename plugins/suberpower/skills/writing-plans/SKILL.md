@@ -15,7 +15,7 @@ description: spec 또는 요구사항이 있는 멀티스텝 작업을 코드 �
 
 **컨텍스트:** 격리된 worktree에서 작업 중이라면, 실행 시점에 `suberpower:using-git-worktrees` skill을 통해 생성되었어야 합니다.
 
-**Plan 저장 위치:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+**Plan 저장 위치:** `docs/suberpowers/plans/YYYY-MM-DD-<feature-name>.md`
 - (Plan 위치에 대한 사용자 선호 설정이 이 기본값을 override 합니다)
 
 ## Scope Check
@@ -135,7 +135,7 @@ git commit -m "feat: add specific feature"
 
 plan을 저장한 후, 실행 선택지를 제시합니다:
 
-**"Plan이 완성되어 `docs/superpowers/plans/<filename>.md`에 저장되었습니다. 두 가지 실행 옵션이 있습니다:**
+**"Plan이 완성되어 `docs/suberpowers/plans/<filename>.md`에 저장되었습니다. 두 가지 실행 옵션이 있습니다:**
 
 **1. Subagent-Driven (권장)** - task마다 새로운 subagent를 dispatch하고, task 사이에 리뷰하며, 빠르게 iteration합니다
 

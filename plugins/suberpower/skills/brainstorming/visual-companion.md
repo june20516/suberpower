@@ -37,15 +37,15 @@ UI 주제 *에 대한* 질문이 자동으로 시각적 질문이 되는 것은 
 scripts/start-server.sh --project-dir /path/to/project
 
 # 반환: {"type":"server-started","port":52341,"url":"http://localhost:52341",
-#           "screen_dir":"/path/to/project/.superpowers/brainstorm/12345-1706000000/content",
-#           "state_dir":"/path/to/project/.superpowers/brainstorm/12345-1706000000/state"}
+#           "screen_dir":"/path/to/project/.suberpowers/brainstorm/12345-1706000000/content",
+#           "state_dir":"/path/to/project/.suberpowers/brainstorm/12345-1706000000/state"}
 ```
 
 응답에서 `screen_dir`과 `state_dir`을 저장하세요. 사용자에게 URL을 열도록 알리세요.
 
-**연결 정보 찾기:** 서버는 시작 시 JSON을 `$STATE_DIR/server-info`에 작성합니다. 서버를 백그라운드에서 실행했고 stdout을 캡처하지 못했다면, 그 파일을 읽어 URL과 포트를 얻으세요. `--project-dir`을 사용할 때는 `<project>/.superpowers/brainstorm/`에서 세션 디렉토리를 확인하세요.
+**연결 정보 찾기:** 서버는 시작 시 JSON을 `$STATE_DIR/server-info`에 작성합니다. 서버를 백그라운드에서 실행했고 stdout을 캡처하지 못했다면, 그 파일을 읽어 URL과 포트를 얻으세요. `--project-dir`을 사용할 때는 `<project>/.suberpowers/brainstorm/`에서 세션 디렉토리를 확인하세요.
 
-**참고:** 프로젝트 루트를 `--project-dir`로 전달하여 mockup이 `.superpowers/brainstorm/`에 영속되고 서버 재시작에도 살아남도록 하세요. 이를 사용하지 않으면 파일은 `/tmp`로 가서 정리됩니다. 사용자에게 아직 추가되지 않았다면 `.superpowers/`를 `.gitignore`에 추가하도록 상기시키세요.
+**참고:** 프로젝트 루트를 `--project-dir`로 전달하여 mockup이 `.suberpowers/brainstorm/`에 영속되고 서버 재시작에도 살아남도록 하세요. 이를 사용하지 않으면 파일은 `/tmp`로 가서 정리됩니다. 사용자에게 아직 추가되지 않았다면 `.suberpowers/`를 `.gitignore`에 추가하도록 상기시키세요.
 
 **플랫폼별 서버 실행:**
 
@@ -278,7 +278,7 @@ frame template은 콘텐츠를 위한 다음 CSS 클래스를 제공합니다:
 scripts/stop-server.sh $SESSION_DIR
 ```
 
-세션이 `--project-dir`을 사용했다면 mockup 파일은 나중 참조를 위해 `.superpowers/brainstorm/`에 영속됩니다. `/tmp` 세션만 중지 시 삭제됩니다.
+세션이 `--project-dir`을 사용했다면 mockup 파일은 나중 참조를 위해 `.suberpowers/brainstorm/`에 영속됩니다. `/tmp` 세션만 중지 시 삭제됩니다.
 
 ## 참조
 
