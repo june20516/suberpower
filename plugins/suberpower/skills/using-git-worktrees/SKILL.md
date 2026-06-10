@@ -1,15 +1,15 @@
 ---
 name: using-git-worktrees
-description: 현재 workspace로부터 isolation이 필요한 feature 작업을 시작하거나 implementation plan을 실행하기 전에 사용 - native 도구 또는 git worktree fallback을 통해 isolated workspace가 존재하도록 보장합니다
+description: 현재 workspace로부터 isolation이 필요한 feature 작업을 시작하거나 implementation plan을 실행하기 전에 사용 - git worktree를 전역 경로에 직접 생성하여 isolated workspace를 보장합니다
 ---
 
 # Using Git Worktrees
 
 ## Overview
 
-작업이 isolated workspace에서 이루어지도록 보장합니다. 플랫폼의 native worktree 도구를 우선적으로 사용하세요. native 도구가 없을 때만 수동 git worktree로 fallback 합니다.
+작업이 isolated workspace에서 이루어지도록 보장합니다. git worktree를 **프로젝트 밖 전역 경로**(`~/.claude/suberpowers/worktrees/`)에 직접 생성하므로, 프로젝트의 git status/diff를 절대 오염시키지 않습니다.
 
-**핵심 원칙:** 먼저 기존 isolation을 감지합니다. 그다음 native 도구를 사용합니다. 그다음 git으로 fallback 합니다. 절대 harness와 싸우지 마세요.
+**핵심 원칙:** 먼저 기존 isolation을 감지합니다. 그다음 base 브랜치와 이름을 사용자에게 확인합니다. 그다음 전역 경로에 git worktree를 생성합니다.
 
 **시작 시 안내:** "isolated workspace를 설정하기 위해 using-git-worktrees skill을 사용합니다."
 
@@ -30,7 +30,7 @@ BRANCH=$(git branch --show-current)
 git rev-parse --show-superproject-working-tree 2>/dev/null
 ```
 
-**`GIT_DIR != GIT_COMMON`이고 submodule이 아닌 경우:** 이미 linked worktree 안에 있습니다. Step 3 (Project Setup)으로 건너뛰세요. 또 다른 worktree를 생성하지 마세요.
+**`GIT_DIR != GIT_COMMON`이고 submodule이 아닌 경우:** 이미 linked worktree 안에 있습니다. Step 4 (Project Setup)로 건너뛰세요. 또 다른 worktree를 생성하지 마세요.
 
 branch 상태와 함께 보고하세요:
 - branch 위에 있을 때: "이미 isolated workspace `<path>`에서 branch `<name>` 위에 있습니다."
@@ -42,76 +42,41 @@ branch 상태와 함께 보고하세요:
 
 > "isolated worktree를 설정해 드릴까요? 현재 branch가 변경되지 않도록 보호해 줍니다."
 
-이미 선언된 선호가 있다면 질문 없이 따르세요. 사용자가 동의하지 않으면 현재 위치에서 작업하고 Step 3으로 건너뛰세요.
+이미 선언된 선호가 있다면 질문 없이 따르세요. 사용자가 동의하지 않으면 worktree 생성(Step 1~3)을 건너뛰고 현재 위치에서 작업하며 Step 4 (Project Setup)로 이동하세요.
 
-## Step 1: Create Isolated Workspace
+## Step 1: Determine Base Branch (프로젝트별 최초 1회)
 
-**두 가지 메커니즘이 있습니다. 다음 순서로 시도하세요.**
+worktree는 사용자가 지정한 base 브랜치에서 분기합니다. base는 **프로젝트마다 한 번만** 정하고 이후 재사용합니다.
 
-### 1a. Native Worktree Tools (preferred)
+1. **이 프로젝트의 base 선호가 이미 알려져 있는지 확인하세요.** 메모리(또는 현재 세션 컨텍스트)에 이 프로젝트의 worktree base가 기록돼 있으면 그 값을 사용하고 질문을 건너뛰세요.
+2. **알려져 있지 않으면 사용자에게 질문하세요:**
+   > "이 프로젝트에서 worktree를 만들 base 브랜치를 지정해 주세요. (예: 현재 브랜치, main, develop)"
+3. **답을 메모리에 프로젝트별로 저장하세요** — 다음부터 재질문하지 않도록. 메모리를 쓸 수 없는 환경이면 현재 세션 동안만 유지합니다.
 
-사용자가 isolated workspace를 요청했습니다 (Step 0 동의). worktree를 생성할 방법이 이미 있나요? `EnterWorktree`, `WorktreeCreate` 같은 이름의 tool, `/worktree` 명령, 또는 `--worktree` flag일 수 있습니다. 있다면 그것을 사용하고 Step 3으로 건너뛰세요.
+선택된 base 브랜치를 `BASE_REF`로 둡니다.
 
-Native 도구는 디렉터리 배치, branch 생성, cleanup을 자동으로 처리합니다. native 도구가 있는데 `git worktree add`를 사용하면 harness가 보지도 관리하지도 못하는 phantom state가 생깁니다.
+## Step 2: Determine Worktree Name
 
-native worktree 도구가 없을 때만 Step 1b로 진행하세요.
+worktree(=브랜치) 이름을 **사용자에게 질문**합니다 — 랜덤 이름 생성을 막기 위함입니다.
 
-### 1b. Git Worktree Fallback
+> "worktree(브랜치) 이름을 지정해 주세요. (예: fix-login, feature-x)"
 
-**Step 1a가 적용되지 않을 때만 사용하세요** — 즉, native worktree 도구가 없을 때만. git을 사용하여 수동으로 worktree를 생성합니다.
+답을 `BRANCH_NAME`으로 둡니다.
 
-#### Directory Selection
+## Step 3: Create Isolated Workspace
 
-다음 우선순위를 따르세요. 명시적인 사용자 선호가 관찰된 파일시스템 상태보다 항상 우선합니다.
-
-1. **instructions에서 선언된 worktree 디렉터리 선호를 확인하세요.** 사용자가 이미 지정했다면 질문 없이 사용하세요.
-
-2. **기존 project-local worktree 디렉터리를 확인하세요:**
-   ```bash
-   ls -d .worktrees 2>/dev/null     # 우선 (숨김)
-   ls -d worktrees 2>/dev/null      # 대안
-   ```
-   찾으면 사용하세요. 둘 다 있으면 `.worktrees`가 우선입니다.
-
-3. **기존 전역 디렉터리를 확인하세요:**
-   ```bash
-   project=$(basename "$(git rev-parse --show-toplevel)")
-   ls -d ~/.config/superpowers/worktrees/$project 2>/dev/null
-   ```
-   찾으면 사용하세요 (legacy 전역 경로와의 backward compatibility).
-
-4. **다른 지침이 없다면**, 프로젝트 루트의 `.worktrees/`를 기본값으로 사용하세요.
-
-#### Safety Verification (project-local 디렉터리에만 해당)
-
-**worktree를 생성하기 전에 디렉터리가 ignored 상태인지 반드시 확인해야 합니다:**
-
-```bash
-git check-ignore -q .worktrees 2>/dev/null || git check-ignore -q worktrees 2>/dev/null
-```
-
-**ignored 상태가 아닌 경우:** .gitignore에 추가하고, 변경 사항을 commit한 다음 진행하세요.
-
-**중요한 이유:** worktree 내용이 실수로 repository에 commit되는 것을 방지합니다.
-
-전역 디렉터리(`~/.config/superpowers/worktrees/`)는 확인이 필요 없습니다.
-
-#### Create the Worktree
+worktree를 전역 경로에 직접 생성합니다. 프로젝트 디렉터리에는 아무것도 만들지 않으므로 git status/diff에 절대 잡히지 않습니다 — `.gitignore`를 건드릴 필요가 없습니다.
 
 ```bash
 project=$(basename "$(git rev-parse --show-toplevel)")
-
-# 선택된 위치에 따라 경로 결정
-# project-local의 경우: path="$LOCATION/$BRANCH_NAME"
-# 전역의 경우: path="~/.config/superpowers/worktrees/$project/$BRANCH_NAME"
-
-git worktree add "$path" -b "$BRANCH_NAME"
+path="$HOME/.claude/suberpowers/worktrees/$project/$BRANCH_NAME"
+git worktree add "$path" -b "$BRANCH_NAME" "$BASE_REF"
 cd "$path"
 ```
 
 **Sandbox fallback:** `git worktree add`가 permission error(sandbox 거부)로 실패하면, sandbox가 worktree 생성을 차단했으며 대신 현재 디렉터리에서 작업한다고 사용자에게 알리세요. 그런 다음 현재 위치에서 setup과 baseline 테스트를 실행하세요.
 
-## Step 3: Project Setup
+## Step 4: Project Setup
 
 자동으로 감지하고 적절한 setup을 실행하세요:
 
@@ -130,7 +95,7 @@ if [ -f pyproject.toml ]; then poetry install; fi
 if [ -f go.mod ]; then go mod download; fi
 ```
 
-## Step 4: Verify Clean Baseline
+## Step 5: Verify Clean Baseline
 
 workspace가 깨끗한 상태로 시작하는지 테스트를 실행하세요:
 
@@ -147,6 +112,7 @@ npm test / cargo test / pytest / go test ./...
 
 ```
 Worktree ready at <full-path>
+Base: <BASE_REF>
 Tests passing (<N> tests, 0 failures)
 Ready to implement <feature-name>
 ```
@@ -157,39 +123,35 @@ Ready to implement <feature-name>
 |-----------|--------|
 | 이미 linked worktree 안에 있음 | 생성 건너뛰기 (Step 0) |
 | submodule 안에 있음 | 일반 repo로 취급 (Step 0 가드) |
-| Native worktree 도구 사용 가능 | 그것을 사용 (Step 1a) |
-| native 도구 없음 | Git worktree fallback (Step 1b) |
-| `.worktrees/` 존재 | 사용 (ignored 확인) |
-| `worktrees/` 존재 | 사용 (ignored 확인) |
-| 둘 다 존재 | `.worktrees/` 사용 |
-| 둘 다 없음 | instruction 파일 확인 후, 기본값 `.worktrees/` |
-| 전역 경로 존재 | 사용 (backward compat) |
-| 디렉터리가 ignored 아님 | .gitignore에 추가 + commit |
+| base 선호가 메모리에 있음 | 재질문 없이 사용 (Step 1) |
+| base 선호가 없음 | 사용자에게 질문 후 메모리에 저장 (Step 1) |
+| worktree 이름 미정 | 사용자에게 질문 (Step 2) |
+| 생성 위치 | 항상 전역 `~/.claude/suberpowers/worktrees/<project>/<branch>` (Step 3) |
 | 생성 시 permission error | Sandbox fallback, 현재 위치에서 작업 |
 | baseline 중 테스트 실패 | 실패 보고 + 질문 |
 | package.json/Cargo.toml 없음 | 의존성 설치 건너뛰기 |
 
 ## Common Mistakes
 
-### Harness와 싸우기
-
-- **문제:** 플랫폼이 이미 isolation을 제공하는데 `git worktree add`를 사용
-- **해결:** Step 0이 기존 isolation을 감지합니다. Step 1a가 native 도구에 위임합니다.
-
 ### 감지 건너뛰기
 
 - **문제:** 기존 worktree 안에 중첩된 worktree를 생성
 - **해결:** 무엇이든 생성하기 전에 항상 Step 0을 실행
 
-### Ignore 확인 건너뛰기
+### base를 묻지 않고 가정하기
 
-- **문제:** worktree 내용이 추적되어 git status를 오염시킴
-- **해결:** project-local worktree를 생성하기 전에 항상 `git check-ignore` 사용
+- **문제:** 항상 main(또는 현재 HEAD)에서 분기하여 사용자 의도와 어긋남
+- **해결:** Step 1에서 프로젝트별 base를 확인 (메모리에 없으면 질문)
 
-### 디렉터리 위치 가정하기
+### 이름을 묻지 않고 랜덤 생성하기
 
-- **문제:** 비일관성을 만들고, 프로젝트 관례를 위반
-- **해결:** 우선순위를 따르세요: 기존 > 전역 legacy > instruction 파일 > 기본값
+- **문제:** `worktree-xxxx` 같은 의미 없는 브랜치명 양산
+- **해결:** Step 2에서 사용자에게 이름을 질문
+
+### 프로젝트 내부에 worktree 생성하기
+
+- **문제:** worktree 내용이 메인 repo의 git status/diff를 오염시킴
+- **해결:** 항상 전역 경로(`~/.claude/suberpowers/worktrees/`)에 생성
 
 ### 실패하는 테스트와 함께 진행하기
 
@@ -200,16 +162,16 @@ Ready to implement <feature-name>
 
 **절대 하지 마세요:**
 - Step 0이 기존 isolation을 감지했을 때 worktree를 생성
-- native worktree 도구(예: `EnterWorktree`)가 있을 때 `git worktree add`를 사용. 이것이 가장 흔한 실수입니다 — 있다면 사용하세요.
-- Step 1a를 건너뛰고 Step 1b의 git 명령으로 바로 뛰어들기
-- 프로젝트 로컬에서 ignored 인지 확인하지 않고 worktree를 생성
+- base를 확인하지 않고 worktree를 생성
+- 이름을 묻지 않고 랜덤 worktree를 생성
+- 프로젝트 내부 경로에 worktree를 생성
 - baseline 테스트 검증을 건너뛰기
 - 질문 없이 실패하는 테스트와 함께 진행
 
 **항상 하세요:**
 - 먼저 Step 0 감지를 실행
-- git fallback보다 native 도구를 우선
-- 디렉터리 우선순위를 따르세요: 기존 > 전역 legacy > instruction 파일 > 기본값
-- project-local의 경우 디렉터리가 ignored 인지 확인
+- Step 1에서 프로젝트별 base를 확인(메모리 우선, 없으면 질문)
+- Step 2에서 worktree 이름을 질문
+- 전역 경로 `~/.claude/suberpowers/worktrees/<project>/<branch>`에 생성
 - 프로젝트 setup을 자동 감지하여 실행
 - 깨끗한 테스트 baseline을 검증

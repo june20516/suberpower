@@ -26,7 +26,7 @@ description: "기능 생성, 컴포넌트 구축, 기능 추가, 동작 수정 �
 3. **Clarifying questions 묻기** — 한 번에 하나씩, 목적/제약/성공 기준을 이해
 4. **2~3가지 접근 방식 제안** — 트레이드오프와 추천안 함께 제시
 5. **설계 제시** — 복잡도에 맞춰 섹션별로 나누고, 각 섹션 후 사용자 승인 받기
-6. **설계 문서 작성** — `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`에 저장하고 commit
+6. **설계 문서 작성** — `docs/suberpowers/specs/YYYY-MM-DD-<topic>-design.md`에 저장하고 commit
 7. **Spec self-review** — 자리표시자, 모순, 모호함, 범위에 대한 빠른 인라인 점검(아래 참조)
 8. **사용자가 작성된 spec 검토** — 진행 전에 사용자가 spec 파일을 검토하도록 요청
 9. **구현 단계로 전환** — writing-plans skill을 호출하여 implementation plan 생성
@@ -108,7 +108,7 @@ digraph brainstorming {
 
 **문서화:**
 
-- 검증된 설계(spec)를 `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`에 작성하세요
+- 검증된 설계(spec)를 `docs/suberpowers/specs/YYYY-MM-DD-<topic>-design.md`에 작성하세요
   - (spec 위치에 대한 사용자 선호도가 이 기본값을 재정의합니다)
 - 사용 가능하다면 elements-of-style:writing-clearly-and-concisely skill을 사용하세요
 - 설계 문서를 git에 commit하세요
