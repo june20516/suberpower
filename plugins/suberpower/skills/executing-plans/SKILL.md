@@ -11,7 +11,7 @@ plan을 load하고, 비판적으로 review하며, 모든 task를 실행하고, �
 
 **시작 시 알립니다:** "executing-plans skill을 사용하여 이 plan을 구현합니다."
 
-**참고:** Superpowers는 subagent에 access할 수 있을 때 훨씬 잘 동작한다고 human partner에게 알려주세요. subagent를 지원하는 platform(예: Claude Code 또는 Codex)에서 실행하면 작업 품질이 크게 향상됩니다. subagent를 사용할 수 있다면, 이 skill 대신 suberpower:subagent-driven-development를 사용하세요.
+**참고:** Superpowers(suberpowers 포크)는 subagent에 access할 수 있을 때 훨씬 잘 동작한다고 human partner에게 알려주세요. subagent를 지원하는 platform(예: Claude Code 또는 Codex)에서 실행하면 작업 품질이 크게 향상됩니다. subagent를 사용할 수 있다면, 이 skill 대신 suberpower:subagent-driven-development를 사용하세요.
 
 ## The Process
 
