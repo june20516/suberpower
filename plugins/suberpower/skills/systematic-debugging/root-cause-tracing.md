@@ -2,7 +2,7 @@
 
 ## 개요
 
-bug는 종종 call stack 깊은 곳에서 나타납니다 (잘못된 디렉토리에서의 git init, 잘못된 위치에 생성된 파일, 잘못된 경로로 열린 database). 본능적으로 에러가 나타나는 곳을 fix하고 싶지만, 그것은 증상을 다루는 것입니다.
+bug는 종종 call stack 깊은 곳에서 나타납니다 (잘못된 디렉터리에서의 git init, 잘못된 위치에 생성된 파일, 잘못된 경로로 열린 database). 본능적으로 에러가 나타나는 곳을 fix하고 싶지만, 그것은 증상을 다루는 것입니다.
 
 **핵심 원칙:** 원래의 trigger를 찾을 때까지 call chain을 통해 역방향으로 추적한 다음, source에서 fix하세요.
 
@@ -54,7 +54,7 @@ WorktreeManager.createSessionWorktree(projectDir, sessionId)
 **어떤 값이 전달되었는가?**
 - `projectDir = ''` (빈 문자열!)
 - `cwd`로서의 빈 문자열은 `process.cwd()`로 resolve됨
-- 그게 소스 코드 디렉토리!
+- 그게 소스 코드 디렉터리!
 
 ### 5. 원래의 Trigger 찾기
 **빈 문자열은 어디서 왔는가?**
@@ -98,7 +98,7 @@ npm test 2>&1 | grep 'DEBUG git init'
 
 test 중에 무언가가 나타나는데 어느 test인지 모를 때:
 
-이 디렉토리의 bisection script `find-polluter.sh`를 사용하세요:
+이 디렉터리의 bisection script `find-polluter.sh`를 사용하세요:
 
 ```bash
 ./find-polluter.sh '.git' 'src/**/*.test.ts'
@@ -122,7 +122,7 @@ test를 하나씩 실행하고, 첫 번째 polluter에서 멈춥니다. 사용�
 **Fix:** tempDir을 beforeEach 이전에 접근되면 throw하는 getter로 만듦
 
 **defense-in-depth도 추가:**
-- Layer 1: Project.create()가 디렉토리 검증
+- Layer 1: Project.create()가 디렉터리 검증
 - Layer 2: WorkspaceManager가 빈 값이 아님을 검증
 - Layer 3: NODE_ENV guard가 tmpdir 외부의 git init을 거부
 - Layer 4: git init 전 stack trace 로깅
@@ -157,7 +157,7 @@ digraph principle {
 
 **test에서:** logger가 아닌 `console.error()`를 사용하세요 - logger는 억제될 수 있습니다
 **작업 전:** 실패한 후가 아니라 위험한 작업 전에 로그를 남기세요
-**컨텍스트 포함:** 디렉토리, cwd, 환경 변수, timestamp
+**맥락 포함:** 디렉터리, cwd, 환경 변수, timestamp
 **stack 캡처:** `new Error().stack`은 완전한 call chain을 보여줍니다
 
 ## 실제 영향

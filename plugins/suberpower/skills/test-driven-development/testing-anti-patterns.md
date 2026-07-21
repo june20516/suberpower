@@ -244,7 +244,7 @@ BEFORE - mock response를 만들기 전:
 TDD 사이클:
 1. 실패하는 test 작성
 2. 통과하도록 implementation
-3. 리팩토링
+3. 리팩터링
 4. 그 후에 완료를 주장
 ```
 

@@ -14,7 +14,7 @@
 다른 layer는 다른 케이스를 잡습니다:
 - entry validation은 대부분의 bug를 잡습니다
 - business logic은 edge case를 잡습니다
-- environment guards는 컨텍스트별 위험을 막습니다
+- environment guards는 맥락별 위험을 막습니다
 - debug logging은 다른 layer가 실패할 때 도움이 됩니다
 
 ## 네 개의 Layer
@@ -50,7 +50,7 @@ function initializeWorkspace(projectDir: string, sessionId: string) {
 ```
 
 ### Layer 3: Environment Guards
-**목적:** 특정 컨텍스트에서 위험한 작업 방지
+**목적:** 특정 맥락에서 위험한 작업 방지
 
 ```typescript
 async function gitInit(directory: string) {
@@ -70,7 +70,7 @@ async function gitInit(directory: string) {
 ```
 
 ### Layer 4: Debug Instrumentation
-**목적:** 포렌식을 위한 컨텍스트 캡처
+**목적:** 포렌식을 위한 맥락 캡처
 
 ```typescript
 async function gitInit(directory: string) {

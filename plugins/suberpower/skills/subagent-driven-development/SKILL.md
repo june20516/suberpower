@@ -49,7 +49,7 @@ digraph process {
         label="Task별";
         "implementer subagent dispatch (./implementer-prompt.md)" [shape=box];
         "implementer subagent가 질문하는가?" [shape=diamond];
-        "질문에 답하고 맥락 제공" [shape=box];
+        "질문에 답하고 context 제공" [shape=box];
         "implementer subagent가 구현, 테스트, commit, self-review" [shape=box];
         "spec reviewer subagent dispatch (./spec-reviewer-prompt.md)" [shape=box];
         "spec reviewer subagent가 코드와 spec 일치를 확인하는가?" [shape=diamond];
@@ -60,15 +60,15 @@ digraph process {
         "TodoWrite에서 task 완료 표시" [shape=box];
     }
 
-    "plan을 읽고, 모든 task를 전체 텍스트로 추출, 맥락 기록, TodoWrite 생성" [shape=box];
+    "plan을 읽고, 모든 task를 전체 텍스트로 추출, context 기록, TodoWrite 생성" [shape=box];
     "남은 task가 있는가?" [shape=diamond];
     "전체 구현에 대한 최종 code reviewer subagent dispatch" [shape=box];
     "suberpower:finishing-a-development-branch 사용" [shape=box style=filled fillcolor=lightgreen];
 
-    "plan을 읽고, 모든 task를 전체 텍스트로 추출, 맥락 기록, TodoWrite 생성" -> "implementer subagent dispatch (./implementer-prompt.md)";
+    "plan을 읽고, 모든 task를 전체 텍스트로 추출, context 기록, TodoWrite 생성" -> "implementer subagent dispatch (./implementer-prompt.md)";
     "implementer subagent dispatch (./implementer-prompt.md)" -> "implementer subagent가 질문하는가?";
-    "implementer subagent가 질문하는가?" -> "질문에 답하고 맥락 제공" [label="예"];
-    "질문에 답하고 맥락 제공" -> "implementer subagent dispatch (./implementer-prompt.md)";
+    "implementer subagent가 질문하는가?" -> "질문에 답하고 context 제공" [label="예"];
+    "질문에 답하고 context 제공" -> "implementer subagent dispatch (./implementer-prompt.md)";
     "implementer subagent가 질문하는가?" -> "implementer subagent가 구현, 테스트, commit, self-review" [label="아니오"];
     "implementer subagent가 구현, 테스트, commit, self-review" -> "spec reviewer subagent dispatch (./spec-reviewer-prompt.md)";
     "spec reviewer subagent dispatch (./spec-reviewer-prompt.md)" -> "spec reviewer subagent가 코드와 spec 일치를 확인하는가?";
@@ -147,7 +147,7 @@ Implementer: "알겠습니다. 지금 구현합니다..."
 [잠시 후] Implementer:
   - install-hook 명령 구현
   - 테스트 추가, 5/5 통과
-  - 자기 review: --force flag를 빠뜨린 것을 발견해 추가함
+  - self-review: --force flag를 빠뜨린 것을 발견해 추가함
   - Commit 완료
 
 [spec 준수 reviewer dispatch]
@@ -167,7 +167,7 @@ Implementer: [질문 없이 진행]
 Implementer:
   - verify/repair 모드 추가
   - 8/8 테스트 통과
-  - 자기 review: 모두 양호
+  - self-review: 모두 양호
   - Commit 완료
 
 [spec 준수 reviewer dispatch]
@@ -221,7 +221,7 @@ Final reviewer: 모든 요구사항 충족, merge 준비 완료
 - 작업 시작 전 질문이 드러남 (작업 후가 아님)
 
 **품질 게이트:**
-- 자체 review로 핸드오프 전에 이슈 발견
+- self-review로 핸드오프 전에 이슈 발견
 - 두 단계 review: spec 준수, 그다음 code quality
 - review 루프로 수정이 실제로 작동하는지 확인
 - spec 준수로 과/소 구축 방지
@@ -245,7 +245,7 @@ Final reviewer: 모든 요구사항 충족, merge 준비 완료
 - subagent 질문 무시 (진행시키기 전에 답변)
 - spec 준수에서 "충분히 가까움"을 받아들이기 (spec reviewer가 이슈를 발견 = 완료 아님)
 - review 루프 건너뛰기 (reviewer가 이슈 발견 = implementer 수정 = 다시 review)
-- implementer의 자체 review가 실제 review를 대체하게 하기 (둘 다 필요함)
+- implementer의 self-review가 실제 review를 대체하게 하기 (둘 다 필요함)
 - **spec 준수가 ✅ 되기 전에 code quality review 시작** (잘못된 순서)
 - 어느 review라도 미해결 이슈가 있는데 다음 task로 이동
 

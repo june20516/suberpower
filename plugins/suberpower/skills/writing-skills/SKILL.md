@@ -151,9 +151,9 @@ Before/after 코드 비교
 
 description은 트리거 조건만 설명해야 합니다. skill의 프로세스나 워크플로우를 description에 요약하지 마세요.
 
-**왜 중요한가:** 테스트 결과, description이 skill의 워크플로우를 요약하면 Claude가 skill의 전체 내용을 읽는 대신 description을 따르는 경향이 나타났습니다. "task 사이에 code review"라고 적힌 description은 Claude가 단 한 번의 리뷰만 수행하게 만들었습니다. skill의 flowchart는 두 번의 리뷰(spec compliance 후 code quality)를 명확히 보여주었음에도 말입니다.
+**왜 중요한가:** 테스트 결과, description이 skill의 워크플로우를 요약하면 Claude가 skill의 전체 내용을 읽는 대신 description을 따르는 경향이 나타났습니다. "task 사이에 code review"라고 적힌 description은 Claude가 단 한 번의 review만 수행하게 만들었습니다. skill의 flowchart는 두 번의 review(spec compliance 후 code quality)를 명확히 보여주었음에도 말입니다.
 
-description을 단순히 "독립적인 task로 구성된 implementation plan을 실행할 때 사용합니다"(워크플로우 요약 없음)로 바꾸자 Claude는 flowchart를 올바르게 읽고 2단계 리뷰 프로세스를 따랐습니다.
+description을 단순히 "독립적인 task로 구성된 implementation plan을 실행할 때 사용합니다"(워크플로우 요약 없음)로 바꾸자 Claude는 flowchart를 올바르게 읽고 2단계 review 프로세스를 따랐습니다.
 
 **함정:** 워크플로우를 요약하는 description은 Claude가 따라가는 지름길을 만들어냅니다. skill 본문은 Claude가 건너뛰는 문서가 되어버립니다.
 
@@ -451,7 +451,7 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 | "문제가 나타나면 테스트하겠다" | 문제 = agent가 skill을 못 쓰는 상태. 배포 전에 테스트하라. |
 | "테스트가 너무 귀찮다" | 테스트가 프로덕션에서 잘못된 skill 디버깅보다 덜 귀찮다. |
 | "잘 됐다고 확신한다" | 과신은 문제를 보장한다. 어쨌든 테스트하라. |
-| "학술적 리뷰면 충분하다" | 읽기 ≠ 사용. 적용 시나리오를 테스트하라. |
+| "학술적 review면 충분하다" | 읽기 ≠ 사용. 적용 시나리오를 테스트하라. |
 | "테스트할 시간이 없다" | 테스트되지 않은 skill 배포는 나중에 고치는 데 더 많은 시간을 쓰게 한다. |
 
 **이 모든 것이 의미하는 바: 배포 전에 테스트하라. 예외 없음.**
@@ -556,7 +556,7 @@ agent가 새 합리화를 발견했나요? 명시적 반론을 추가합니다. 
 **테스팅 방법론:** 완전한 테스팅 방법론은 @testing-skills-with-subagents.md를 참고하세요:
 - 압박 시나리오 작성 방법
 - 압박 유형 (시간, 매몰비용, 권위, 피로)
-- 체계적으로 구멍 막기
+- 체계적으로 허점 막기
 - 메타 테스팅 기법
 
 ## 안티 패턴

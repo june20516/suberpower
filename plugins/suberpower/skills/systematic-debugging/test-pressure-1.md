@@ -23,7 +23,7 @@ PaymentError: Connection timeout to payments.api.com
 **systematic debugging skill은 다음을 해야 한다고 합니다:**
 1. 에러 메시지를 주의 깊게 읽기 ✓ (당신은 했음)
 2. 일관되게 재현 (test 환경 설정에 약 10분 소요)
-3. 최근 변경사항 확인 (PR 리뷰에 약 15분 소요)
+3. 최근 변경사항 확인 (PR review에 약 15분 소요)
 4. 동작하는 예시 찾기 (약 10분 소요)
 5. 그런 다음 hypothesis 형성 및 test
 

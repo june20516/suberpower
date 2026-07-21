@@ -18,7 +18,7 @@
 - 각 phase의 구체적 단계
 
 **제외할 것:**
-- 프로젝트별 컨텍스트
+- 프로젝트별 맥락
 - 같은 규칙의 반복 변형
 - 서사적 설명 (원칙으로 압축됨)
 
@@ -49,7 +49,7 @@
 
 ### 중복성
 - root cause 명령이 overview + when_to_use + Phase 1 + 구현 규칙에 등장
-- "NEVER fix symptom"이 다른 컨텍스트에서 4번 등장
+- "NEVER fix symptom"이 다른 맥락에서 4번 등장
 - 각 phase에 명시적 "don't skip" 지침
 
 ## 테스트 접근

@@ -111,7 +111,7 @@ Phase 1을 완료하지 않았다면, fix를 제안할 수 없습니다.
 
    **에러가 call stack 깊은 곳에 있을 때:**
 
-   완전한 backward tracing 기법은 이 디렉토리의 `root-cause-tracing.md`를 참조하세요.
+   완전한 backward tracing 기법은 이 디렉터리의 `root-cause-tracing.md`를 참조하세요.
 
    **간략 버전:**
    - 잘못된 값은 어디서 시작되었나요?
@@ -277,7 +277,7 @@ Phase 1을 완료하지 않았다면, fix를 제안할 수 없습니다.
 
 ## 보조 기법
 
-이 기법들은 systematic debugging의 일부이며 이 디렉토리에서 사용할 수 있습니다:
+이 기법들은 systematic debugging의 일부이며 이 디렉터리에서 사용할 수 있습니다:
 
 - **`root-cause-tracing.md`** - 원래의 trigger를 찾기 위해 call stack을 통해 bug를 역방향 추적
 - **`defense-in-depth.md`** - root cause를 찾은 후 여러 layer에 검증 추가

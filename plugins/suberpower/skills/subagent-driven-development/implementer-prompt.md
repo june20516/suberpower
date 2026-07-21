@@ -33,10 +33,10 @@ Task tool (general-purpose):
     2. 테스트를 작성하세요 (task가 지시하면 TDD를 따르세요)
     3. 구현이 동작하는지 검증하세요
     4. 작업을 commit하세요
-    5. 자기 review를 하세요 (아래 참조)
+    5. self-review를 하세요 (아래 참조)
     6. 결과를 보고하세요
 
-    작업 디렉토리: [directory]
+    작업 디렉터리: [directory]
 
     **작업 중에:** 예상치 못했거나 불명확한 것을 만나면 **질문하세요**.
     멈추고 명확히 하는 것은 언제나 괜찮습니다. 추측하거나 넘겨짚지 마세요.
@@ -60,7 +60,7 @@ Task tool (general-purpose):
     나쁜 작업은 아무 작업도 하지 않는 것보다 나쁩니다. escalate했다고 해서
     불이익을 받지 않습니다.
 
-    **다음 경우 멈추고 escalate하세요:**
+    **STOP - 다음 경우 escalate하세요:**
     - task가 유효한 접근이 여러 개인 아키텍처 결정을 요구할 때
     - 제공된 것 이상의 코드를 이해해야 하는데 명확한 답을 찾을 수 없을 때
     - 당신의 접근 방식이 옳은지 확신이 서지 않을 때
@@ -72,7 +72,7 @@ Task tool (general-purpose):
     구체적으로 설명하세요. controller가 더 많은 context를 제공하거나,
     더 강력한 모델로 재dispatch하거나, task를 더 작게 쪼갤 수 있습니다.
 
-    ## 보고 전에: 자기 Review
+    ## 보고 전에: Self-Review
 
     새로운 시각으로 작업을 review하세요. 스스로에게 물어보세요:
 
@@ -96,7 +96,7 @@ Task tool (general-purpose):
     - 요구되었다면 TDD를 따랐는가?
     - 테스트가 충분한가?
 
-    자기 review 중에 이슈를 발견하면, 보고하기 전에 지금 fix하세요.
+    self-review 중에 이슈를 발견하면, 보고하기 전에 지금 fix하세요.
 
     ## 보고 형식
 
@@ -105,7 +105,7 @@ Task tool (general-purpose):
     - 무엇을 구현했는가 (막혔다면 무엇을 시도했는가)
     - 무엇을 테스트했고 결과는 어땠는가
     - 변경된 파일
-    - 자기 review 결과 (있는 경우)
+    - self-review 결과 (있는 경우)
     - 모든 이슈 또는 우려 사항
 
     작업을 완료했지만 정확성에 의문이 있다면 DONE_WITH_CONCERNS를 사용하세요.

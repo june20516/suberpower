@@ -7,13 +7,13 @@ description: spec 또는 요구사항이 있는 멀티스텝 작업을 코드 �
 
 ## Overview
 
-엔지니어가 우리 코드베이스에 대한 컨텍스트가 전혀 없고 취향도 의심스럽다는 가정 하에 포괄적인 구현 plan을 작성합니다. 각 task에서 어떤 파일을 다루어야 하는지, 코드, 테스트, 참고해야 할 docs, 테스트 방법 등 그들이 알아야 할 모든 것을 문서화합니다. 전체 plan을 한 입 크기의 task로 나누어 제공합니다. DRY. YAGNI. TDD. 잦은 commit.
+엔지니어가 우리 코드베이스에 대한 맥락이 전혀 없고 취향도 의심스럽다는 가정 하에 포괄적인 구현 plan을 작성합니다. 각 task에서 어떤 파일을 다루어야 하는지, 코드, 테스트, 참고해야 할 docs, 테스트 방법 등 그들이 알아야 할 모든 것을 문서화합니다. 전체 plan을 한 입 크기의 task로 나누어 제공합니다. DRY. YAGNI. TDD. 잦은 commit.
 
 그들이 숙련된 개발자이지만 우리 도구나 문제 영역에 대해서는 거의 모른다고 가정합니다. 좋은 테스트 설계에 대해서도 잘 모른다고 가정합니다.
 
 **시작 시 알림:** "writing-plans skill을 사용하여 구현 plan을 작성하겠습니다."
 
-**컨텍스트:** 격리된 worktree에서 작업 중이라면, 실행 시점에 `suberpower:using-git-worktrees` skill을 통해 생성되었어야 합니다.
+**맥락:** 격리된 worktree에서 작업 중이라면, 실행 시점에 `suberpower:using-git-worktrees` skill을 통해 생성되었어야 합니다.
 
 **Plan 저장 위치:** `docs/suberpowers/plans/YYYY-MM-DD-<feature-name>.md`
 - (Plan 위치에 대한 사용자 선호 설정이 이 기본값을 override 합니다)
@@ -27,7 +27,7 @@ spec이 여러 개의 독립적인 서브시스템을 다룬다면, brainstormin
 task를 정의하기 전에, 어떤 파일이 생성 또는 수정될지, 그리고 각 파일이 무엇을 담당하는지 매핑합니다. 분해(decomposition) 결정이 여기서 확정됩니다.
 
 - 명확한 경계와 잘 정의된 인터페이스를 가진 단위로 설계합니다. 각 파일은 하나의 명확한 책임을 가져야 합니다.
-- 한 번에 컨텍스트에 담을 수 있는 코드일수록 추론이 가장 잘 되고, 파일이 focused 되어 있을수록 편집이 더 신뢰성 있습니다. 너무 많은 일을 하는 큰 파일보다는 작고 focused 된 파일을 선호하세요.
+- 당신은 한 번에 context에 담을 수 있는 코드를 가장 잘 추론하며, 파일이 집중되어 있을수록 편집이 더 안정적입니다. 너무 많은 일을 하는 큰 파일보다는 작고 focused 된 파일을 선호하세요.
 - 함께 변경되는 파일들은 함께 위치해야 합니다. 기술 계층이 아니라 책임으로 분할하세요.
 - 기존 코드베이스에서는 확립된 패턴을 따르세요. 코드베이스가 큰 파일을 사용한다면 일방적으로 재구조화하지 마세요 — 하지만 수정 중인 파일이 다루기 힘들 정도로 커졌다면, plan에 분할을 포함하는 것은 합리적입니다.
 
@@ -129,7 +129,7 @@ git commit -m "feat: add specific feature"
 
 **3. Type consistency:** 후반 task에서 사용한 type, method signature, property 이름이 이전 task에서 정의한 것과 일치하나요? Task 3에서 `clearLayers()`라 부른 함수를 Task 7에서 `clearFullLayers()`로 부르면 버그입니다.
 
-문제를 발견하면 즉석에서 수정합니다. 다시 리뷰할 필요 없습니다 — 그냥 수정하고 넘어가세요. spec 요구사항인데 해당 task가 없다면 task를 추가합니다.
+문제를 발견하면 즉석에서 수정합니다. 다시 review할 필요 없습니다 — 그냥 수정하고 넘어가세요. spec 요구사항인데 해당 task가 없다면 task를 추가합니다.
 
 ## Execution Handoff
 
@@ -137,7 +137,7 @@ plan을 저장한 후, 실행 선택지를 제시합니다:
 
 **"Plan이 완성되어 `docs/suberpowers/plans/<filename>.md`에 저장되었습니다. 두 가지 실행 옵션이 있습니다:**
 
-**1. Subagent-Driven (권장)** - task마다 새로운 subagent를 dispatch하고, task 사이에 리뷰하며, 빠르게 iteration합니다
+**1. Subagent-Driven (권장)** - task마다 새로운 subagent를 dispatch하고, task 사이에 review하며, 빠르게 iteration합니다
 
 **2. Inline Execution** - executing-plans를 사용해 이 세션에서 task를 실행하고, checkpoint와 함께 배치 실행합니다
 
@@ -145,8 +145,8 @@ plan을 저장한 후, 실행 선택지를 제시합니다:
 
 **Subagent-Driven을 선택한 경우:**
 - **REQUIRED SUB-SKILL:** Use suberpower:subagent-driven-development
-- task마다 새로운 subagent + 2단계 리뷰
+- task마다 새로운 subagent + 2단계 review
 
 **Inline Execution을 선택한 경우:**
 - **REQUIRED SUB-SKILL:** Use suberpower:executing-plans
-- 리뷰를 위한 checkpoint와 함께 배치 실행
+- review를 위한 checkpoint와 함께 배치 실행

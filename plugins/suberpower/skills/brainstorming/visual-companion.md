@@ -26,7 +26,7 @@ UI 주제 *에 대한* 질문이 자동으로 시각적 질문이 되는 것은 
 
 ## 작동 방식
 
-서버는 HTML 파일이 있는 디렉토리를 감시하고 가장 최신 파일을 브라우저에 제공합니다. 당신은 `screen_dir`에 HTML 콘텐츠를 작성하고, 사용자는 브라우저에서 이를 보고 옵션을 선택하기 위해 클릭할 수 있습니다. 선택은 `state_dir/events`에 기록되며 다음 turn에서 읽을 수 있습니다.
+서버는 HTML 파일이 있는 디렉터리를 감시하고 가장 최신 파일을 브라우저에 제공합니다. 당신은 `screen_dir`에 HTML 콘텐츠를 작성하고, 사용자는 브라우저에서 이를 보고 옵션을 선택하기 위해 클릭할 수 있습니다. 선택은 `state_dir/events`에 기록되며 다음 turn에서 읽을 수 있습니다.
 
 **콘텐츠 fragment vs 전체 문서:** HTML 파일이 `<!DOCTYPE` 또는 `<html`로 시작하면 서버는 있는 그대로 제공합니다(helper script만 주입). 그렇지 않으면 서버는 자동으로 콘텐츠를 frame template으로 감쌉니다 — 헤더, CSS 테마, 선택 표시기, 모든 인터랙티브 인프라를 추가합니다. **기본적으로 콘텐츠 fragment를 작성하세요.** 페이지에 대한 완전한 제어가 필요할 때만 전체 문서를 작성하세요.
 
@@ -43,7 +43,7 @@ scripts/start-server.sh --project-dir /path/to/project
 
 응답에서 `screen_dir`과 `state_dir`을 저장하세요. 사용자에게 URL을 열도록 알리세요.
 
-**연결 정보 찾기:** 서버는 시작 시 JSON을 `$STATE_DIR/server-info`에 작성합니다. 서버를 백그라운드에서 실행했고 stdout을 캡처하지 못했다면, 그 파일을 읽어 URL과 포트를 얻으세요. `--project-dir`을 사용할 때는 `<project>/.suberpowers/brainstorm/`에서 세션 디렉토리를 확인하세요.
+**연결 정보 찾기:** 서버는 시작 시 JSON을 `$STATE_DIR/server-info`에 작성합니다. 서버를 백그라운드에서 실행했고 stdout을 캡처하지 못했다면, 그 파일을 읽어 URL과 포트를 얻으세요. `--project-dir`을 사용할 때는 `<project>/.suberpowers/brainstorm/`에서 세션 디렉터리를 확인하세요.
 
 **참고:** 프로젝트 루트를 `--project-dir`로 전달하여 mockup이 `.suberpowers/brainstorm/`에 영속되고 서버 재시작에도 살아남도록 하세요. 이를 사용하지 않으면 파일은 `/tmp`로 가서 정리됩니다. 사용자에게 아직 추가되지 않았다면 `.suberpowers/`를 `.gitignore`에 추가하도록 상기시키세요.
 
