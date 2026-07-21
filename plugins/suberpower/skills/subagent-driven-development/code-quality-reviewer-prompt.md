@@ -8,12 +8,12 @@ code quality reviewer subagent를 dispatch할 때 이 템플릿을 사용하세�
 
 ```
 Task tool (general-purpose):
-  Use template at requesting-code-review/code-reviewer.md
+  requesting-code-review/code-reviewer.md의 템플릿을 사용
 
-  DESCRIPTION: [task summary, from implementer's report]
-  PLAN_OR_REQUIREMENTS: Task N from [plan-file]
-  BASE_SHA: [commit before task]
-  HEAD_SHA: [current commit]
+  DESCRIPTION: [implementer 보고서에서 가져온 task 요약]
+  PLAN_OR_REQUIREMENTS: [plan-file]의 Task N
+  BASE_SHA: [task 이전 commit]
+  HEAD_SHA: [현재 commit]
 ```
 
 **표준 code quality 관심사 외에, reviewer는 다음을 확인해야 합니다:**

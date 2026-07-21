@@ -18,6 +18,17 @@ claude plugin install suberpower@suberpower
 - `plugins/suberpower/skills/` — 한국어로 번역된 스킬 14종
 - `plugins/suberpower/hooks/` — SessionStart 훅 (매 세션 시작 시 `using-suberpowers` 주입)
 
+## 유지보수 문서
+
+- **[의도적 Divergence](./docs/suberpowers/divergence.md)** — 이 포크가 upstream과 다른 지점. 근거·정책과 함께 관리되며 기계 검증됩니다. **동기화 전에 가장 먼저 읽으세요.**
+- [번역 용어집 및 표기 규칙](./docs/suberpowers/translation-glossary.md) — 용어 대응표, 강조 계층 보존 규칙, 치환 시 함정
+- [Upstream 동기화 상태](./docs/suberpowers/upstream-sync.md) — baseline SHA, 미반영 변경, 동기화 절차
+
+```bash
+./scripts/check-divergence.sh          # 평소 — 자동 검사만
+./scripts/check-divergence.sh --sync   # 동기화 후 — 기계로 못 재는 항목까지 확인 강제
+```
+
 ## 라이선스 / 원작자
 
 MIT License. 원작자: Jesse Vincent ([obra/superpowers](https://github.com/obra/superpowers)). 자세한 내용은 [LICENSE](./LICENSE)를 참고하세요.

@@ -14,22 +14,22 @@ Code review는 감정적인 퍼포먼스가 아니라 기술적 평가를 요구
 ## The Response Pattern
 
 ```
-WHEN receiving code review feedback:
+WHEN - code review feedback를 받았을 때:
 
-1. READ: Complete feedback without reacting
-2. UNDERSTAND: Restate requirement in own words (or ask)
-3. VERIFY: Check against codebase reality
-4. EVALUATE: Technically sound for THIS codebase?
-5. RESPOND: Technical acknowledgment or reasoned pushback
-6. IMPLEMENT: One item at a time, test each
+1. READ: 반응하지 말고 feedback 전체를 읽는다
+2. UNDERSTAND: 요구사항을 자신의 말로 다시 진술한다 (또는 질문한다)
+3. VERIFY: codebase의 실제와 대조해 확인한다
+4. EVALUATE: 이 codebase에 기술적으로 타당한가?
+5. RESPOND: 기술적 인지 표명 또는 근거 있는 push back
+6. IMPLEMENT: 한 번에 하나씩, 각각 테스트한다
 ```
 
 ## Forbidden Responses
 
 **NEVER:**
-- "You're absolutely right!" (명시적인 CLAUDE.md 위반)
-- "Great point!" / "Excellent feedback!" (형식적)
-- "Let me implement that now" (검증 전)
+- "말씀이 완전히 맞습니다!" (명시적인 CLAUDE.md 위반)
+- "좋은 지적이네요!" / "훌륭한 feedback입니다!" (형식적)
+- "지금 바로 구현하겠습니다" (검증 전)
 
 **INSTEAD:**
 - 기술적 요구사항을 다시 진술합니다
@@ -40,20 +40,20 @@ WHEN receiving code review feedback:
 ## Handling Unclear Feedback
 
 ```
-IF any item is unclear:
-  STOP - do not implement anything yet
-  ASK for clarification on unclear items
+IF 불명확한 항목이 하나라도 있으면:
+  STOP - 아직 아무것도 구현하지 않는다
+  ASK - 불명확한 항목에 대해 설명을 요청한다
 
-WHY: Items may be related. Partial understanding = wrong implementation.
+WHY: 항목들이 서로 연관되어 있을 수 있다. 부분적 이해 = 잘못된 구현.
 ```
 
 **예시:**
 ```
-your human partner: "Fix 1-6"
-You understand 1,2,3,6. Unclear on 4,5.
+your human partner: "1-6번 고쳐주세요"
+1, 2, 3, 6번은 이해했고 4, 5번은 불명확하다.
 
-❌ WRONG: Implement 1,2,3,6 now, ask about 4,5 later
-✅ RIGHT: "I understand items 1,2,3,6. Need clarification on 4 and 5 before proceeding."
+❌ 잘못: 1, 2, 3, 6번을 지금 구현하고 4, 5번은 나중에 질문
+✅ 올바름: "1, 2, 3, 6번은 이해했습니다. 진행하기 전에 4번과 5번에 대한 설명이 필요합니다."
 ```
 
 ## Source-Specific Handling
@@ -66,48 +66,48 @@ You understand 1,2,3,6. Unclear on 4,5.
 
 ### From External Reviewers
 ```
-BEFORE implementing:
-  1. Check: Technically correct for THIS codebase?
-  2. Check: Breaks existing functionality?
-  3. Check: Reason for current implementation?
-  4. Check: Works on all platforms/versions?
-  5. Check: Does reviewer understand full context?
+BEFORE - 구현하기 전:
+  1. 확인: 이 codebase에 기술적으로 올바른가?
+  2. 확인: 기존 기능을 망가뜨리는가?
+  3. 확인: 현재 구현이 그렇게 된 이유가 있는가?
+  4. 확인: 모든 플랫폼/버전에서 동작하는가?
+  5. 확인: reviewer가 전체 맥락을 이해하고 있는가?
 
-IF suggestion seems wrong:
-  Push back with technical reasoning
+IF 제안이 잘못된 것으로 보이면:
+  기술적 근거를 들어 push back 한다
 
-IF can't easily verify:
-  Say so: "I can't verify this without [X]. Should I [investigate/ask/proceed]?"
+IF 쉽게 검증할 수 없으면:
+  그렇다고 말한다: "[X] 없이는 이것을 검증할 수 없습니다. [조사할까요/물어볼까요/진행할까요]?"
 
-IF conflicts with your human partner's prior decisions:
-  Stop and discuss with your human partner first
+IF your human partner의 이전 결정과 충돌하면:
+  멈추고 your human partner와 먼저 논의한다
 ```
 
-**your human partner의 규칙:** "External feedback - be skeptical, but check carefully"
+**your human partner의 규칙:** "외부 feedback은 회의적으로 보되, 꼼꼼히 확인하라"
 
 ## YAGNI Check for "Professional" Features
 
 ```
-IF reviewer suggests "implementing properly":
-  grep codebase for actual usage
+IF reviewer가 "제대로 구현하라"고 제안하면:
+  실제 사용처를 codebase에서 grep 한다
 
-  IF unused: "This endpoint isn't called. Remove it (YAGNI)?"
-  IF used: Then implement properly
+  IF 사용되지 않으면: "이 endpoint는 호출되지 않습니다. 제거할까요 (YAGNI)?"
+  IF 사용되면: 제대로 구현한다
 ```
 
-**your human partner의 규칙:** "You and reviewer both report to me. If we don't need this feature, don't add it."
+**your human partner의 규칙:** "당신과 reviewer 모두 나에게 보고한다. 이 기능이 필요 없다면 추가하지 마라."
 
 ## Implementation Order
 
 ```
-FOR multi-item feedback:
-  1. Clarify anything unclear FIRST
-  2. Then implement in this order:
-     - Blocking issues (breaks, security)
-     - Simple fixes (typos, imports)
-     - Complex fixes (refactoring, logic)
-  3. Test each fix individually
-  4. Verify no regressions
+FOR 여러 항목의 feedback:
+  1. 불명확한 것을 FIRST 명확히 한다
+  2. 그다음 이 순서로 구현한다:
+     - 진행을 막는 이슈 (동작 파손, 보안)
+     - 간단한 수정 (오타, import)
+     - 복잡한 수정 (리팩터링, 로직)
+  3. 각 수정을 개별적으로 테스트한다
+  4. 회귀가 없는지 검증한다
 ```
 
 ## When To Push Back
@@ -132,31 +132,31 @@ FOR multi-item feedback:
 
 feedback이 옳을 때:
 ```
-✅ "Fixed. [Brief description of what changed]"
-✅ "Good catch - [specific issue]. Fixed in [location]."
-✅ [Just fix it and show in the code]
+✅ "수정했습니다. [무엇이 바뀌었는지 간단한 설명]"
+✅ "[구체적인 이슈] 확인했습니다. [위치]에서 수정했습니다."
+✅ [그냥 고치고 코드로 보여준다]
 
-❌ "You're absolutely right!"
-❌ "Great point!"
-❌ "Thanks for catching that!"
-❌ "Thanks for [anything]"
-❌ ANY gratitude expression
+❌ "말씀이 완전히 맞습니다!"
+❌ "좋은 지적이네요!"
+❌ "찾아주셔서 감사합니다!"
+❌ "[무엇이든]에 대해 감사합니다"
+❌ 모든 감사 표현
 ```
 
-**감사 표현을 하지 않는 이유:** 행동이 말합니다. 그냥 고치세요. 코드 자체가 feedback을 들었음을 보여줍니다.
+**감사 표현을 하지 않는 이유:** 말보다 행동입니다. 그냥 고치세요. 코드 자체가 feedback을 들었음을 보여줍니다.
 
-**"Thanks"라고 쓰려는 자신을 발견했다면:** 삭제하세요. 대신 수정 내용을 진술합니다.
+**"감사합니다"라고 쓰고 있다면:** 삭제하세요. 대신 수정 내용을 진술합니다.
 
 ## Gracefully Correcting Your Pushback
 
 Push back 했는데 틀렸다면:
 ```
-✅ "You were right - I checked [X] and it does [Y]. Implementing now."
-✅ "Verified this and you're correct. My initial understanding was wrong because [reason]. Fixing."
+✅ "말씀하신 것이 맞았습니다 - [X]를 확인했고 실제로 [Y]입니다. 지금 구현합니다."
+✅ "확인해보니 맞습니다. 제 초기 이해가 틀렸던 이유는 [이유]입니다. 수정합니다."
 
-❌ Long apology
-❌ Defending why you pushed back
-❌ Over-explaining
+❌ 긴 사과
+❌ push back 한 이유를 변호하는 것
+❌ 과도한 설명
 ```
 
 수정 사항을 사실 그대로 진술하고 넘어갑니다.
@@ -177,27 +177,27 @@ Push back 했는데 틀렸다면:
 
 **Performative Agreement (Bad):**
 ```
-Reviewer: "Remove legacy code"
-❌ "You're absolutely right! Let me remove that..."
+Reviewer: "legacy 코드를 제거하세요"
+❌ "말씀이 완전히 맞습니다! 바로 제거하겠습니다..."
 ```
 
 **Technical Verification (Good):**
 ```
-Reviewer: "Remove legacy code"
-✅ "Checking... build target is 10.15+, this API needs 13+. Need legacy for backward compat. Current impl has wrong bundle ID - fix it or drop pre-13 support?"
+Reviewer: "legacy 코드를 제거하세요"
+✅ "확인 중입니다... build target이 10.15+인데 이 API는 13+가 필요합니다. 하위 호환을 위해 legacy가 필요합니다. 현재 구현의 bundle ID가 잘못되어 있는데 — 그것을 고칠까요, 아니면 13 미만 지원을 중단할까요?"
 ```
 
 **YAGNI (Good):**
 ```
-Reviewer: "Implement proper metrics tracking with database, date filters, CSV export"
-✅ "Grepped codebase - nothing calls this endpoint. Remove it (YAGNI)? Or is there usage I'm missing?"
+Reviewer: "데이터베이스, 날짜 필터, CSV export를 갖춘 제대로 된 지표 추적을 구현하세요"
+✅ "codebase를 grep 했는데 이 endpoint를 호출하는 곳이 없습니다. 제거할까요 (YAGNI)? 아니면 제가 놓친 사용처가 있나요?"
 ```
 
 **Unclear Item (Good):**
 ```
-your human partner: "Fix items 1-6"
-You understand 1,2,3,6. Unclear on 4,5.
-✅ "Understand 1,2,3,6. Need clarification on 4 and 5 before implementing."
+your human partner: "1-6번 항목을 고쳐주세요"
+1, 2, 3, 6번은 이해했고 4, 5번은 불명확하다.
+✅ "1, 2, 3, 6번은 이해했습니다. 구현하기 전에 4번과 5번에 대한 설명이 필요합니다."
 ```
 
 ## GitHub Thread Replies

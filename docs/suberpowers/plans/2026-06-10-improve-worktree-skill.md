@@ -1,6 +1,6 @@
 # Worktree 스킬 개선 + superpowers 네임스페이스 치환 Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use suberpower:subagent-driven-development (recommended) or suberpower:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **agentic worker에게:** REQUIRED SUB-SKILL: 이 plan을 task 단위로 구현하려면 suberpower:subagent-driven-development(권장) 또는 suberpower:executing-plans를 사용하세요. Step은 추적을 위해 checkbox(`- [ ]`) 문법을 사용합니다.
 
 **Goal:** worktree 스킬을 native 위임에서 git 직접 조작으로 전환(전역 경로·base/이름 질문)하고, 포크 전반의 `superpowers` 네임스페이스를 규칙에 따라 정리한다.
 
@@ -73,7 +73,7 @@ branch 상태와 함께 보고하세요:
 
 > "isolated worktree를 설정해 드릴까요? 현재 branch가 변경되지 않도록 보호해 줍니다."
 
-이미 선언된 선호가 있다면 질문 없이 따르세요. 사용자가 동의하지 않으면 현재 위치에서 작업하고 Step 4로 건너뛰세요.
+이미 선언된 선호가 있다면 질문 없이 따르세요. 사용자가 동의하지 않으면 worktree 생성(Step 1~3)을 건너뛰고 현재 위치에서 작업하며 Step 4 (Project Setup)로 이동하세요.
 
 ## Step 1: Determine Base Branch (프로젝트별 최초 1회)
 
@@ -142,10 +142,10 @@ npm test / cargo test / pytest / go test ./...
 ### Report
 
 ```
-Worktree ready at <full-path>
+Worktree 준비 완료: <full-path>
 Base: <BASE_REF>
-Tests passing (<N> tests, 0 failures)
-Ready to implement <feature-name>
+테스트 통과 (<N>개 테스트, 실패 0)
+<feature-name> 구현 준비 완료
 ```
 
 ## Quick Reference

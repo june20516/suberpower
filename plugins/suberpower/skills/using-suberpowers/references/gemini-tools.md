@@ -26,13 +26,13 @@ skill이 명명된 agent 유형을 dispatch하라고 할 때, skill의 prompt te
 |-------------------|----------------------|
 | `Task tool (suberpower:implementer)` | 채워진 `implementer-prompt.md` template과 함께 `@generalist` |
 | `Task tool (suberpower:spec-reviewer)` | 채워진 `spec-reviewer-prompt.md` template과 함께 `@generalist` |
-| `Task tool (suberpower:code-reviewer)` | `@code-reviewer` (번들된 agent) 또는 채워진 리뷰 prompt와 함께 `@generalist` |
+| `Task tool (suberpower:code-reviewer)` | `@code-reviewer` (번들된 agent) 또는 채워진 review prompt와 함께 `@generalist` |
 | `Task tool (suberpower:code-quality-reviewer)` | 채워진 `code-quality-reviewer-prompt.md` template과 함께 `@generalist` |
 | 인라인 prompt와 함께 `Task tool (general-purpose)` | 인라인 prompt와 함께 `@generalist` |
 
 ### Prompt 채우기
 
-skill은 `{WHAT_WAS_IMPLEMENTED}` 또는 `[FULL TEXT of task]`와 같은 placeholder가 있는 prompt template을 제공합니다. 모든 placeholder를 채우고 완전한 prompt를 `@generalist`에 메시지로 전달하세요. prompt template 자체에는 agent의 역할, 리뷰 기준, 예상 출력 형식이 포함되어 있습니다 — `@generalist`가 이를 따를 것입니다.
+skill은 `{WHAT_WAS_IMPLEMENTED}` 또는 `[FULL TEXT of task]`와 같은 placeholder가 있는 prompt template을 제공합니다. 모든 placeholder를 채우고 완전한 prompt를 `@generalist`에 메시지로 전달하세요. prompt template 자체에는 agent의 역할, review 기준, 예상 출력 형식이 포함되어 있습니다 — `@generalist`가 이를 따를 것입니다.
 
 ### 병렬 dispatch
 

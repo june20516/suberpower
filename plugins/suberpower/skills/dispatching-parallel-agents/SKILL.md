@@ -7,7 +7,7 @@ description: 공유 상태나 순차적 의존성 없이 작업할 수 있는 2�
 
 ## 개요
 
-격리된 context를 가진 전문화된 agent에게 작업을 위임합니다. 그들의 지시와 context를 정밀하게 작성함으로써, agent가 작업에 집중하고 성공하도록 보장합니다. 그들은 절대 당신 세션의 context나 히스토리를 상속받아서는 안 되며, 필요한 것을 정확하게 구성해 주어야 합니다. 이는 또한 조율 작업을 위한 당신 자신의 context를 보존합니다.
+격리된 context를 가진 전문 agent에게 task를 위임합니다. 지시문과 context를 정밀하게 구성함으로써, 해당 agent가 집중력을 유지하고 task를 성공적으로 수행하도록 보장합니다. subagent는 절대 당신의 세션 context나 히스토리를 상속받아서는 안 됩니다 — 필요한 것을 정확히 구성해서 전달해야 합니다. 이를 통해 당신 자신의 context도 조율 작업을 위해 보존됩니다.
 
 서로 관련 없는 여러 실패(다른 테스트 파일, 다른 서브시스템, 다른 버그)가 있을 때, 순차적으로 조사하는 것은 시간 낭비입니다. 각 조사는 독립적이며 parallel로 진행될 수 있습니다.
 
@@ -61,7 +61,7 @@ digraph when_to_use {
 - **구체적인 범위:** 하나의 테스트 파일 또는 서브시스템
 - **명확한 목표:** 이 테스트들을 통과시키기
 - **제약 조건:** 다른 코드는 변경하지 말 것
-- **예상되는 출력:** 발견한 것과 고친 것의 요약
+- **반환할 출력:** 발견한 것과 고친 것의 요약
 
 ### 3. Parallel로 Dispatch
 
@@ -89,39 +89,39 @@ agent들이 돌아왔을 때:
 3. **출력에 대해 구체적임** - agent가 무엇을 반환해야 하는가?
 
 ```markdown
-Fix the 3 failing tests in src/agents/agent-tool-abort.test.ts:
+src/agents/agent-tool-abort.test.ts의 실패하는 테스트 3개를 수정하세요:
 
-1. "should abort tool with partial output capture" - expects 'interrupted at' in message
-2. "should handle mixed completed and aborted tools" - fast tool aborted instead of completed
-3. "should properly track pendingToolCount" - expects 3 results but gets 0
+1. "should abort tool with partial output capture" - 메시지에 'interrupted at'을 기대하지만 없음
+2. "should handle mixed completed and aborted tools" - 빠른 tool이 완료되지 않고 abort됨
+3. "should properly track pendingToolCount" - 결과 3개를 기대하지만 0개를 받음
 
-These are timing/race condition issues. Your task:
+이것들은 timing/race condition 문제입니다. 당신이 할 일:
 
-1. Read the test file and understand what each test verifies
-2. Identify root cause - timing issues or actual bugs?
-3. Fix by:
-   - Replacing arbitrary timeouts with event-based waiting
-   - Fixing bugs in abort implementation if found
-   - Adjusting test expectations if testing changed behavior
+1. 테스트 파일을 읽고 각 테스트가 무엇을 검증하는지 파악하세요
+2. 근본 원인을 식별하세요 - timing 문제인가, 실제 bug인가?
+3. 다음 방법으로 수정하세요:
+   - 임의의 timeout을 event 기반 대기로 교체
+   - abort 구현에 bug가 있다면 수정
+   - 테스트 대상 동작이 바뀌었다면 테스트 기댓값을 조정
 
-Do NOT just increase timeouts - find the real issue.
+timeout을 늘리기만 하지 마세요 - 진짜 원인을 찾으세요.
 
-Return: Summary of what you found and what you fixed.
+반환할 것: 무엇을 발견했고 무엇을 수정했는지에 대한 요약.
 ```
 
 ## 흔한 실수
 
-**❌ 너무 광범위함:** "Fix all the tests" - agent가 길을 잃습니다
-**✅ 구체적임:** "Fix agent-tool-abort.test.ts" - 집중된 범위
+**❌ 너무 광범위함:** "모든 테스트를 고쳐줘" - agent가 길을 잃습니다
+**✅ 구체적임:** "agent-tool-abort.test.ts를 고쳐줘" - 집중된 범위
 
-**❌ Context 없음:** "Fix the race condition" - agent가 어디인지 모릅니다
+**❌ Context 없음:** "race condition을 고쳐줘" - agent가 어디인지 모릅니다
 **✅ Context 있음:** 오류 메시지와 테스트 이름을 붙여 넣으세요
 
 **❌ 제약 조건 없음:** agent가 모든 것을 refactor할 수 있습니다
-**✅ 제약 조건 있음:** "Do NOT change production code" 또는 "Fix tests only"
+**✅ 제약 조건 있음:** "production 코드는 변경하지 마세요" 또는 "테스트만 수정하세요"
 
-**❌ 모호한 출력:** "Fix it" - 무엇이 변경되었는지 모릅니다
-**✅ 구체적임:** "Return summary of root cause and changes"
+**❌ 모호한 출력:** "고쳐줘" - 무엇이 변경되었는지 모릅니다
+**✅ 구체적임:** "근본 원인과 변경 사항의 요약을 반환하세요"
 
 ## 사용하지 말아야 할 때
 
@@ -143,9 +143,9 @@ Return: Summary of what you found and what you fixed.
 
 **Dispatch:**
 ```
-Agent 1 → Fix agent-tool-abort.test.ts
-Agent 2 → Fix batch-completion-behavior.test.ts
-Agent 3 → Fix tool-approval-race-conditions.test.ts
+Agent 1 → agent-tool-abort.test.ts 수정
+Agent 2 → batch-completion-behavior.test.ts 수정
+Agent 3 → tool-approval-race-conditions.test.ts 수정
 ```
 
 **결과:**
@@ -170,7 +170,7 @@ agent들이 돌아온 후:
 1. **각 요약 검토** - 무엇이 변경되었는지 이해하세요
 2. **충돌 확인** - agent들이 같은 코드를 편집했는가?
 3. **전체 suite 실행** - 모든 수정 사항이 함께 작동하는지 확인하세요
-4. **표본 점검** - agent들은 체계적인 오류를 만들 수 있습니다
+4. **표본 점검** - agent들은 같은 실수를 일관되게 반복할 수 있습니다
 
 ## 실제 영향
 
@@ -179,4 +179,4 @@ agent들이 돌아온 후:
 - 3개의 agent가 parallel로 dispatch됨
 - 모든 조사가 동시에 완료됨
 - 모든 수정 사항이 성공적으로 통합됨
-- agent 변경 사항 간 충돌 zero
+- agent 변경 사항 간 충돌 없음

@@ -13,12 +13,12 @@
 
 **포함할 것:**
 - 모든 규칙을 포함한 완전한 4-phase framework
-- anti-shortcut ("NEVER fix symptom", "STOP and re-analyze")
-- 압박 저항 언어 ("even if faster", "even if I seem in a hurry")
+- anti-shortcut ("증상만 고치는 것은 실패입니다", "Phase 1로 돌아가서 재분석")
+- 압박 저항 언어 ("급할 때", "매니저가 지금 당장 fix를 원할 때")
 - 각 phase의 구체적 단계
 
 **제외할 것:**
-- 프로젝트별 컨텍스트
+- 프로젝트별 맥락
 - 같은 규칙의 반복 변형
 - 서사적 설명 (원칙으로 압축됨)
 
@@ -36,20 +36,20 @@
 압박 하의 합리화에 저항하도록 설계된 framework:
 
 ### 언어 선택
-- "ALWAYS" / "NEVER" ("should" / "try to"가 아님)
-- "even if faster" / "even if I seem in a hurry"
-- "STOP and re-analyze" (명시적 일시 정지)
-- "Don't skip past" (실제 행동을 잡음)
+- "항상" / "절대" / "반드시" ("~하는 게 좋다" / "~해 보라"가 아님)
+- "서두르면 반드시 재작업이 발생합니다" / "체계적인 접근이 허둥대는 것보다 빠릅니다"
+- "Phase 1로 돌아가서 재분석" (명시적 일시 정지)
+- "건너뛰지 마세요" (실제 행동을 잡음)
 
 ### 구조적 방어
 - **Phase 1 필수** - 구현으로 건너뛸 수 없음
 - **단일 hypothesis 규칙** - 사고를 강제, shotgun fix 방지
-- **명시적 실패 모드** - 필수 행동과 함께 "IF your first fix doesn't work"
+- **명시적 실패 모드** - 필수 행동과 함께 "이전 fix가 동작하지 않았을 때"
 - **Anti-pattern 섹션** - shortcut이 정확히 어떻게 생겼는지 보여줌
 
 ### 중복성
 - root cause 명령이 overview + when_to_use + Phase 1 + 구현 규칙에 등장
-- "NEVER fix symptom"이 다른 컨텍스트에서 4번 등장
+- "NEVER fix symptom"이 다른 맥락에서 4번 등장
 - 각 phase에 명시적 "don't skip" 지침
 
 ## 테스트 접근

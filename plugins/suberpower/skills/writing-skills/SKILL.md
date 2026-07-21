@@ -35,7 +35,7 @@ description: 새로운 skill을 만들거나, 기존 skill을 편집하거나, �
 | **프로덕션 코드** | skill 문서 (SKILL.md) |
 | **테스트 실패 (RED)** | skill 없이 agent가 규칙을 위반함 (베이스라인) |
 | **테스트 통과 (GREEN)** | skill이 있을 때 agent가 따름 |
-| **리팩터링** | 따름을 유지한 채 허점을 차단 |
+| **리팩터링** | 준수를 유지한 채 허점을 차단 |
 | **테스트 먼저 작성** | skill 작성 전에 베이스라인 시나리오 실행 |
 | **실패 관찰** | agent가 사용하는 정확한 합리화를 기록 |
 | **최소한의 코드** | 해당 위반에 정확히 대응하는 skill 작성 |
@@ -97,7 +97,7 @@ skills/
 - 전체 길이 최대 1024자
 - `name`: 영문자, 숫자, 하이픈만 사용 (괄호, 특수문자 금지)
 - `description`: 3인칭으로, **언제** 사용하는지만 설명 (무엇을 하는지가 아님)
-  - "Use when..."으로 시작하여 트리거 조건에 집중
+  - "...할 때 사용합니다"로 끝맺어 트리거 조건에 집중
   - 구체적 증상, 상황, 맥락 포함
   - **skill의 프로세스나 워크플로우를 절대 요약하지 말 것** (이유는 CSO 섹션 참고)
   - 가능하면 500자 이내로 유지
@@ -105,7 +105,7 @@ skills/
 ```markdown
 ---
 name: Skill-Name-With-Hyphens
-description: Use when [구체적인 트리거 조건과 증상]
+description: [구체적인 트리거 조건과 증상]일 때 사용합니다
 ---
 
 # Skill Name
@@ -145,30 +145,30 @@ Before/after 코드 비교
 
 **목적:** Claude는 주어진 작업에 어떤 skill을 로드할지 결정하기 위해 description을 읽습니다. "지금 이 skill을 읽어야 하는가?"에 답이 되도록 만드세요.
 
-**형식:** "Use when..."으로 시작하여 트리거 조건에 집중
+**형식:** "...할 때 사용합니다"로 끝맺어 트리거 조건에 집중
 
 **중요: Description은 언제 사용하는지이지, skill이 무엇을 하는지가 아닙니다**
 
 description은 트리거 조건만 설명해야 합니다. skill의 프로세스나 워크플로우를 description에 요약하지 마세요.
 
-**왜 중요한가:** 테스트 결과, description이 skill의 워크플로우를 요약하면 Claude가 skill의 전체 내용을 읽는 대신 description을 따르는 경향이 나타났습니다. "code review between tasks"라고 적힌 description은 Claude가 단 한 번의 리뷰만 수행하게 만들었습니다. skill의 flowchart는 두 번의 리뷰(spec compliance 후 code quality)를 명확히 보여주었음에도 말입니다.
+**왜 중요한가:** 테스트 결과, description이 skill의 워크플로우를 요약하면 Claude가 skill의 전체 내용을 읽는 대신 description을 따르는 경향이 나타났습니다. "task 사이에 code review"라고 적힌 description은 Claude가 단 한 번의 review만 수행하게 만들었습니다. skill의 flowchart는 두 번의 review(spec compliance 후 code quality)를 명확히 보여주었음에도 말입니다.
 
-description을 단순히 "Use when executing implementation plans with independent tasks"(워크플로우 요약 없음)로 바꾸자 Claude는 flowchart를 올바르게 읽고 2단계 리뷰 프로세스를 따랐습니다.
+description을 단순히 "독립적인 task로 구성된 implementation plan을 실행할 때 사용합니다"(워크플로우 요약 없음)로 바꾸자 Claude는 flowchart를 올바르게 읽고 2단계 review 프로세스를 따랐습니다.
 
 **함정:** 워크플로우를 요약하는 description은 Claude가 따라가는 지름길을 만들어냅니다. skill 본문은 Claude가 건너뛰는 문서가 되어버립니다.
 
 ```yaml
 # ❌ BAD: 워크플로우 요약 - Claude가 skill을 읽는 대신 이것을 따를 수 있음
-description: Use when executing plans - dispatches subagent per task with code review between tasks
+description: plan 실행 시 사용 - task마다 subagent를 dispatch하고 task 사이에 code review 수행
 
 # ❌ BAD: 너무 많은 프로세스 디테일
-description: Use for TDD - write test first, watch it fail, write minimal code, refactor
+description: TDD용 - test를 먼저 작성하고, 실패를 확인하고, 최소한의 코드를 작성하고, 리팩터링
 
 # ✅ GOOD: 트리거 조건만, 워크플로우 요약 없음
-description: Use when executing implementation plans with independent tasks in the current session
+description: 현재 세션에서 독립적인 task로 구성된 implementation plan을 실행할 때 사용합니다
 
 # ✅ GOOD: 트리거 조건만
-description: Use when implementing any feature or bugfix, before writing implementation code
+description: 모든 기능 구현이나 버그 수정 시 implementation 코드를 작성하기 전에 사용합니다
 ```
 
 **내용:**
@@ -181,19 +181,19 @@ description: Use when implementing any feature or bugfix, before writing impleme
 
 ```yaml
 # ❌ BAD: 너무 추상적, 모호함, 언제 사용하는지가 빠짐
-description: For async testing
+description: 비동기 테스팅용
 
 # ❌ BAD: 1인칭
-description: I can help you with async tests when they're flaky
+description: 테스트가 불안정할 때 제가 async 테스트를 도와드릴 수 있습니다
 
 # ❌ BAD: 기술을 언급했지만 skill이 그 기술 전용이 아님
-description: Use when tests use setTimeout/sleep and are flaky
+description: test가 setTimeout/sleep을 사용하고 불안정할 때 사용합니다
 
-# ✅ GOOD: "Use when"으로 시작, 문제를 설명, 워크플로우 없음
-description: Use when tests have race conditions, timing dependencies, or pass/fail inconsistently
+# ✅ GOOD: 트리거 조건으로 끝맺음, 문제를 설명, 워크플로우 없음
+description: test에 race condition이나 타이밍 의존성이 있거나, 통과/실패가 일관되지 않을 때 사용합니다
 
 # ✅ GOOD: 기술 종속 skill에 명시적 트리거
-description: Use when using React Router and handling authentication redirects
+description: React Router를 사용하며 인증 리다이렉트를 다룰 때 사용합니다
 ```
 
 ### 2. 키워드 커버리지
@@ -224,33 +224,33 @@ Claude가 검색할 만한 단어들을 사용:
 **디테일은 도구 help로 옮기기:**
 ```bash
 # ❌ BAD: 모든 플래그를 SKILL.md에 기록
-search-conversations supports --text, --both, --after DATE, --before DATE, --limit N
+search-conversations는 --text, --both, --after DATE, --before DATE, --limit N을 지원합니다
 
 # ✅ GOOD: --help 참조
-search-conversations supports multiple modes and filters. Run --help for details.
+search-conversations는 여러 모드와 필터를 지원합니다. 자세한 내용은 --help를 실행하세요.
 ```
 
 **상호 참조 사용:**
 ```markdown
 # ❌ BAD: 워크플로우 디테일 반복
-When searching, dispatch subagent with template...
+검색할 때는 템플릿과 함께 subagent를 dispatch하고...
 [반복된 지시 20줄]
 
 # ✅ GOOD: 다른 skill 참조
-Always use subagents (50-100x context savings). REQUIRED: Use [other-skill-name] for workflow.
+항상 subagent를 사용하세요 (context 50-100배 절감). REQUIRED: workflow에는 [other-skill-name]을 사용하세요.
 ```
 
 **예시 압축:**
 ```markdown
 # ❌ BAD: 장황한 예시 (42단어)
-your human partner: "How did we handle authentication errors in React Router before?"
-You: I'll search past conversations for React Router authentication patterns.
-[Dispatch subagent with search query: "React Router authentication error handling 401"]
+your human partner: "예전에 React Router에서 인증 에러를 어떻게 처리했었죠?"
+You: React Router 인증 패턴에 대해 과거 대화를 검색하겠습니다.
+[검색어와 함께 subagent dispatch: "React Router authentication error handling 401"]
 
 # ✅ GOOD: 최소화된 예시 (20단어)
-Partner: "How did we handle auth errors in React Router?"
-You: Searching...
-[Dispatch subagent → synthesis]
+Partner: "React Router에서 인증 에러를 어떻게 처리했죠?"
+You: 검색 중입니다...
+[subagent dispatch → 종합]
 ```
 
 **중복 제거:**
@@ -265,7 +265,7 @@ wc -w skills/path/SKILL.md
 # 그 외 자주 로드되는 것: 전체 200 미만 목표
 ```
 
-**무엇을 DO하는지 또는 핵심 통찰로 명명:**
+**무엇을 하는지, 또는 핵심 통찰로 명명:**
 - ✅ `condition-based-waiting` > `async-test-helpers`
 - ✅ `using-skills` (X: `skill-usage`)
 - ✅ `flatten-with-flags` > `data-structure-refactoring`
@@ -275,7 +275,7 @@ wc -w skills/path/SKILL.md
 - `creating-skills`, `testing-skills`, `debugging-with-logs`
 - 능동적, 당신이 취하는 동작을 묘사
 
-### 4. 다른 skill 상호 참조
+### 5. 다른 skill 상호 참조
 
 **다른 skill을 참조하는 문서를 작성할 때:**
 
@@ -315,7 +315,7 @@ digraph when_flowchart {
 
 graphviz 스타일 규칙은 @graphviz-conventions.dot를 참고하세요.
 
-**사람 파트너에게 시각화:** 이 디렉터리의 `render-graphs.js`로 skill의 flowchart를 SVG로 렌더링할 수 있습니다:
+**your human partner에게 시각화:** 이 디렉터리의 `render-graphs.js`로 skill의 flowchart를 SVG로 렌더링할 수 있습니다:
 ```bash
 ./render-graphs.js ../some-skill           # 각 다이어그램을 따로
 ./render-graphs.js ../some-skill --combine # 모든 다이어그램을 하나의 SVG로
@@ -351,7 +351,7 @@ graphviz 스타일 규칙은 @graphviz-conventions.dot를 참고하세요.
 defense-in-depth/
   SKILL.md    # 모든 것이 인라인
 ```
-언제: 모든 내용이 들어맞고, 분량이 큰 참조가 필요 없을 때
+언제: 모든 내용이 한 파일에 담기고, 분량이 큰 참조가 필요 없을 때
 
 ### 재사용 가능한 도구가 있는 skill
 ```
@@ -383,12 +383,12 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 테스트 없이 skill을 편집했나요? 같은 위반입니다.
 
 **예외 없음:**
-- "간단한 추가"라고 해서가 아닙니다
-- "그냥 섹션 추가"라고 해서가 아닙니다
-- "문서 업데이트"라고 해서가 아닙니다
+- "간단한 추가"라도 예외가 아닙니다
+- "그냥 섹션 추가"라도 예외가 아닙니다
+- "문서 업데이트"라도 예외가 아닙니다
 - 테스트하지 않은 변경을 "참고용"이라며 남기지 말 것
-- 테스트를 실행하면서 "적응"하지 말 것
-- 삭제는 삭제를 의미합니다
+- test를 작성하면서 그것을 참고해 고쳐 쓰지 말 것
+- 삭제하라는 것은 삭제하라는 뜻
 
 **필수 사전 지식:** suberpower:test-driven-development skill이 왜 이것이 중요한지 설명합니다. 같은 원칙이 문서에도 적용됩니다.
 
@@ -401,7 +401,7 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 **예시:** TDD, verification-before-completion, designing-before-coding
 
 **테스트 방법:**
-- 학술적 질문: 규칙을 이해하고 있는가?
+- 이론적 질문: 규칙을 이해하고 있는가?
 - 압박 시나리오: 스트레스 상황에서도 따르는가?
 - 여러 압박 결합: 시간 + 매몰비용 + 피로
 - 합리화를 식별하고 명시적 반론을 추가
@@ -446,15 +446,15 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 | 핑계 | 현실 |
 |--------|---------|
 | "skill이 명백히 명확하다" | 당신에게 명확한 것 ≠ 다른 agent에게 명확함. 테스트하세요. |
-| "그냥 참고용이다" | 참조도 빈틈, 불명확한 섹션이 있을 수 있다. 검색을 테스트하세요. |
-| "테스팅은 과하다" | 테스트되지 않은 skill에는 항상 문제가 있다. 15분 테스트가 몇 시간을 아낀다. |
-| "문제가 나타나면 테스트하겠다" | 문제 = agent가 skill을 못 쓰는 상태. 배포 전에 테스트하라. |
-| "테스트가 너무 귀찮다" | 테스트가 프로덕션에서 잘못된 skill 디버깅보다 덜 귀찮다. |
-| "잘 됐다고 확신한다" | 과신은 문제를 보장한다. 어쨌든 테스트하라. |
-| "학술적 리뷰면 충분하다" | 읽기 ≠ 사용. 적용 시나리오를 테스트하라. |
-| "테스트할 시간이 없다" | 테스트되지 않은 skill 배포는 나중에 고치는 데 더 많은 시간을 쓰게 한다. |
+| "그냥 참고용이다" | 참조도 빈틈, 불명확한 섹션이 있을 수 있습니다. 검색을 테스트하세요. |
+| "테스팅은 과하다" | 테스트되지 않은 skill에는 항상 문제가 있습니다. 15분 테스트가 몇 시간을 아낍니다. |
+| "문제가 나타나면 테스트하겠다" | 문제 = agent가 skill을 못 쓰는 상태입니다. 배포 전에 테스트하세요. |
+| "테스트가 너무 귀찮다" | 테스트가 프로덕션에서 잘못된 skill 디버깅보다 덜 귀찮습니다. |
+| "잘 됐다고 확신한다" | 과신은 문제를 보장합니다. 어쨌든 테스트하세요. |
+| "탁상공론식 review면 충분하다" | 읽기 ≠ 사용. 적용 시나리오를 테스트하세요. |
+| "테스트할 시간이 없다" | 테스트되지 않은 skill 배포는 나중에 고치는 데 더 많은 시간을 쓰게 합니다. |
 
-**이 모든 것은: 배포 전에 테스트하라. 예외 없음.**
+**이 모든 것이 의미하는 바: 배포 전에 테스트하라. 예외 없음.**
 
 ## 합리화에 대비한 skill 방탄화
 
@@ -468,19 +468,19 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 
 <Bad>
 ```markdown
-Write code before test? Delete it.
+test보다 코드를 먼저 작성했나요? 삭제하세요.
 ```
 </Bad>
 
 <Good>
 ```markdown
-Write code before test? Delete it. Start over.
+test보다 코드를 먼저 작성했나요? 삭제하세요. 처음부터 다시 시작하세요.
 
-**No exceptions:**
-- Don't keep it as "reference"
-- Don't "adapt" it while writing tests
-- Don't look at it
-- Delete means delete
+**예외 없음:**
+- "참고용"으로 남겨두지 말 것
+- test를 작성하면서 그것을 참고해 고쳐 쓰지 말 것
+- 쳐다보지도 말 것
+- 삭제하라는 것은 삭제하라는 뜻
 ```
 </Good>
 
@@ -489,7 +489,7 @@ Write code before test? Delete it. Start over.
 근본 원칙을 일찍 추가:
 
 ```markdown
-**Violating the letter of the rules is violating the spirit of the rules.**
+**규칙의 문구를 어기는 것이 곧 규칙의 취지를 어기는 것입니다.**
 ```
 
 이것은 "나는 정신을 따르고 있다" 류의 합리화 전체를 차단합니다.
@@ -499,11 +499,11 @@ Write code before test? Delete it. Start over.
 베이스라인 테스트에서 합리화를 수집합니다 (아래 Testing 섹션 참고). agent가 하는 모든 핑계가 표에 들어갑니다:
 
 ```markdown
-| Excuse | Reality |
+| 핑계 | 현실 |
 |--------|---------|
-| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
-| "I'll test after" | Tests passing immediately prove nothing. |
-| "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
+| "테스트하기엔 너무 단순하다" | 단순한 코드도 깨집니다. 테스트는 30초면 됩니다. |
+| "나중에 테스트하겠다" | 바로 통과하는 테스트는 아무것도 증명하지 못합니다. |
+| "나중에 테스트해도 같은 목표를 달성한다" | 사후 테스트 = "이게 뭘 하는 거지?" 선행 테스트 = "이게 뭘 해야 하지?" |
 ```
 
 ### Red Flags 목록 작성
@@ -513,13 +513,13 @@ agent가 합리화하고 있을 때 스스로 체크하기 쉽게 만듭니다:
 ```markdown
 ## Red Flags - STOP and Start Over
 
-- Code before test
-- "I already manually tested it"
-- "Tests after achieve the same purpose"
-- "It's about spirit not ritual"
-- "This is different because..."
+- test보다 코드가 먼저
+- "이미 수동으로 테스트했잖아요"
+- "나중에 테스트해도 같은 목적을 달성합니다"
+- "형식이 아니라 취지가 중요합니다"
+- "이 경우는 다릅니다. 왜냐하면..."
 
-**All of these mean: Delete code. Start over with TDD.**
+**이 모든 것이 의미하는 바: 코드를 삭제하라. TDD로 처음부터 다시 시작하라.**
 ```
 
 ### 위반 증상에 맞춰 CSO 업데이트
@@ -527,7 +527,7 @@ agent가 합리화하고 있을 때 스스로 체크하기 쉽게 만듭니다:
 description에 추가: 규칙을 위반하기 직전의 증상:
 
 ```yaml
-description: use when implementing any feature or bugfix, before writing implementation code
+description: 모든 기능 구현이나 버그 수정 시 implementation 코드를 작성하기 전에 사용합니다
 ```
 
 ## skill을 위한 RED-GREEN-REFACTOR
@@ -556,13 +556,13 @@ agent가 새 합리화를 발견했나요? 명시적 반론을 추가합니다. 
 **테스팅 방법론:** 완전한 테스팅 방법론은 @testing-skills-with-subagents.md를 참고하세요:
 - 압박 시나리오 작성 방법
 - 압박 유형 (시간, 매몰비용, 권위, 피로)
-- 체계적으로 구멍 막기
+- 체계적으로 허점 막기
 - 메타 테스팅 기법
 
 ## 안티 패턴
 
 ### ❌ 서사형 예시
-"In session 2025-10-03, we found empty projectDir caused..."
+"2025-10-03 세션에서 빈 projectDir가 원인이라는 것을 발견했고..."
 **왜 나쁜가:** 너무 구체적, 재사용 불가
 
 ### ❌ 다중 언어 희석
@@ -605,7 +605,7 @@ helper1, helper2, step3, pattern4
 **GREEN 단계 - 최소한의 skill 작성:**
 - [ ] 이름이 영문자, 숫자, 하이픈만 사용 (괄호/특수문자 없음)
 - [ ] 필수 `name`과 `description` 필드를 가진 YAML frontmatter (최대 1024자; [spec](https://agentskills.io/specification) 참고)
-- [ ] description이 "Use when..."으로 시작하고 구체적 트리거/증상 포함
+- [ ] description이 "...할 때 사용합니다"로 끝나고 구체적 트리거/증상 포함
 - [ ] description을 3인칭으로 작성
 - [ ] 검색을 위해 키워드를 전반에 분포 (에러, 증상, 도구)
 - [ ] 핵심 원칙이 있는 명료한 개요
@@ -637,6 +637,7 @@ helper1, helper2, step3, pattern4
 미래의 Claude가 당신의 skill을 어떻게 찾는지:
 
 1. **문제 발생** ("tests are flaky")
+2. **skill 검색** (description을 grep하고, 카테고리를 훑어봄)
 3. **SKILL 발견** (description 일치)
 4. **개요 훑기** (이게 관련 있나?)
 5. **패턴 읽기** (빠른 참조 표)

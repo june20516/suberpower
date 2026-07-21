@@ -79,7 +79,7 @@ async function waitFor<T>(
 }
 ```
 
-실제 debugging session에서의 도메인별 helper(`waitForEvent`, `waitForEventCount`, `waitForEventMatch`)를 포함한 완전한 구현은 이 디렉토리의 `condition-based-waiting-example.ts`를 참조하세요.
+실제 debugging session에서의 도메인별 helper(`waitForEvent`, `waitForEventCount`, `waitForEventMatch`)를 포함한 완전한 구현은 이 디렉터리의 `condition-based-waiting-example.ts`를 참조하세요.
 
 ## 흔한 실수
 

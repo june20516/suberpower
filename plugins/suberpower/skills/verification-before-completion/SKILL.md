@@ -112,7 +112,7 @@ NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 - 정의되지 않은 함수가 배포됨 - 크래시 발생
 - 누락된 요구사항이 배포됨 - 불완전한 기능
 - 잘못된 완료에 시간 낭비 → 방향 수정 → 재작업
-- 위반함: "Honesty is a core value. If you lie, you'll be replaced."
+- 위반함: "정직은 핵심 가치다. 거짓말을 하면 교체될 것이다."
 
 ## When To Apply
 

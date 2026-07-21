@@ -26,7 +26,7 @@ UI 주제 *에 대한* 질문이 자동으로 시각적 질문이 되는 것은 
 
 ## 작동 방식
 
-서버는 HTML 파일이 있는 디렉토리를 감시하고 가장 최신 파일을 브라우저에 제공합니다. 당신은 `screen_dir`에 HTML 콘텐츠를 작성하고, 사용자는 브라우저에서 이를 보고 옵션을 선택하기 위해 클릭할 수 있습니다. 선택은 `state_dir/events`에 기록되며 다음 turn에서 읽을 수 있습니다.
+서버는 HTML 파일이 있는 디렉터리를 감시하고 가장 최신 파일을 브라우저에 제공합니다. 당신은 `screen_dir`에 HTML 콘텐츠를 작성하고, 사용자는 브라우저에서 이를 보고 옵션을 선택하기 위해 클릭할 수 있습니다. 선택은 `state_dir/events`에 기록되며 다음 turn에서 읽을 수 있습니다.
 
 **콘텐츠 fragment vs 전체 문서:** HTML 파일이 `<!DOCTYPE` 또는 `<html`로 시작하면 서버는 있는 그대로 제공합니다(helper script만 주입). 그렇지 않으면 서버는 자동으로 콘텐츠를 frame template으로 감쌉니다 — 헤더, CSS 테마, 선택 표시기, 모든 인터랙티브 인프라를 추가합니다. **기본적으로 콘텐츠 fragment를 작성하세요.** 페이지에 대한 완전한 제어가 필요할 때만 전체 문서를 작성하세요.
 
@@ -43,7 +43,7 @@ scripts/start-server.sh --project-dir /path/to/project
 
 응답에서 `screen_dir`과 `state_dir`을 저장하세요. 사용자에게 URL을 열도록 알리세요.
 
-**연결 정보 찾기:** 서버는 시작 시 JSON을 `$STATE_DIR/server-info`에 작성합니다. 서버를 백그라운드에서 실행했고 stdout을 캡처하지 못했다면, 그 파일을 읽어 URL과 포트를 얻으세요. `--project-dir`을 사용할 때는 `<project>/.suberpowers/brainstorm/`에서 세션 디렉토리를 확인하세요.
+**연결 정보 찾기:** 서버는 시작 시 JSON을 `$STATE_DIR/server-info`에 작성합니다. 서버를 백그라운드에서 실행했고 stdout을 캡처하지 못했다면, 그 파일을 읽어 URL과 포트를 얻으세요. `--project-dir`을 사용할 때는 `<project>/.suberpowers/brainstorm/`에서 세션 디렉터리를 확인하세요.
 
 **참고:** 프로젝트 루트를 `--project-dir`로 전달하여 mockup이 `.suberpowers/brainstorm/`에 영속되고 서버 재시작에도 살아남도록 하세요. 이를 사용하지 않으면 파일은 `/tmp`로 가서 정리됩니다. 사용자에게 아직 추가되지 않았다면 `.suberpowers/`를 `.gitignore`에 추가하도록 상기시키세요.
 
@@ -101,8 +101,8 @@ scripts/start-server.sh \
 
 2. **사용자에게 무엇을 기대할지 알리고 turn을 종료하세요:**
    - URL을 매번 상기시키세요(첫 단계뿐 아니라)
-   - 화면에 무엇이 있는지 간단한 텍스트 요약을 제공하세요(예: "Showing 3 layout options for the homepage")
-   - 터미널에서 응답하도록 요청하세요: "Take a look and let me know what you think. Click to select an option if you'd like."
+   - 화면에 무엇이 있는지 간단한 텍스트 요약을 제공하세요(예: "홈페이지 레이아웃 3가지를 보여드리고 있습니다")
+   - 터미널에서 응답하도록 요청하세요: "한번 보시고 어떠신지 알려주세요. 원하시면 옵션을 클릭해서 선택하셔도 됩니다."
 
 3. **다음 turn에서** — 사용자가 터미널에서 응답한 후:
    - `$STATE_DIR/events`가 존재하면 읽으세요 — 이는 사용자의 브라우저 상호작용(클릭, 선택)을 JSON 라인으로 포함합니다
@@ -259,7 +259,7 @@ frame template은 콘텐츠를 위한 다음 CSS 클래스를 제공합니다:
 ## 디자인 팁
 
 - **질문에 맞춰 충실도 조정** — 레이아웃에는 와이어프레임, 다듬기 질문에는 polish
-- **각 페이지에서 질문 설명** — "Pick one"이 아니라 "Which layout feels more professional?"
+- **각 페이지에서 질문 설명** — "하나 고르세요"가 아니라 "어느 레이아웃이 더 전문적으로 느껴지시나요?"
 - **진행 전에 반복** — 피드백이 현재 화면을 바꾸면 새 버전을 작성하세요
 - 화면당 **최대 2~4개 옵션**
 - **중요할 때는 실제 콘텐츠 사용** — 사진 포트폴리오라면 실제 이미지(Unsplash)를 사용하세요. Placeholder 콘텐츠는 디자인 문제를 가립니다.
