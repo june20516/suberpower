@@ -11,7 +11,7 @@ description: 현재 세션에서 독립적인 task로 구성된 implementation p
 
 **핵심 원칙:** task마다 새로운 subagent + 두 단계 review(spec → quality) = 높은 품질과 빠른 반복
 
-**지속적인 실행:** task 사이에 사람 파트너에게 확인받기 위해 멈추지 마세요. plan의 모든 task를 멈추지 않고 실행하세요. 멈춰야 할 유일한 이유는 다음과 같습니다: 해결할 수 없는 BLOCKED 상태, 진행을 실제로 막는 모호함, 모든 task 완료. "계속할까요?" 같은 질문이나 진행 요약은 사용자의 시간을 낭비합니다 — 그들은 plan을 실행해달라고 요청한 것이므로, 그냥 실행하세요.
+**지속적인 실행:** task 사이에 your human partner에게 확인받기 위해 멈추지 마세요. plan의 모든 task를 멈추지 않고 실행하세요. 멈춰야 할 유일한 이유는 다음과 같습니다: 해결할 수 없는 BLOCKED 상태, 진행을 실제로 막는 모호함, 모든 task 완료. "계속할까요?" 같은 질문이나 진행 요약은 사용자의 시간을 낭비합니다 — 그들은 plan을 실행해달라고 요청한 것이므로, 그냥 실행하세요.
 
 ## 언제 사용하는가
 
@@ -115,9 +115,9 @@ Implementer subagent는 네 가지 상태 중 하나를 보고합니다. 각각�
 1. context 문제라면 더 많은 context를 제공하고 같은 모델로 다시 dispatch합니다
 2. task에 더 많은 추론이 필요하다면 더 강력한 모델로 다시 dispatch합니다
 3. task가 너무 크다면 더 작은 조각으로 나눕니다
-4. plan 자체가 잘못되었다면 사람에게 에스컬레이션합니다
+4. plan 자체가 잘못되었다면 사람에게 escalate합니다
 
-에스컬레이션을 **절대** 무시하거나 변경 없이 같은 모델에게 재시도를 강요하지 마세요. implementer가 막혔다고 말했다면 무언가가 바뀌어야 합니다.
+escalate를 **절대** 무시하거나 변경 없이 같은 모델에게 재시도를 강요하지 마세요. implementer가 막혔다고 말했다면 무언가가 바뀌어야 합니다.
 
 ## Prompt 템플릿
 
@@ -139,7 +139,7 @@ Task 1: Hook 설치 스크립트
 [Task 1의 텍스트와 context 확보 (이미 추출됨)]
 [전체 task 텍스트 + context와 함께 implementation subagent dispatch]
 
-Implementer: "시작하기 전에 — hook을 user 레벨에 설치해야 하나요, system 레벨인가요?"
+Implementer: "시작하기 전에 — hook을 user 레벨에 설치해야 하나요, 아니면 system 레벨에 설치해야 하나요?"
 
 You: "User 레벨입니다 (~/.config/suberpowers/hooks/)"
 
@@ -224,11 +224,11 @@ Final reviewer: 모든 요구사항 충족, merge 준비 완료
 - self-review로 핸드오프 전에 이슈 발견
 - 두 단계 review: spec 준수, 그다음 code quality
 - review 루프로 수정이 실제로 작동하는지 확인
-- spec 준수로 과/소 구축 방지
+- spec 준수로 과잉 구현과 구현 누락을 방지
 - code quality로 구현이 잘 만들어지도록 보장
 
 **비용:**
-- 더 많은 subagent 호출 (task당 implementer + 2명의 reviewer)
+- 더 많은 subagent 호출 (task당 implementer + reviewer 2개)
 - controller가 더 많은 준비 작업 수행 (모든 task를 미리 추출)
 - review 루프로 반복 추가
 - 하지만 이슈를 일찍 잡음 (나중에 디버깅하는 것보다 저렴)
@@ -241,7 +241,7 @@ Final reviewer: 모든 요구사항 충족, merge 준비 완료
 - 수정되지 않은 이슈로 진행
 - 여러 implementation subagent를 병렬로 dispatch (충돌 발생)
 - subagent에게 plan 파일을 읽게 하기 (대신 전체 텍스트 제공)
-- 장면 설정 context 건너뛰기 (subagent는 task가 어디에 맞는지 이해해야 함)
+- 배경 설명 context 건너뛰기 (subagent는 task가 전체에서 어디에 속하는지 이해해야 함)
 - subagent 질문 무시 (진행시키기 전에 답변)
 - spec 준수에서 "충분히 가까움"을 받아들이기 (spec reviewer가 이슈를 발견 = 완료 아님)
 - review 루프 건너뛰기 (reviewer가 이슈 발견 = implementer 수정 = 다시 review)

@@ -10,7 +10,7 @@ test는 mock의 동작이 아니라 실제 동작을 검증해야 합니다. moc
 
 **엄격한 TDD를 따르면 이러한 anti-pattern을 방지합니다.**
 
-## 철의 법칙들
+## 철의 법칙
 
 ```
 1. NEVER - mock의 동작을 test하지 말 것
@@ -112,7 +112,7 @@ BEFORE - production 클래스에 메서드를 추가하기 전:
   질문: "이 클래스가 이 리소스의 lifecycle을 소유하는가?"
 
   IF 아니라면:
-    STOP - 이 메서드에는 잘못된 클래스임
+    STOP - 이 메서드를 둘 곳이 아님
 ```
 
 ## Anti-Pattern 3: 이해 없이 mock하기
@@ -161,7 +161,7 @@ BEFORE - 어떤 메서드든 mock하기 전:
   IF side effect에 의존한다면:
     더 낮은 레벨에서 mock할 것 (실제로 느리거나 외부에 있는 작업)
     OR 필요한 동작을 보존하는 test double을 사용할 것
-    NOT test가 의존하는 상위 레벨 메서드를 mock하는 것
+    NOT - test가 의존하는 상위 레벨 메서드는 mock하지 말 것
 
   IF test가 무엇에 의존하는지 확실하지 않다면:
     FIRST 실제 구현으로 test를 실행할 것
@@ -231,7 +231,7 @@ BEFORE - mock response를 만들기 전:
 ```
 ✅ Implementation 완료
 ❌ test 미작성
-"test 준비 완료"
+"이제 테스트만 하면 됩니다"
 ```
 
 **왜 잘못되었나:**

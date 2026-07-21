@@ -237,7 +237,7 @@ search-conversations는 여러 모드와 필터를 지원합니다. 자세한 �
 [반복된 지시 20줄]
 
 # ✅ GOOD: 다른 skill 참조
-항상 subagent를 사용하세요 (context 50-100배 절감). REQUIRED: workflow는 [other-skill-name]을 사용하세요.
+항상 subagent를 사용하세요 (context 50-100배 절감). REQUIRED: workflow에는 [other-skill-name]을 사용하세요.
 ```
 
 **예시 압축:**
@@ -265,7 +265,7 @@ wc -w skills/path/SKILL.md
 # 그 외 자주 로드되는 것: 전체 200 미만 목표
 ```
 
-**무엇을 DO하는지 또는 핵심 통찰로 명명:**
+**무엇을 하는지, 또는 핵심 통찰로 명명:**
 - ✅ `condition-based-waiting` > `async-test-helpers`
 - ✅ `using-skills` (X: `skill-usage`)
 - ✅ `flatten-with-flags` > `data-structure-refactoring`
@@ -315,7 +315,7 @@ digraph when_flowchart {
 
 graphviz 스타일 규칙은 @graphviz-conventions.dot를 참고하세요.
 
-**사람 파트너에게 시각화:** 이 디렉터리의 `render-graphs.js`로 skill의 flowchart를 SVG로 렌더링할 수 있습니다:
+**your human partner에게 시각화:** 이 디렉터리의 `render-graphs.js`로 skill의 flowchart를 SVG로 렌더링할 수 있습니다:
 ```bash
 ./render-graphs.js ../some-skill           # 각 다이어그램을 따로
 ./render-graphs.js ../some-skill --combine # 모든 다이어그램을 하나의 SVG로
@@ -351,7 +351,7 @@ graphviz 스타일 규칙은 @graphviz-conventions.dot를 참고하세요.
 defense-in-depth/
   SKILL.md    # 모든 것이 인라인
 ```
-언제: 모든 내용이 들어맞고, 분량이 큰 참조가 필요 없을 때
+언제: 모든 내용이 한 파일에 담기고, 분량이 큰 참조가 필요 없을 때
 
 ### 재사용 가능한 도구가 있는 skill
 ```
@@ -401,7 +401,7 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 **예시:** TDD, verification-before-completion, designing-before-coding
 
 **테스트 방법:**
-- 학술적 질문: 규칙을 이해하고 있는가?
+- 이론적 질문: 규칙을 이해하고 있는가?
 - 압박 시나리오: 스트레스 상황에서도 따르는가?
 - 여러 압박 결합: 시간 + 매몰비용 + 피로
 - 합리화를 식별하고 명시적 반론을 추가
@@ -446,13 +446,13 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 | 핑계 | 현실 |
 |--------|---------|
 | "skill이 명백히 명확하다" | 당신에게 명확한 것 ≠ 다른 agent에게 명확함. 테스트하세요. |
-| "그냥 참고용이다" | 참조도 빈틈, 불명확한 섹션이 있을 수 있다. 검색을 테스트하세요. |
-| "테스팅은 과하다" | 테스트되지 않은 skill에는 항상 문제가 있다. 15분 테스트가 몇 시간을 아낀다. |
-| "문제가 나타나면 테스트하겠다" | 문제 = agent가 skill을 못 쓰는 상태. 배포 전에 테스트하라. |
-| "테스트가 너무 귀찮다" | 테스트가 프로덕션에서 잘못된 skill 디버깅보다 덜 귀찮다. |
-| "잘 됐다고 확신한다" | 과신은 문제를 보장한다. 어쨌든 테스트하라. |
-| "학술적 review면 충분하다" | 읽기 ≠ 사용. 적용 시나리오를 테스트하라. |
-| "테스트할 시간이 없다" | 테스트되지 않은 skill 배포는 나중에 고치는 데 더 많은 시간을 쓰게 한다. |
+| "그냥 참고용이다" | 참조도 빈틈, 불명확한 섹션이 있을 수 있습니다. 검색을 테스트하세요. |
+| "테스팅은 과하다" | 테스트되지 않은 skill에는 항상 문제가 있습니다. 15분 테스트가 몇 시간을 아낍니다. |
+| "문제가 나타나면 테스트하겠다" | 문제 = agent가 skill을 못 쓰는 상태입니다. 배포 전에 테스트하세요. |
+| "테스트가 너무 귀찮다" | 테스트가 프로덕션에서 잘못된 skill 디버깅보다 덜 귀찮습니다. |
+| "잘 됐다고 확신한다" | 과신은 문제를 보장합니다. 어쨌든 테스트하세요. |
+| "탁상공론식 review면 충분하다" | 읽기 ≠ 사용. 적용 시나리오를 테스트하세요. |
+| "테스트할 시간이 없다" | 테스트되지 않은 skill 배포는 나중에 고치는 데 더 많은 시간을 쓰게 합니다. |
 
 **이 모든 것이 의미하는 바: 배포 전에 테스트하라. 예외 없음.**
 

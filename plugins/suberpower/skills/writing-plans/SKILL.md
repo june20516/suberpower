@@ -11,12 +11,12 @@ description: spec 또는 요구사항이 있는 멀티스텝 작업을 코드 �
 
 그들이 숙련된 개발자이지만 우리 도구나 문제 영역에 대해서는 거의 모른다고 가정합니다. 좋은 테스트 설계에 대해서도 잘 모른다고 가정합니다.
 
-**시작 시 알림:** "writing-plans skill을 사용하여 구현 plan을 작성하겠습니다."
+**시작 시 안내:** "writing-plans skill을 사용하여 구현 plan을 작성하겠습니다."
 
 **맥락:** 격리된 worktree에서 작업 중이라면, 실행 시점에 `suberpower:using-git-worktrees` skill을 통해 생성되었어야 합니다.
 
 **Plan 저장 위치:** `docs/suberpowers/plans/YYYY-MM-DD-<feature-name>.md`
-- (Plan 위치에 대한 사용자 선호 설정이 이 기본값을 override 합니다)
+- (Plan 위치에 대한 사용자 선호 설정이 이 기본값을 override합니다)
 
 ## Scope Check
 
@@ -27,11 +27,11 @@ spec이 여러 개의 독립적인 서브시스템을 다룬다면, brainstormin
 task를 정의하기 전에, 어떤 파일이 생성 또는 수정될지, 그리고 각 파일이 무엇을 담당하는지 매핑합니다. 분해(decomposition) 결정이 여기서 확정됩니다.
 
 - 명확한 경계와 잘 정의된 인터페이스를 가진 단위로 설계합니다. 각 파일은 하나의 명확한 책임을 가져야 합니다.
-- 당신은 한 번에 context에 담을 수 있는 코드를 가장 잘 추론하며, 파일이 집중되어 있을수록 편집이 더 안정적입니다. 너무 많은 일을 하는 큰 파일보다는 작고 focused 된 파일을 선호하세요.
+- 당신은 한 번에 context에 담을 수 있는 코드를 가장 잘 추론하며, 파일이 집중되어 있을수록 편집이 더 안정적입니다. 너무 많은 일을 하는 큰 파일보다는 작고 집중된 파일을 선호하세요.
 - 함께 변경되는 파일들은 함께 위치해야 합니다. 기술 계층이 아니라 책임으로 분할하세요.
 - 기존 코드베이스에서는 확립된 패턴을 따르세요. 코드베이스가 큰 파일을 사용한다면 일방적으로 재구조화하지 마세요 — 하지만 수정 중인 파일이 다루기 힘들 정도로 커졌다면, plan에 분할을 포함하는 것은 합리적입니다.
 
-이 구조가 task 분해를 알려줍니다. 각 task는 독립적으로 의미가 있는 자기 완결적인 변경을 만들어내야 합니다.
+이 구조가 task 분해의 기준이 됩니다. 각 task는 독립적으로 의미가 있는 자기 완결적인 변경을 만들어내야 합니다.
 
 ## Bite-Sized Task Granularity
 
@@ -137,7 +137,7 @@ plan을 저장한 후, 실행 선택지를 제시합니다:
 
 **"Plan이 완성되어 `docs/suberpowers/plans/<filename>.md`에 저장되었습니다. 두 가지 실행 옵션이 있습니다:**
 
-**1. Subagent-Driven (권장)** - task마다 새로운 subagent를 dispatch하고, task 사이에 review하며, 빠르게 iteration합니다
+**1. Subagent-Driven (권장)** - task마다 새로운 subagent를 dispatch하고, task 사이에 review하며, 빠르게 반복합니다
 
 **2. Inline Execution** - executing-plans를 사용해 이 세션에서 task를 실행하고, checkpoint와 함께 배치 실행합니다
 

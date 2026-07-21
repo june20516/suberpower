@@ -6,7 +6,7 @@ implementer subagent를 dispatch할 때 이 템플릿을 사용하세요.
 Task tool (general-purpose):
   description: "Implement Task N: [task 이름]"
   prompt: |
-    당신은 Task N을 구현합니다: [task 이름]
+    당신은 Task N: [task 이름]을 구현합니다.
 
     ## Task 설명
 
@@ -38,8 +38,8 @@ Task tool (general-purpose):
 
     작업 디렉터리: [directory]
 
-    **작업 중에:** 예상치 못했거나 불명확한 것을 만나면 **질문하세요**.
-    멈추고 명확히 하는 것은 언제나 괜찮습니다. 추측하거나 넘겨짚지 마세요.
+    **작업 중에:** 예상치 못한 것이나 불명확한 것을 만나면 **질문하세요**.
+    멈추고 명확히 하는 것은 언제나 괜찮습니다. 추측하거나 가정하지 마세요.
 
     ## 코드 구성
 
@@ -51,7 +51,7 @@ Task tool (general-purpose):
       DONE_WITH_CONCERNS로 보고하세요 — plan의 지침 없이 임의로 파일을 분리하지 마세요
     - 수정 중인 기존 파일이 이미 크거나 얽혀 있다면, 신중하게 작업하고
       보고서에 우려 사항으로 기록하세요
-    - 기존 코드베이스에서는 확립된 패턴을 따르세요. 손대는 코드는 좋은 개발자가
+    - 기존 코드베이스에서는 확립된 패턴을 따르세요. 손대는 코드는 좋은 개발자라면
       할 만큼 개선하되, task 범위 밖의 것을 재구조화하지 마세요
 
     ## 감당하기 벅찰 때
@@ -70,7 +70,7 @@ Task tool (general-purpose):
     **escalate하는 방법:** BLOCKED 또는 NEEDS_CONTEXT 상태로 보고하세요.
     무엇에 막혔는지, 무엇을 시도했는지, 어떤 종류의 도움이 필요한지
     구체적으로 설명하세요. controller가 더 많은 context를 제공하거나,
-    더 강력한 모델로 재dispatch하거나, task를 더 작게 쪼갤 수 있습니다.
+    더 강력한 모델로 다시 dispatch하거나, task를 더 작게 쪼갤 수 있습니다.
 
     ## 보고 전에: Self-Review
 
@@ -96,7 +96,7 @@ Task tool (general-purpose):
     - 요구되었다면 TDD를 따랐는가?
     - 테스트가 충분한가?
 
-    self-review 중에 이슈를 발견하면, 보고하기 전에 지금 fix하세요.
+    self-review 중에 이슈를 발견하면, 보고하기 전에 지금 수정하세요.
 
     ## 보고 형식
 
