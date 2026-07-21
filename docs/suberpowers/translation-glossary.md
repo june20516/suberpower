@@ -20,12 +20,16 @@
 
 ### description 작성 규칙
 
-`"...할 때 사용합니다"`로 **끝맺습니다**. (upstream은 `"Use when..."`으로 시작하는 형식)
+한국어로 **트리거 조건을 서술하고 `사용`을 포함**합니다. 트리거 절 뒤에 대시로 부연을 붙이는 형태도 씁니다. (upstream은 `"Use when..."`으로 시작하는 형식)
 
 ```yaml
 # ✅ 현재 세션에서 독립적인 task로 구성된 implementation plan을 실행할 때 사용합니다
+# ✅ 모든 대화를 시작할 때 사용합니다 - skill을 찾고 사용하는 방법을 확립하며, …
+# ❌ Use when executing implementation plans with independent tasks
 # ❌ plan 실행 시 사용 - task마다 subagent를 dispatch하고 code review 수행  (워크플로우 요약 금지)
 ```
+
+이 규칙은 [divergence.md의 D-003](./divergence.md#d-003--description-규약)에서 기계적으로 검증됩니다.
 
 ---
 
@@ -122,18 +126,11 @@ perl -i -pe 's/(?<!어트)리뷰/review/g'
 
 ---
 
-## 7. 의도적 divergence (동기화 시 덮어쓰지 말 것)
+## 7. 의도적 divergence
 
-upstream을 반영할 때 아래는 이 포크의 커스터마이징이므로 보존합니다.
+**→ [divergence.md](./divergence.md)로 분리되었습니다.**
 
-| 대상 | 내용 |
-|---|---|
-| 네임스페이스 | `superpowers` → `suberpower` (플러그인), `suberpowers` (경로/디렉터리) |
-| skill 호출 | `suberpower:<skill-name>` |
-| `using-git-worktrees/SKILL.md` | 전면 재작성 — native 위임 대신 git 직접 조작, 전역 경로 고정, base/이름 질문 단계 |
-| 경로 | `docs/superpowers/` → `docs/suberpowers/`, `~/.claude/suberpowers/` |
-| 브랜드 표기 | `Suberpowers`, 원작자 표기 유지 |
-| description 형식 | `"...할 때 사용합니다"` (upstream은 `"Use when..."`) |
+이 포크가 upstream과 의도적으로 다른 지점은 별도 문서에서 근거·정책과 함께 관리하며, `./scripts/check-divergence.sh`로 기계 검증합니다. 동기화 작업 후 반드시 실행하세요.
 
 ---
 

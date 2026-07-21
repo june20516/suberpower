@@ -37,11 +37,13 @@ baseline 이후 upstream `skills/` 경로에 **83개 커밋**이 쌓여 있습�
 
 ## 동기화 절차
 
+0. **[divergence.md](./divergence.md) 확인** — 이 포크가 upstream과 의도적으로 다른 지점. 자동 반영 대상에서 제외할 것을 먼저 파악합니다
 1. **비교** — baseline SHA와 현재 upstream HEAD 사이의 `skills/` 변경을 산정
 2. **보고·선별** — 사용자에게 정리해 보고하고, 반영 대상과 커스터마이징 의사를 확인
 3. **번역 적용** — [translation-glossary.md](./translation-glossary.md)의 규칙에 따라 번역
-4. **배포** — `plugin.json`·`marketplace.json` version bump 후 commit
-5. **이 파일의 baseline SHA를 갱신**
+4. **검증** — `./scripts/check-divergence.sh` 실행. **실패하면 divergence가 파괴된 것이므로 배포 전에 복구합니다**
+5. **배포** — `plugin.json`·`marketplace.json` version bump 후 commit
+6. **이 파일의 baseline SHA를 갱신**
 
 ### 유용한 명령
 
@@ -61,9 +63,8 @@ gh api "repos/obra/superpowers/commits?path=<경로>&until=<ISO8601>&per_page=1"
 
 ## 동기화에서 제외할 것
 
-이 포크의 의도적 커스터마이징입니다. upstream 변경으로 덮어쓰지 마세요. 전체 목록은 [translation-glossary.md의 7절](./translation-glossary.md#7-의도적-divergence-동기화-시-덮어쓰지-말-것)을 참고하세요.
+**→ [divergence.md](./divergence.md)** — 근거·정책과 함께 관리되며 기계 검증됩니다.
 
-- 네임스페이스 치환 (`superpowers` → `suberpower` / `suberpowers`)
-- `using-git-worktrees/SKILL.md` — 전면 재작성됨
-- description 형식 (`"...할 때 사용합니다"`)
-- 브랜드 표기
+```bash
+./scripts/check-divergence.sh
+```

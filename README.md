@@ -20,8 +20,13 @@ claude plugin install suberpower@suberpower
 
 ## 유지보수 문서
 
+- **[의도적 Divergence](./docs/suberpowers/divergence.md)** — 이 포크가 upstream과 다른 지점. 근거·정책과 함께 관리되며 기계 검증됩니다. **동기화 전에 가장 먼저 읽으세요.**
 - [번역 용어집 및 표기 규칙](./docs/suberpowers/translation-glossary.md) — 용어 대응표, 강조 계층 보존 규칙, 치환 시 함정
 - [Upstream 동기화 상태](./docs/suberpowers/upstream-sync.md) — baseline SHA, 미반영 변경, 동기화 절차
+
+```bash
+./scripts/check-divergence.sh   # divergence가 유지되는지 검증
+```
 
 ## 라이선스 / 원작자
 
