@@ -128,77 +128,77 @@ Implementer subagent는 네 가지 상태 중 하나를 보고합니다. 각각�
 ## 예시 워크플로우
 
 ```
-You: I'm using Subagent-Driven Development to execute this plan.
+You: 이 plan을 실행하기 위해 Subagent-Driven Development를 사용합니다.
 
-[Read plan file once: docs/suberpowers/plans/feature-plan.md]
-[Extract all 5 tasks with full text and context]
-[Create TodoWrite with all tasks]
+[plan 파일을 한 번 읽음: docs/suberpowers/plans/feature-plan.md]
+[5개 task를 전체 텍스트와 context와 함께 추출]
+[모든 task로 TodoWrite 생성]
 
-Task 1: Hook installation script
+Task 1: Hook 설치 스크립트
 
-[Get Task 1 text and context (already extracted)]
-[Dispatch implementation subagent with full task text + context]
+[Task 1의 텍스트와 context 확보 (이미 추출됨)]
+[전체 task 텍스트 + context와 함께 implementation subagent dispatch]
 
-Implementer: "Before I begin - should the hook be installed at user or system level?"
+Implementer: "시작하기 전에 — hook을 user 레벨에 설치해야 하나요, system 레벨인가요?"
 
-You: "User level (~/.config/suberpowers/hooks/)"
+You: "User 레벨입니다 (~/.config/suberpowers/hooks/)"
 
-Implementer: "Got it. Implementing now..."
-[Later] Implementer:
-  - Implemented install-hook command
-  - Added tests, 5/5 passing
-  - Self-review: Found I missed --force flag, added it
-  - Committed
+Implementer: "알겠습니다. 지금 구현합니다..."
+[잠시 후] Implementer:
+  - install-hook 명령 구현
+  - 테스트 추가, 5/5 통과
+  - 자기 review: --force flag를 빠뜨린 것을 발견해 추가함
+  - Commit 완료
 
-[Dispatch spec compliance reviewer]
-Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
+[spec 준수 reviewer dispatch]
+Spec reviewer: ✅ Spec 준수 - 모든 요구사항 충족, 추가된 것 없음
 
-[Get git SHAs, dispatch code quality reviewer]
-Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
+[git SHA 확보, code quality reviewer dispatch]
+Code reviewer: Strengths: 좋은 테스트 커버리지, 깔끔함. Issues: 없음. 승인.
 
-[Mark Task 1 complete]
+[Task 1 완료 표시]
 
-Task 2: Recovery modes
+Task 2: 복구 모드
 
-[Get Task 2 text and context (already extracted)]
-[Dispatch implementation subagent with full task text + context]
+[Task 2의 텍스트와 context 확보 (이미 추출됨)]
+[전체 task 텍스트 + context와 함께 implementation subagent dispatch]
 
-Implementer: [No questions, proceeds]
+Implementer: [질문 없이 진행]
 Implementer:
-  - Added verify/repair modes
-  - 8/8 tests passing
-  - Self-review: All good
-  - Committed
+  - verify/repair 모드 추가
+  - 8/8 테스트 통과
+  - 자기 review: 모두 양호
+  - Commit 완료
 
-[Dispatch spec compliance reviewer]
-Spec reviewer: ❌ Issues:
-  - Missing: Progress reporting (spec says "report every 100 items")
-  - Extra: Added --json flag (not requested)
+[spec 준수 reviewer dispatch]
+Spec reviewer: ❌ 이슈 발견:
+  - 누락: 진행 상황 보고 (spec에 "100개 항목마다 보고"라고 명시됨)
+  - 추가: --json flag 추가됨 (요청되지 않음)
 
-[Implementer fixes issues]
-Implementer: Removed --json flag, added progress reporting
+[Implementer가 이슈 수정]
+Implementer: --json flag 제거, 진행 상황 보고 추가
 
-[Spec reviewer reviews again]
-Spec reviewer: ✅ Spec compliant now
+[Spec reviewer가 다시 review]
+Spec reviewer: ✅ 이제 Spec 준수
 
-[Dispatch code quality reviewer]
-Code reviewer: Strengths: Solid. Issues (Important): Magic number (100)
+[code quality reviewer dispatch]
+Code reviewer: Strengths: 견고함. Issues (Important): 매직 넘버 (100)
 
-[Implementer fixes]
-Implementer: Extracted PROGRESS_INTERVAL constant
+[Implementer가 수정]
+Implementer: PROGRESS_INTERVAL 상수로 추출
 
-[Code reviewer reviews again]
-Code reviewer: ✅ Approved
+[Code reviewer가 다시 review]
+Code reviewer: ✅ 승인
 
-[Mark Task 2 complete]
+[Task 2 완료 표시]
 
 ...
 
-[After all tasks]
-[Dispatch final code-reviewer]
-Final reviewer: All requirements met, ready to merge
+[모든 task 완료 후]
+[최종 code-reviewer dispatch]
+Final reviewer: 모든 요구사항 충족, merge 준비 완료
 
-Done!
+완료!
 ```
 
 ## 장점

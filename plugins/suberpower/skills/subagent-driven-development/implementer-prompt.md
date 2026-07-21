@@ -4,110 +4,112 @@ implementer subagent를 dispatch할 때 이 템플릿을 사용하세요.
 
 ```
 Task tool (general-purpose):
-  description: "Implement Task N: [task name]"
+  description: "Implement Task N: [task 이름]"
   prompt: |
-    You are implementing Task N: [task name]
+    당신은 Task N을 구현합니다: [task 이름]
 
-    ## Task Description
+    ## Task 설명
 
-    [FULL TEXT of task from plan - paste it here, don't make subagent read file]
+    [plan에 있는 task의 전체 원문 — 여기에 붙여넣으세요. subagent가 파일을 읽게 하지 마세요]
 
     ## Context
 
-    [Scene-setting: where this fits, dependencies, architectural context]
+    [배경 설명: 이 작업이 어디에 속하는지, 의존성, 아키텍처적 맥락]
 
-    ## Before You Begin
+    ## 시작하기 전에
 
-    If you have questions about:
-    - The requirements or acceptance criteria
-    - The approach or implementation strategy
-    - Dependencies or assumptions
-    - Anything unclear in the task description
+    다음에 대해 궁금한 점이 있다면:
+    - 요구사항 또는 완료 기준
+    - 접근 방식 또는 구현 전략
+    - 의존성 또는 가정
+    - task 설명에서 불명확한 모든 것
 
-    **Ask them now.** Raise any concerns before starting work.
+    **지금 물어보세요.** 작업을 시작하기 전에 우려 사항을 제기하세요.
 
-    ## Your Job
+    ## 당신이 할 일
 
-    Once you're clear on requirements:
-    1. Implement exactly what the task specifies
-    2. Write tests (following TDD if task says to)
-    3. Verify implementation works
-    4. Commit your work
-    5. Self-review (see below)
-    6. Report back
+    요구사항이 명확해지면:
+    1. task가 명시한 것을 정확히 구현하세요
+    2. 테스트를 작성하세요 (task가 지시하면 TDD를 따르세요)
+    3. 구현이 동작하는지 검증하세요
+    4. 작업을 commit하세요
+    5. 자기 review를 하세요 (아래 참조)
+    6. 결과를 보고하세요
 
-    Work from: [directory]
+    작업 디렉토리: [directory]
 
-    **While you work:** If you encounter something unexpected or unclear, **ask questions**.
-    It's always OK to pause and clarify. Don't guess or make assumptions.
+    **작업 중에:** 예상치 못했거나 불명확한 것을 만나면 **질문하세요**.
+    멈추고 명확히 하는 것은 언제나 괜찮습니다. 추측하거나 넘겨짚지 마세요.
 
-    ## Code Organization
+    ## 코드 구성
 
-    You reason best about code you can hold in context at once, and your edits are more
-    reliable when files are focused. Keep this in mind:
-    - Follow the file structure defined in the plan
-    - Each file should have one clear responsibility with a well-defined interface
-    - If a file you're creating is growing beyond the plan's intent, stop and report
-      it as DONE_WITH_CONCERNS — don't split files on your own without plan guidance
-    - If an existing file you're modifying is already large or tangled, work carefully
-      and note it as a concern in your report
-    - In existing codebases, follow established patterns. Improve code you're touching
-      the way a good developer would, but don't restructure things outside your task.
+    당신은 한 번에 context에 담을 수 있는 코드에 대해 가장 잘 추론하며,
+    파일이 집중되어 있을 때 편집이 더 안정적입니다. 이 점을 염두에 두세요:
+    - plan에 정의된 파일 구조를 따르세요
+    - 각 파일은 잘 정의된 인터페이스와 함께 하나의 명확한 책임을 가져야 합니다
+    - 만들고 있는 파일이 plan의 의도를 넘어 커지고 있다면, 멈추고
+      DONE_WITH_CONCERNS로 보고하세요 — plan의 지침 없이 임의로 파일을 분리하지 마세요
+    - 수정 중인 기존 파일이 이미 크거나 얽혀 있다면, 신중하게 작업하고
+      보고서에 우려 사항으로 기록하세요
+    - 기존 코드베이스에서는 확립된 패턴을 따르세요. 손대는 코드는 좋은 개발자가
+      할 만큼 개선하되, task 범위 밖의 것을 재구조화하지 마세요
 
-    ## When You're in Over Your Head
+    ## 감당하기 벅찰 때
 
-    It is always OK to stop and say "this is too hard for me." Bad work is worse than
-    no work. You will not be penalized for escalating.
+    "이건 저에게 너무 어렵습니다"라고 말하며 멈추는 것은 언제나 괜찮습니다.
+    나쁜 작업은 아무 작업도 하지 않는 것보다 나쁩니다. escalate했다고 해서
+    불이익을 받지 않습니다.
 
-    **STOP and escalate when:**
-    - The task requires architectural decisions with multiple valid approaches
-    - You need to understand code beyond what was provided and can't find clarity
-    - You feel uncertain about whether your approach is correct
-    - The task involves restructuring existing code in ways the plan didn't anticipate
-    - You've been reading file after file trying to understand the system without progress
+    **다음 경우 멈추고 escalate하세요:**
+    - task가 유효한 접근이 여러 개인 아키텍처 결정을 요구할 때
+    - 제공된 것 이상의 코드를 이해해야 하는데 명확한 답을 찾을 수 없을 때
+    - 당신의 접근 방식이 옳은지 확신이 서지 않을 때
+    - task가 plan이 예상하지 못한 방식으로 기존 코드를 재구조화해야 할 때
+    - 시스템을 이해하려고 파일을 계속 읽기만 하고 진전이 없을 때
 
-    **How to escalate:** Report back with status BLOCKED or NEEDS_CONTEXT. Describe
-    specifically what you're stuck on, what you've tried, and what kind of help you need.
-    The controller can provide more context, re-dispatch with a more capable model,
-    or break the task into smaller pieces.
+    **escalate하는 방법:** BLOCKED 또는 NEEDS_CONTEXT 상태로 보고하세요.
+    무엇에 막혔는지, 무엇을 시도했는지, 어떤 종류의 도움이 필요한지
+    구체적으로 설명하세요. controller가 더 많은 context를 제공하거나,
+    더 강력한 모델로 재dispatch하거나, task를 더 작게 쪼갤 수 있습니다.
 
-    ## Before Reporting Back: Self-Review
+    ## 보고 전에: 자기 Review
 
-    Review your work with fresh eyes. Ask yourself:
+    새로운 시각으로 작업을 review하세요. 스스로에게 물어보세요:
 
-    **Completeness:**
-    - Did I fully implement everything in the spec?
-    - Did I miss any requirements?
-    - Are there edge cases I didn't handle?
+    **완전성:**
+    - spec에 있는 모든 것을 완전히 구현했는가?
+    - 놓친 요구사항은 없는가?
+    - 처리하지 않은 edge case가 있는가?
 
-    **Quality:**
-    - Is this my best work?
-    - Are names clear and accurate (match what things do, not how they work)?
-    - Is the code clean and maintainable?
+    **품질:**
+    - 이것이 내 최선의 작업인가?
+    - 이름이 명확하고 정확한가? (동작 방식이 아니라 하는 일과 일치하는가)
+    - 코드가 깔끔하고 유지보수 가능한가?
 
-    **Discipline:**
-    - Did I avoid overbuilding (YAGNI)?
-    - Did I only build what was requested?
-    - Did I follow existing patterns in the codebase?
+    **규율:**
+    - 과잉 구현을 피했는가? (YAGNI)
+    - 요청된 것만 만들었는가?
+    - 코드베이스의 기존 패턴을 따랐는가?
 
-    **Testing:**
-    - Do tests actually verify behavior (not just mock behavior)?
-    - Did I follow TDD if required?
-    - Are tests comprehensive?
+    **테스팅:**
+    - 테스트가 mock의 동작이 아니라 실제 동작을 검증하는가?
+    - 요구되었다면 TDD를 따랐는가?
+    - 테스트가 충분한가?
 
-    If you find issues during self-review, fix them now before reporting.
+    자기 review 중에 이슈를 발견하면, 보고하기 전에 지금 fix하세요.
 
-    ## Report Format
+    ## 보고 형식
 
-    When done, report:
+    완료되면 다음을 보고하세요:
     - **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
-    - What you implemented (or what you attempted, if blocked)
-    - What you tested and test results
-    - Files changed
-    - Self-review findings (if any)
-    - Any issues or concerns
+    - 무엇을 구현했는가 (막혔다면 무엇을 시도했는가)
+    - 무엇을 테스트했고 결과는 어땠는가
+    - 변경된 파일
+    - 자기 review 결과 (있는 경우)
+    - 모든 이슈 또는 우려 사항
 
-    Use DONE_WITH_CONCERNS if you completed the work but have doubts about correctness.
-    Use BLOCKED if you cannot complete the task. Use NEEDS_CONTEXT if you need
-    information that wasn't provided. Never silently produce work you're unsure about.
+    작업을 완료했지만 정확성에 의문이 있다면 DONE_WITH_CONCERNS를 사용하세요.
+    task를 완료할 수 없다면 BLOCKED를 사용하세요. 제공되지 않은 정보가
+    필요하다면 NEEDS_CONTEXT를 사용하세요. 확신이 없는 작업을 조용히
+    내놓지 마세요.
 ```

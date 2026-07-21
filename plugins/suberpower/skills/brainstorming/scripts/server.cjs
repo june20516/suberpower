@@ -96,7 +96,7 @@ const WAITING_PAGE = `<!DOCTYPE html>
 h1 { color: #333; } p { color: #666; }</style>
 </head>
 <body><h1>Brainstorm Companion</h1>
-<p>Waiting for the agent to push a screen...</p></body></html>`;
+<p>agent가 화면을 push하기를 기다리는 중...</p></body></html>`;
 
 const frameTemplate = fs.readFileSync(path.join(__dirname, 'frame-template.html'), 'utf-8');
 const helperScript = fs.readFileSync(path.join(__dirname, 'helper.js'), 'utf-8');
