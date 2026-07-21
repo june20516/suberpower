@@ -1,4 +1,4 @@
-# Code Reviewer Prompt Template
+# Code Reviewer Prompt 템플릿
 
 code reviewer subagent를 dispatch할 때 이 template를 사용하세요.
 

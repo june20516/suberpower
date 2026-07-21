@@ -110,6 +110,6 @@ Task tool (general-purpose):
 
     작업을 완료했지만 정확성에 의문이 있다면 DONE_WITH_CONCERNS를 사용하세요.
     task를 완료할 수 없다면 BLOCKED를 사용하세요. 제공되지 않은 정보가
-    필요하다면 NEEDS_CONTEXT를 사용하세요. 확신이 없는 작업을 조용히
-    내놓지 마세요.
+    필요하다면 NEEDS_CONTEXT를 사용하세요. 확신이 없는 작업을 **절대**
+    조용히 내놓지 마세요.
 ```

@@ -14,7 +14,7 @@ Code review는 감정적인 퍼포먼스가 아니라 기술적 평가를 요구
 ## The Response Pattern
 
 ```
-WHEN code review feedback를 받았을 때:
+WHEN - code review feedback를 받았을 때:
 
 1. READ: 반응하지 말고 feedback 전체를 읽는다
 2. UNDERSTAND: 요구사항을 자신의 말로 다시 진술한다 (또는 질문한다)
@@ -42,7 +42,7 @@ WHEN code review feedback를 받았을 때:
 ```
 IF 불명확한 항목이 하나라도 있으면:
   STOP - 아직 아무것도 구현하지 않는다
-  ASK 불명확한 항목에 대해 설명을 요청한다
+  ASK - 불명확한 항목에 대해 설명을 요청한다
 
 WHY: 항목들이 서로 연관되어 있을 수 있다. 부분적 이해 = 잘못된 구현.
 ```
@@ -66,7 +66,7 @@ your human partner: "1-6번 고쳐주세요"
 
 ### From External Reviewers
 ```
-BEFORE 구현하기 전에:
+BEFORE - 구현하기 전:
   1. 확인: 이 codebase에 기술적으로 올바른가?
   2. 확인: 기존 기능을 망가뜨리는가?
   3. 확인: 현재 구현이 그렇게 된 이유가 있는가?
@@ -133,7 +133,7 @@ FOR 여러 항목의 feedback:
 feedback이 옳을 때:
 ```
 ✅ "수정했습니다. [무엇이 바뀌었는지 간단한 설명]"
-✅ "정확한 지적입니다 - [구체적인 이슈]. [위치]에서 수정했습니다."
+✅ "[구체적인 이슈] 확인했습니다. [위치]에서 수정했습니다."
 ✅ [그냥 고치고 코드로 보여준다]
 
 ❌ "말씀이 완전히 맞습니다!"

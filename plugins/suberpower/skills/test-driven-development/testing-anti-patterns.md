@@ -13,9 +13,9 @@ test는 mock의 동작이 아니라 실제 동작을 검증해야 합니다. moc
 ## 철의 법칙들
 
 ```
-1. NEVER mock의 동작을 test하지 말 것
-2. NEVER production 클래스에 test 전용 메서드를 추가하지 말 것
-3. NEVER 의존성을 이해하지 않고 mock하지 말 것
+1. NEVER - mock의 동작을 test하지 말 것
+2. NEVER - production 클래스에 test 전용 메서드를 추가하지 말 것
+3. NEVER - 의존성을 이해하지 않고 mock하지 말 것
 ```
 
 ## Anti-Pattern 1: mock 동작 test
@@ -51,7 +51,7 @@ test('renders sidebar', () => {
 ### 게이트 함수
 
 ```
-BEFORE mock 요소에 대해 assert하기 전에:
+BEFORE - mock 요소에 대해 assert하기 전:
   질문: "실제 컴포넌트의 동작을 test하고 있는가, 아니면 그저 mock의 존재를 test하고 있는가?"
 
   IF mock의 존재를 test하고 있다면:
@@ -102,7 +102,7 @@ afterEach(() => cleanupSession(session));
 ### 게이트 함수
 
 ```
-BEFORE production 클래스에 메서드를 추가하기 전에:
+BEFORE - production 클래스에 메서드를 추가하기 전:
   질문: "이것은 test에서만 사용되는가?"
 
   IF 그렇다면:
@@ -151,11 +151,11 @@ test('detects duplicate server', () => {
 ### 게이트 함수
 
 ```
-BEFORE 어떤 메서드든 mock하기 전에:
+BEFORE - 어떤 메서드든 mock하기 전:
   STOP - 아직 mock하지 말 것
 
   1. 질문: "실제 메서드는 어떤 side effect를 가지는가?"
-  2. 질문: "이 test가 그 side effect 중 하나라도 의존하는가?"
+  2. 질문: "이 test가 그 side effect 중 어느 하나에라도 의존하는가?"
   3. 질문: "이 test가 무엇을 필요로 하는지 완전히 이해하고 있는가?"
 
   IF side effect에 의존한다면:
@@ -194,7 +194,7 @@ const mockResponse = {
 - **test는 통과하지만 integration이 실패** - mock은 불완전, 실제 API는 완전
 - **잘못된 확신** - test가 실제 동작에 대해 아무것도 증명하지 못함
 
-**철의 법칙:** 즉각적인 test가 사용하는 필드뿐만 아니라 실제로 존재하는 COMPLETE 데이터 구조를 mock하세요.
+**철의 법칙:** 지금 작성 중인 test가 사용하는 필드뿐만 아니라 실제로 존재하는 COMPLETE 데이터 구조를 mock하세요.
 
 **수정:**
 ```typescript
@@ -210,7 +210,7 @@ const mockResponse = {
 ### 게이트 함수
 
 ```
-BEFORE mock response를 만들기 전에:
+BEFORE - mock response를 만들기 전:
   확인: "실제 API response는 어떤 필드를 포함하는가?"
 
   할 일:
@@ -283,7 +283,7 @@ TDD 사이클:
 
 ## 위험 신호
 
-- `*-mock` test ID에 대한 assertion 확인
+- `*-mock` test ID에 대한 assertion
 - test 파일에서만 호출되는 메서드
 - mock setup이 test의 50% 이상
 - mock을 제거하면 test가 실패

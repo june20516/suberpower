@@ -107,7 +107,7 @@ Implementer subagent는 네 가지 상태 중 하나를 보고합니다. 각각�
 
 **DONE:** spec 준수 review로 진행합니다.
 
-**DONE_WITH_CONCERNS:** implementer가 작업을 완료했지만 의심을 표시했습니다. 진행하기 전에 그 우려 사항을 읽어보세요. 우려가 정확성이나 범위에 관한 것이라면 review 전에 해결하세요. 단순한 관찰(예: "이 파일이 커지고 있다")이라면 메모해두고 review로 진행하세요.
+**DONE_WITH_CONCERNS:** implementer가 작업을 완료했지만 우려 사항을 표시했습니다. 진행하기 전에 그 우려 사항을 읽어보세요. 우려가 정확성이나 범위에 관한 것이라면 review 전에 해결하세요. 단순한 관찰(예: "이 파일이 커지고 있다")이라면 메모해두고 review로 진행하세요.
 
 **NEEDS_CONTEXT:** implementer가 제공받지 못한 정보가 필요합니다. 누락된 context를 제공하고 다시 dispatch하세요.
 
@@ -121,9 +121,9 @@ Implementer subagent는 네 가지 상태 중 하나를 보고합니다. 각각�
 
 ## Prompt 템플릿
 
-- `./implementer-prompt.md` - implementer subagent dispatch
-- `./spec-reviewer-prompt.md` - spec 준수 reviewer subagent dispatch
-- `./code-quality-reviewer-prompt.md` - code quality reviewer subagent dispatch
+- `./implementer-prompt.md` - implementer subagent dispatch용
+- `./spec-reviewer-prompt.md` - spec 준수 reviewer subagent dispatch용
+- `./code-quality-reviewer-prompt.md` - code quality reviewer subagent dispatch용
 
 ## 예시 워크플로우
 

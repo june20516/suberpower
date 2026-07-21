@@ -47,15 +47,15 @@ task를 정의하기 전에, 어떤 파일이 생성 또는 수정될지, 그리
 **모든 plan은 반드시 이 헤더로 시작해야 합니다:**
 
 ```markdown
-# [Feature Name] Implementation Plan
+# [기능 이름] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use suberpower:subagent-driven-development (recommended) or suberpower:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **agentic worker에게:** REQUIRED SUB-SKILL: 이 plan을 task 단위로 구현하려면 suberpower:subagent-driven-development(권장) 또는 suberpower:executing-plans를 사용하세요. Step은 추적을 위해 checkbox(`- [ ]`) 문법을 사용합니다.
 
-**Goal:** [One sentence describing what this builds]
+**Goal:** [무엇을 만드는지 한 문장으로]
 
-**Architecture:** [2-3 sentences about approach]
+**Architecture:** [접근 방식에 대해 2-3문장]
 
-**Tech Stack:** [Key technologies/libraries]
+**Tech Stack:** [핵심 기술/라이브러리]
 
 ---
 ```
@@ -106,10 +106,10 @@ git commit -m "feat: add specific feature"
 ## No Placeholders
 
 모든 step은 엔지니어에게 필요한 실제 내용을 포함해야 합니다. 다음은 **plan 실패** 사례 — 절대 작성하지 마세요:
-- "TBD", "TODO", "implement later", "fill in details"
-- "Add appropriate error handling" / "add validation" / "handle edge cases"
-- "Write tests for the above" (실제 테스트 코드 없이)
-- "Similar to Task N" (코드를 반복해서 적으세요 — 엔지니어가 task를 순서대로 읽지 않을 수 있습니다)
+- "TBD", "TODO", "나중에 구현", "세부사항은 채워 넣을 것"
+- "적절한 error handling을 추가" / "validation 추가" / "edge case 처리"
+- "위 내용에 대한 테스트를 작성" (실제 테스트 코드 없이)
+- "Task N과 비슷하게" (코드를 반복해서 적으세요 — 엔지니어가 task를 순서대로 읽지 않을 수 있습니다)
 - 무엇을 할지만 설명하고 어떻게 할지는 보여주지 않는 step (코드 step에는 코드 블록 필수)
 - 어떤 task에서도 정의되지 않은 type, function, method에 대한 참조
 
@@ -125,7 +125,7 @@ git commit -m "feat: add specific feature"
 
 **1. Spec coverage:** spec의 각 섹션/요구사항을 훑어봅니다. 그것을 구현하는 task를 가리킬 수 있나요? 누락된 부분을 나열합니다.
 
-**2. Placeholder scan:** 위 "No Placeholders" 섹션의 패턴 중 하나라도 plan에 있는지 — 위험 신호를 검색합니다. 수정합니다.
+**2. Placeholder scan:** 위 "No Placeholders" 섹션의 패턴이 plan에 하나라도 있는지 검색합니다 — 그것들이 위험 신호입니다. 발견하면 수정합니다.
 
 **3. Type consistency:** 후반 task에서 사용한 type, method signature, property 이름이 이전 task에서 정의한 것과 일치하나요? Task 3에서 `clearLayers()`라 부른 함수를 Task 7에서 `clearFullLayers()`로 부르면 버그입니다.
 

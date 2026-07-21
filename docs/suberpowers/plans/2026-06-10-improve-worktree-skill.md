@@ -1,6 +1,6 @@
 # Worktree 스킬 개선 + superpowers 네임스페이스 치환 Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use suberpower:subagent-driven-development (recommended) or suberpower:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **agentic worker에게:** REQUIRED SUB-SKILL: 이 plan을 task 단위로 구현하려면 suberpower:subagent-driven-development(권장) 또는 suberpower:executing-plans를 사용하세요. Step은 추적을 위해 checkbox(`- [ ]`) 문법을 사용합니다.
 
 **Goal:** worktree 스킬을 native 위임에서 git 직접 조작으로 전환(전역 경로·base/이름 질문)하고, 포크 전반의 `superpowers` 네임스페이스를 규칙에 따라 정리한다.
 

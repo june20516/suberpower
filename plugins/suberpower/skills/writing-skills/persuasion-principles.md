@@ -4,7 +4,7 @@
 
 LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학을 이해하면 더 효과적인 skill을 설계할 수 있습니다 - 조작이 아니라, 압박 상황에서도 중요한 관행이 지켜지도록 보장하기 위해서입니다.
 
-**연구 기반:** Meincke et al. (2025)는 N=28,000개의 AI 대화로 7가지 persuasion 원칙을 테스트했습니다. Persuasion 기법은 따름 비율을 두 배 이상 높였습니다 (33% → 72%, p < .001).
+**연구 기반:** Meincke et al. (2025)는 N=28,000개의 AI 대화로 7가지 persuasion 원칙을 테스트했습니다. Persuasion 기법은 준수율을 두 배 이상 높였습니다 (33% → 72%, p < .001).
 
 ## 7가지 원칙
 
@@ -31,8 +31,8 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 **무엇인가:** 이전 행동, 진술, 공개 선언과의 일관성.
 
 **skill에서 작동 방식:**
-- 공표 요구: "Announce skill usage"
-- 명시적 선택 강제: "Choose A, B, or C"
+- 공표 요구: "skill 사용을 공표하세요"
+- 명시적 선택 강제: "A, B, C 중에서 선택하세요"
 - 추적 사용: 체크리스트에 TodoWrite
 
 **언제 사용:**
@@ -88,8 +88,8 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 **무엇인가:** 공유된 정체성, "우리됨", 내집단 소속감.
 
 **skill에서 작동 방식:**
-- 협력적 언어: "our codebase", "we're colleagues"
-- 공유 목표: "we both want quality"
+- 협력적 언어: "우리 codebase", "우리는 동료입니다"
+- 공유 목표: "우리 둘 다 품질을 원합니다"
 
 **언제 사용:**
 - 협력적 워크플로우
@@ -116,7 +116,7 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 **무엇인가:** 우리가 좋아하는 사람과 협력하려는 선호.
 
 **작동 방식:**
-- **따름을 위해 사용하지 말 것**
+- **준수를 강요하려고 사용하지 말 것**
 - 정직한 피드백 문화와 충돌
 - 아첨(sycophancy)을 만듦
 
@@ -141,12 +141,12 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 
 **Implementation intention은 자동 행동을 만든다:**
 - 명확한 트리거 + 요구 행동 = 자동 실행
-- "When X, do Y"가 "generally do Y"보다 효과적
-- 따름의 인지 부담을 줄임
+- "X일 때 Y를 하라"가 "대체로 Y를 하라"보다 효과적
+- 준수에 대한 인지 부담을 줄임
 
 **LLM은 parahuman이다:**
 - 이러한 패턴을 담은 인간 텍스트로 학습됨
-- Authority 언어는 학습 데이터에서 따름에 선행함
+- 학습 데이터에서 authority 언어 뒤에는 순응이 뒤따름
 - Commitment 시퀀스 (진술 → 행동)가 자주 모델링됨
 - Social proof 패턴 (모두가 X를 한다)이 규범을 세움
 
@@ -160,7 +160,7 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 **부당한 사용:**
 - 개인적 이득을 위한 조작
 - 거짓 긴급함 만들기
-- 죄책감 기반 따름
+- 죄책감에 기반한 준수 압박
 
 **테스트:** 사용자가 이 기법을 완전히 이해한다면, 그들의 진정한 이익에 부합할까?
 
@@ -172,7 +172,7 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 
 **Meincke, L., Shapiro, D., Duckworth, A. L., Mollick, E., Mollick, L., & Cialdini, R. (2025).** Call Me A Jerk: Persuading AI to Comply with Objectionable Requests. University of Pennsylvania.
 - N=28,000 LLM 대화로 7가지 원칙 테스트
-- persuasion 기법으로 따름이 33% → 72%로 증가
+- persuasion 기법으로 준수율이 33% → 72%로 증가
 - Authority, commitment, scarcity가 가장 효과적
 - LLM 행동의 parahuman 모델을 검증
 

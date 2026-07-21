@@ -10,7 +10,7 @@ Skill이 어떻게 작동하는지에 대한 개념적 배경은 [Skills overvie
 
 ### 간결함이 핵심
 
-[context window](https://platform.claude.com/docs/en/build-with-claude/context-windows)는 공공재입니다. 당신의 Skill은 Claude가 알아야 할 다른 모든 것과 context window를 공유합니다. 여기에는 다음이 포함됩니다:
+[context window](https://platform.claude.com/docs/en/build-with-claude/context-windows)는 공유 자원입니다. 당신의 Skill은 Claude가 알아야 할 다른 모든 것과 context window를 공유합니다. 여기에는 다음이 포함됩니다:
 
 * system prompt
 * 대화 기록
@@ -1031,8 +1031,8 @@ Skill은 파일시스템 액세스, bash 명령, 코드 실행 기능이 있는 
 * **포괄적인 리소스 번들링**: 완전한 API 문서, 광범위한 예시, 큰 데이터셋을 포함; 접근하기 전까지 context 페널티 없음
 * **결정적 작업에는 스크립트 선호**: Claude에게 검증 코드를 생성하라고 요청하는 대신 `validate_form.py`를 작성
 * **실행 의도 명확히**:
-  * "Run `analyze_form.py` to extract fields" (실행)
-  * "See `analyze_form.py` for the extraction algorithm" (참조로 읽기)
+  * "필드를 추출하려면 `analyze_form.py`를 실행하세요" (실행)
+  * "추출 알고리즘은 `analyze_form.py`를 참고하세요" (참조로 읽기)
 * **파일 액세스 패턴 테스트**: 실제 요청으로 테스트하여 Claude가 디렉터리 구조를 탐색할 수 있는지 검증
 
 **예시:**
@@ -1123,7 +1123,7 @@ Skill을 공유하기 전에, 검증하세요:
 * [ ] 필수 패키지가 지시에 나열되고 사용 가능한지 검증됨
 * [ ] 스크립트가 명확한 문서를 가짐
 * [ ] Windows 스타일 경로 없음 (모두 forward slash)
-* [ ] 중요한 작업에 대한 검증/검증 단계
+* [ ] 중요한 작업에 대한 유효성 검사/결과 검증 단계
 * [ ] 품질이 중요한 작업에 피드백 루프 포함
 
 ### 테스팅
