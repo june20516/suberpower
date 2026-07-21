@@ -30,9 +30,9 @@ Claude가 아직 갖고 있지 않은 context만 추가합니다. 각 정보 조
 **좋은 예: 간결함** (약 50 토큰):
 
 ````markdown  theme={null}
-## Extract PDF text
+## PDF 텍스트 추출
 
-Use pdfplumber for text extraction:
+텍스트 추출에는 pdfplumber를 사용하세요:
 
 ```python
 import pdfplumber
@@ -45,13 +45,13 @@ with pdfplumber.open("file.pdf") as pdf:
 **나쁜 예: 너무 장황** (약 150 토큰):
 
 ```markdown  theme={null}
-## Extract PDF text
+## PDF 텍스트 추출
 
-PDF (Portable Document Format) files are a common file format that contains
-text, images, and other content. To extract text from a PDF, you'll need to
-use a library. There are many libraries available for PDF processing, but we
-recommend pdfplumber because it's easy to use and handles most cases well.
-First, you'll need to install it using pip. Then you can use the code below...
+PDF(Portable Document Format) 파일은 텍스트, 이미지, 기타 콘텐츠를 담는 일반적인
+파일 형식입니다. PDF에서 텍스트를 추출하려면 라이브러리를 사용해야 합니다. PDF 처리를
+위한 라이브러리는 많이 있지만, 저희는 pdfplumber를 추천합니다. 사용하기 쉽고 대부분의
+경우를 잘 처리하기 때문입니다. 먼저 pip으로 설치해야 합니다. 그다음 아래 코드를 사용할 수
+있습니다...
 ```
 
 간결한 버전은 Claude가 PDF가 무엇이고 라이브러리가 어떻게 작동하는지 안다고 가정합니다.
@@ -71,12 +71,12 @@ First, you'll need to install it using pip. Then you can use the code below...
 예시:
 
 ```markdown  theme={null}
-## Code review process
+## 코드 review 프로세스
 
-1. Analyze the code structure and organization
-2. Check for potential bugs or edge cases
-3. Suggest improvements for readability and maintainability
-4. Verify adherence to project conventions
+1. 코드 구조와 구성을 분석한다
+2. 잠재적인 bug나 edge case를 확인한다
+3. 가독성과 유지보수성 개선을 제안한다
+4. 프로젝트 관례를 준수하는지 검증한다
 ```
 
 **중간 자유도** (의사 코드 또는 매개변수가 있는 스크립트):
@@ -90,9 +90,9 @@ First, you'll need to install it using pip. Then you can use the code below...
 예시:
 
 ````markdown  theme={null}
-## Generate report
+## 보고서 생성
 
-Use this template and customize as needed:
+이 템플릿을 사용하고 필요에 따라 수정하세요:
 
 ```python
 def generate_report(data, format="markdown", include_charts=True):
@@ -113,15 +113,15 @@ def generate_report(data, format="markdown", include_charts=True):
 예시:
 
 ````markdown  theme={null}
-## Database migration
+## 데이터베이스 마이그레이션
 
-Run exactly this script:
+정확히 이 스크립트를 실행하세요:
 
 ```bash
 python scripts/migrate.py --verify --backup
 ```
 
-Do not modify the command or add additional flags.
+명령을 수정하거나 추가 flag를 붙이지 마세요.
 ````
 
 **비유**: Claude를 경로를 탐색하는 로봇이라고 생각하세요:
@@ -189,9 +189,9 @@ Skill을 참조하고 논의하기 쉽도록 일관된 네이밍 패턴을 사�
 <Warning>
   **항상 3인칭으로 작성하세요**. description은 system prompt에 주입되며, 일관성 없는 시점은 발견 문제를 일으킬 수 있습니다.
 
-  * **Good:** "Processes Excel files and generates reports"
-  * **Avoid:** "I can help you process Excel files"
-  * **Avoid:** "You can use this to process Excel files"
+  * **Good:** "Excel 파일을 처리하고 보고서를 생성합니다"
+  * **Avoid:** "제가 Excel 파일 처리를 도와드릴 수 있습니다"
+  * **Avoid:** "이것으로 Excel 파일을 처리할 수 있습니다"
 </Warning>
 
 **구체적이고 핵심 용어를 포함하세요**. Skill이 무엇을 하는지와 언제 사용하는지의 구체적 트리거/context를 모두 포함합니다.
@@ -203,33 +203,33 @@ Skill을 참조하고 논의하기 쉽도록 일관된 네이밍 패턴을 사�
 **PDF Processing skill:**
 
 ```yaml  theme={null}
-description: Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
+description: PDF 파일에서 텍스트와 표를 추출하고, 폼을 채우고, 문서를 병합합니다. PDF 파일을 다루거나 사용자가 PDF, 폼, 문서 추출을 언급할 때 사용합니다.
 ```
 
 **Excel Analysis skill:**
 
 ```yaml  theme={null}
-description: Analyze Excel spreadsheets, create pivot tables, generate charts. Use when analyzing Excel files, spreadsheets, tabular data, or .xlsx files.
+description: Excel 스프레드시트를 분석하고, 피벗 테이블을 만들고, 차트를 생성합니다. Excel 파일, 스프레드시트, 표 형식 데이터, .xlsx 파일을 분석할 때 사용합니다.
 ```
 
 **Git Commit Helper skill:**
 
 ```yaml  theme={null}
-description: Generate descriptive commit messages by analyzing git diffs. Use when the user asks for help writing commit messages or reviewing staged changes.
+description: git diff를 분석하여 서술적인 commit 메시지를 생성합니다. 사용자가 commit 메시지 작성이나 staged 변경사항 review에 도움을 요청할 때 사용합니다.
 ```
 
 다음과 같은 모호한 description은 피하세요:
 
 ```yaml  theme={null}
-description: Helps with documents
+description: 문서 작업을 도와줍니다
 ```
 
 ```yaml  theme={null}
-description: Processes data
+description: 데이터를 처리합니다
 ```
 
 ```yaml  theme={null}
-description: Does stuff with files
+description: 파일로 이것저것 합니다
 ```
 
 ### Progressive disclosure 패턴
@@ -271,25 +271,25 @@ pdf/
 ````markdown  theme={null}
 ---
 name: PDF Processing
-description: Extracts text and tables from PDF files, fills forms, and merges documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
+description: PDF 파일에서 텍스트와 표를 추출하고, 폼을 채우고, 문서를 병합합니다. PDF 파일을 다루거나 사용자가 PDF, 폼, 문서 추출을 언급할 때 사용합니다.
 ---
 
 # PDF Processing
 
-## Quick start
+## 빠른 시작
 
-Extract text with pdfplumber:
+pdfplumber로 텍스트를 추출하세요:
 ```python
 import pdfplumber
 with pdfplumber.open("file.pdf") as pdf:
     text = pdf.pages[0].extract_text()
 ```
 
-## Advanced features
+## 고급 기능
 
-**Form filling**: See [FORMS.md](FORMS.md) for complete guide
-**API reference**: See [REFERENCE.md](REFERENCE.md) for all methods
-**Examples**: See [EXAMPLES.md](EXAMPLES.md) for common patterns
+**폼 채우기**: 전체 가이드는 [FORMS.md](FORMS.md) 참고
+**API 참조**: 모든 메서드는 [REFERENCE.md](REFERENCE.md) 참고
+**예시**: 일반적인 패턴은 [EXAMPLES.md](EXAMPLES.md) 참고
 ````
 
 Claude는 FORMS.md, REFERENCE.md 또는 EXAMPLES.md를 필요할 때만 로드합니다.
@@ -311,16 +311,16 @@ bigquery-skill/
 ````markdown SKILL.md theme={null}
 # BigQuery Data Analysis
 
-## Available datasets
+## 사용 가능한 데이터셋
 
-**Finance**: Revenue, ARR, billing → See [reference/finance.md](reference/finance.md)
-**Sales**: Opportunities, pipeline, accounts → See [reference/sales.md](reference/sales.md)
-**Product**: API usage, features, adoption → See [reference/product.md](reference/product.md)
-**Marketing**: Campaigns, attribution, email → See [reference/marketing.md](reference/marketing.md)
+**Finance**: 매출, ARR, 청구 → [reference/finance.md](reference/finance.md) 참고
+**Sales**: 기회, 파이프라인, 계정 → [reference/sales.md](reference/sales.md) 참고
+**Product**: API 사용량, 기능, 도입률 → [reference/product.md](reference/product.md) 참고
+**Marketing**: 캠페인, 어트리뷰션, 이메일 → [reference/marketing.md](reference/marketing.md) 참고
 
-## Quick search
+## 빠른 검색
 
-Find specific metrics using grep:
+grep으로 특정 지표를 찾으세요:
 
 ```bash
 grep -i "revenue" reference/finance.md
@@ -336,16 +336,16 @@ grep -i "api usage" reference/product.md
 ```markdown  theme={null}
 # DOCX Processing
 
-## Creating documents
+## 문서 생성
 
-Use docx-js for new documents. See [DOCX-JS.md](DOCX-JS.md).
+새 문서에는 docx-js를 사용하세요. [DOCX-JS.md](DOCX-JS.md)를 참고하세요.
 
-## Editing documents
+## 문서 편집
 
-For simple edits, modify the XML directly.
+간단한 편집은 XML을 직접 수정하세요.
 
-**For tracked changes**: See [REDLINING.md](REDLINING.md)
-**For OOXML details**: See [OOXML.md](OOXML.md)
+**변경 이력 추적**: [REDLINING.md](REDLINING.md) 참고
+**OOXML 세부사항**: [OOXML.md](OOXML.md) 참고
 ```
 
 Claude는 사용자가 그 기능이 필요할 때만 REDLINING.md나 OOXML.md를 읽습니다.
@@ -360,13 +360,13 @@ Claude는 다른 참조된 파일에서 참조된 파일을 부분적으로 읽�
 
 ```markdown  theme={null}
 # SKILL.md
-See [advanced.md](advanced.md)...
+[advanced.md](advanced.md)를 참고하세요...
 
 # advanced.md
-See [details.md](details.md)...
+[details.md](details.md)를 참고하세요...
 
 # details.md
-Here's the actual information...
+여기에 실제 정보가 있습니다...
 ```
 
 **좋은 예: 한 단계 깊이**:
@@ -374,10 +374,10 @@ Here's the actual information...
 ```markdown  theme={null}
 # SKILL.md
 
-**Basic usage**: [instructions in SKILL.md]
-**Advanced features**: See [advanced.md](advanced.md)
-**API reference**: See [reference.md](reference.md)
-**Examples**: See [examples.md](examples.md)
+**기본 사용법**: [SKILL.md 안의 지시]
+**고급 기능**: [advanced.md](advanced.md) 참고
+**API 참조**: [reference.md](reference.md) 참고
+**예시**: [examples.md](examples.md) 참고
 ```
 
 ### 더 긴 참조 파일은 목차로 구조화
@@ -389,17 +389,17 @@ Here's the actual information...
 ```markdown  theme={null}
 # API Reference
 
-## Contents
-- Authentication and setup
-- Core methods (create, read, update, delete)
-- Advanced features (batch operations, webhooks)
-- Error handling patterns
-- Code examples
+## 목차
+- 인증 및 설정
+- 핵심 메서드 (create, read, update, delete)
+- 고급 기능 (배치 작업, webhook)
+- Error handling 패턴
+- 코드 예시
 
-## Authentication and setup
+## 인증 및 설정
 ...
 
-## Core methods
+## 핵심 메서드
 ...
 ```
 
@@ -416,41 +416,41 @@ Claude는 그러면 완전한 파일을 읽거나 필요에 따라 특정 섹션
 **예시 1: 리서치 합성 워크플로우** (코드 없는 Skill용):
 
 ````markdown  theme={null}
-## Research synthesis workflow
+## 리서치 합성 워크플로우
 
-Copy this checklist and track your progress:
+이 체크리스트를 복사해서 진행 상황을 추적하세요:
 
 ```
-Research Progress:
-- [ ] Step 1: Read all source documents
-- [ ] Step 2: Identify key themes
-- [ ] Step 3: Cross-reference claims
-- [ ] Step 4: Create structured summary
-- [ ] Step 5: Verify citations
+리서치 진행 상황:
+- [ ] Step 1: 모든 원본 문서 읽기
+- [ ] Step 2: 핵심 주제 식별
+- [ ] Step 3: 주장 교차 확인
+- [ ] Step 4: 구조화된 요약 작성
+- [ ] Step 5: 인용 검증
 ```
 
-**Step 1: Read all source documents**
+**Step 1: 모든 원본 문서 읽기**
 
-Review each document in the `sources/` directory. Note the main arguments and supporting evidence.
+`sources/` 디렉터리의 각 문서를 검토하세요. 주요 논거와 뒷받침하는 근거를 기록하세요.
 
-**Step 2: Identify key themes**
+**Step 2: 핵심 주제 식별**
 
-Look for patterns across sources. What themes appear repeatedly? Where do sources agree or disagree?
+여러 출처에 걸친 패턴을 찾으세요. 어떤 주제가 반복해서 나타나는가? 출처들이 어디에서 일치하고 어디에서 엇갈리는가?
 
-**Step 3: Cross-reference claims**
+**Step 3: 주장 교차 확인**
 
-For each major claim, verify it appears in the source material. Note which source supports each point.
+주요 주장마다 그것이 원본 자료에 실제로 나오는지 검증하세요. 각 논점을 어떤 출처가 뒷받침하는지 기록하세요.
 
-**Step 4: Create structured summary**
+**Step 4: 구조화된 요약 작성**
 
-Organize findings by theme. Include:
-- Main claim
-- Supporting evidence from sources
-- Conflicting viewpoints (if any)
+발견한 것을 주제별로 정리하세요. 다음을 포함하세요:
+- 주요 주장
+- 출처에서 뒷받침하는 근거
+- 상충하는 관점 (있는 경우)
 
-**Step 5: Verify citations**
+**Step 5: 인용 검증**
 
-Check that every claim references the correct source document. If citations are incomplete, return to Step 3.
+모든 주장이 올바른 원본 문서를 참조하는지 확인하세요. 인용이 불완전하면 Step 3으로 돌아가세요.
 ````
 
 이 예시는 워크플로우가 코드를 요구하지 않는 분석 작업에 어떻게 적용되는지 보여줍니다. 체크리스트 패턴은 어떤 복잡한 다단계 프로세스에도 작동합니다.
@@ -458,44 +458,44 @@ Check that every claim references the correct source document. If citations are 
 **예시 2: PDF 폼 채우기 워크플로우** (코드가 있는 Skill용):
 
 ````markdown  theme={null}
-## PDF form filling workflow
+## PDF 폼 채우기 워크플로우
 
-Copy this checklist and check off items as you complete them:
+이 체크리스트를 복사해서 완료할 때마다 항목을 체크하세요:
 
 ```
-Task Progress:
-- [ ] Step 1: Analyze the form (run analyze_form.py)
-- [ ] Step 2: Create field mapping (edit fields.json)
-- [ ] Step 3: Validate mapping (run validate_fields.py)
-- [ ] Step 4: Fill the form (run fill_form.py)
-- [ ] Step 5: Verify output (run verify_output.py)
+작업 진행 상황:
+- [ ] Step 1: 폼 분석 (analyze_form.py 실행)
+- [ ] Step 2: 필드 매핑 생성 (fields.json 편집)
+- [ ] Step 3: 매핑 검증 (validate_fields.py 실행)
+- [ ] Step 4: 폼 채우기 (fill_form.py 실행)
+- [ ] Step 5: 출력 검증 (verify_output.py 실행)
 ```
 
-**Step 1: Analyze the form**
+**Step 1: 폼 분석**
 
-Run: `python scripts/analyze_form.py input.pdf`
+실행: `python scripts/analyze_form.py input.pdf`
 
-This extracts form fields and their locations, saving to `fields.json`.
+폼 필드와 그 위치를 추출하여 `fields.json`에 저장합니다.
 
-**Step 2: Create field mapping**
+**Step 2: 필드 매핑 생성**
 
-Edit `fields.json` to add values for each field.
+`fields.json`을 편집하여 각 필드의 값을 추가하세요.
 
-**Step 3: Validate mapping**
+**Step 3: 매핑 검증**
 
-Run: `python scripts/validate_fields.py fields.json`
+실행: `python scripts/validate_fields.py fields.json`
 
-Fix any validation errors before continuing.
+계속하기 전에 검증 오류를 모두 수정하세요.
 
-**Step 4: Fill the form**
+**Step 4: 폼 채우기**
 
-Run: `python scripts/fill_form.py input.pdf fields.json output.pdf`
+실행: `python scripts/fill_form.py input.pdf fields.json output.pdf`
 
-**Step 5: Verify output**
+**Step 5: 출력 검증**
 
-Run: `python scripts/verify_output.py output.pdf`
+실행: `python scripts/verify_output.py output.pdf`
 
-If verification fails, return to Step 2.
+검증에 실패하면 Step 2로 돌아가세요.
 ````
 
 명확한 단계는 Claude가 중요한 검증을 건너뛰는 것을 막습니다. 체크리스트는 Claude와 당신 모두가 다단계 워크플로우의 진행을 추적하는 데 도움이 됩니다.
@@ -509,19 +509,19 @@ If verification fails, return to Step 2.
 **예시 1: 스타일 가이드 준수** (코드 없는 Skill용):
 
 ```markdown  theme={null}
-## Content review process
+## 콘텐츠 review 프로세스
 
-1. Draft your content following the guidelines in STYLE_GUIDE.md
-2. Review against the checklist:
-   - Check terminology consistency
-   - Verify examples follow the standard format
-   - Confirm all required sections are present
-3. If issues found:
-   - Note each issue with specific section reference
-   - Revise the content
-   - Review the checklist again
-4. Only proceed when all requirements are met
-5. Finalize and save the document
+1. STYLE_GUIDE.md의 가이드라인에 따라 콘텐츠 초안을 작성한다
+2. 체크리스트와 대조하여 review한다:
+   - 용어 일관성 확인
+   - 예시가 표준 형식을 따르는지 검증
+   - 필수 섹션이 모두 있는지 확인
+3. 이슈를 발견하면:
+   - 각 이슈를 구체적인 섹션 참조와 함께 기록
+   - 콘텐츠를 수정
+   - 체크리스트를 다시 review
+4. 모든 요구사항이 충족되었을 때만 진행한다
+5. 문서를 마무리하고 저장한다
 ```
 
 이는 스크립트 대신 참조 문서를 사용한 검증 루프 패턴을 보여줍니다. "validator"는 STYLE\_GUIDE.md이고, Claude는 읽고 비교하여 검사를 수행합니다.
@@ -529,17 +529,17 @@ If verification fails, return to Step 2.
 **예시 2: 문서 편집 프로세스** (코드가 있는 Skill용):
 
 ```markdown  theme={null}
-## Document editing process
+## 문서 편집 프로세스
 
-1. Make your edits to `word/document.xml`
-2. **Validate immediately**: `python ooxml/scripts/validate.py unpacked_dir/`
-3. If validation fails:
-   - Review the error message carefully
-   - Fix the issues in the XML
-   - Run validation again
-4. **Only proceed when validation passes**
-5. Rebuild: `python ooxml/scripts/pack.py unpacked_dir/ output.docx`
-6. Test the output document
+1. `word/document.xml`을 편집한다
+2. **즉시 검증**: `python ooxml/scripts/validate.py unpacked_dir/`
+3. 검증에 실패하면:
+   - 오류 메시지를 주의 깊게 확인
+   - XML의 문제를 수정
+   - 검증을 다시 실행
+4. **검증을 통과했을 때만 진행한다**
+5. 재빌드: `python ooxml/scripts/pack.py unpacked_dir/ output.docx`
+6. 출력 문서를 테스트한다
 ```
 
 검증 루프는 오류를 조기에 잡습니다.
@@ -553,25 +553,25 @@ If verification fails, return to Step 2.
 **나쁜 예: 시간 민감** (틀려질 것):
 
 ```markdown  theme={null}
-If you're doing this before August 2025, use the old API.
-After August 2025, use the new API.
+2025년 8월 이전에 작업한다면 예전 API를 사용하세요.
+2025년 8월 이후에는 새 API를 사용하세요.
 ```
 
 **좋은 예** ("old patterns" 섹션 사용):
 
 ```markdown  theme={null}
-## Current method
+## 현재 방식
 
-Use the v2 API endpoint: `api.example.com/v2/messages`
+v2 API endpoint를 사용하세요: `api.example.com/v2/messages`
 
-## Old patterns
+## 예전 패턴
 
 <details>
-<summary>Legacy v1 API (deprecated 2025-08)</summary>
+<summary>Legacy v1 API (2025-08 deprecated)</summary>
 
-The v1 API used: `api.example.com/v1/messages`
+v1 API는 다음을 사용했습니다: `api.example.com/v1/messages`
 
-This endpoint is no longer supported.
+이 endpoint는 더 이상 지원되지 않습니다.
 </details>
 ```
 
@@ -604,48 +604,48 @@ old patterns 섹션은 메인 콘텐츠를 어수선하게 하지 않으면서 �
 **엄격한 요구사항** (API 응답이나 데이터 형식 등):
 
 ````markdown  theme={null}
-## Report structure
+## 보고서 구조
 
-ALWAYS use this exact template structure:
+ALWAYS 정확히 이 템플릿 구조를 사용하세요:
 
 ```markdown
-# [Analysis Title]
+# [분석 제목]
 
-## Executive summary
-[One-paragraph overview of key findings]
+## 요약
+[핵심 발견 사항에 대한 한 단락 개요]
 
-## Key findings
-- Finding 1 with supporting data
-- Finding 2 with supporting data
-- Finding 3 with supporting data
+## 주요 발견 사항
+- 뒷받침하는 데이터와 함께 발견 사항 1
+- 뒷받침하는 데이터와 함께 발견 사항 2
+- 뒷받침하는 데이터와 함께 발견 사항 3
 
-## Recommendations
-1. Specific actionable recommendation
-2. Specific actionable recommendation
+## 권장 사항
+1. 구체적이고 실행 가능한 권장 사항
+2. 구체적이고 실행 가능한 권장 사항
 ```
 ````
 
 **유연한 가이던스** (적응이 유용할 때):
 
 ````markdown  theme={null}
-## Report structure
+## 보고서 구조
 
-Here is a sensible default format, but use your best judgment based on the analysis:
+다음은 합리적인 기본 형식이지만, 분석 내용에 따라 최선의 판단을 사용하세요:
 
 ```markdown
-# [Analysis Title]
+# [분석 제목]
 
-## Executive summary
-[Overview]
+## 요약
+[개요]
 
-## Key findings
-[Adapt sections based on what you discover]
+## 주요 발견 사항
+[발견한 내용에 따라 섹션을 조정하세요]
 
-## Recommendations
-[Tailor to the specific context]
+## 권장 사항
+[구체적인 맥락에 맞게 조정하세요]
 ```
 
-Adjust sections as needed for the specific analysis type.
+구체적인 분석 유형에 맞게 필요에 따라 섹션을 조정하세요.
 ````
 
 ### 예시 패턴
@@ -653,31 +653,31 @@ Adjust sections as needed for the specific analysis type.
 출력 품질이 예시를 보는 것에 달려 있는 Skill의 경우, 일반 prompt에서처럼 input/output 쌍을 제공합니다:
 
 ````markdown  theme={null}
-## Commit message format
+## Commit 메시지 형식
 
-Generate commit messages following these examples:
+다음 예시를 따라 commit 메시지를 생성하세요:
 
-**Example 1:**
-Input: Added user authentication with JWT tokens
-Output:
+**예시 1:**
+입력: JWT 토큰으로 사용자 인증을 추가함
+출력:
 ```
 feat(auth): implement JWT-based authentication
 
 Add login endpoint and token validation middleware
 ```
 
-**Example 2:**
-Input: Fixed bug where dates displayed incorrectly in reports
-Output:
+**예시 2:**
+입력: 보고서에서 날짜가 잘못 표시되던 bug를 수정함
+출력:
 ```
 fix(reports): correct date formatting in timezone conversion
 
 Use UTC timestamps consistently across report generation
 ```
 
-**Example 3:**
-Input: Updated dependencies and refactored error handling
-Output:
+**예시 3:**
+입력: 의존성을 업데이트하고 error handling을 리팩터링함
+출력:
 ```
 chore: update dependencies and refactor error handling
 
@@ -685,7 +685,7 @@ chore: update dependencies and refactor error handling
 - Standardize error response format across endpoints
 ```
 
-Follow this style: type(scope): brief description, then detailed explanation.
+이 스타일을 따르세요: type(scope): 간략한 설명, 그다음 상세 설명.
 ````
 
 예시는 Claude가 설명만으로는 알기 어려운 원하는 스타일과 디테일 수준을 더 명확히 이해하도록 돕습니다.
@@ -695,23 +695,23 @@ Follow this style: type(scope): brief description, then detailed explanation.
 결정 지점을 통해 Claude를 안내합니다:
 
 ```markdown  theme={null}
-## Document modification workflow
+## 문서 수정 워크플로우
 
-1. Determine the modification type:
+1. 수정 유형을 판단한다:
 
-   **Creating new content?** → Follow "Creation workflow" below
-   **Editing existing content?** → Follow "Editing workflow" below
+   **새 콘텐츠를 만드나요?** → 아래 "생성 워크플로우"를 따르세요
+   **기존 콘텐츠를 편집하나요?** → 아래 "편집 워크플로우"를 따르세요
 
-2. Creation workflow:
-   - Use docx-js library
-   - Build document from scratch
-   - Export to .docx format
+2. 생성 워크플로우:
+   - docx-js 라이브러리 사용
+   - 문서를 처음부터 구성
+   - .docx 형식으로 내보내기
 
-3. Editing workflow:
-   - Unpack existing document
-   - Modify XML directly
-   - Validate after each change
-   - Repack when complete
+3. 편집 워크플로우:
+   - 기존 문서 압축 해제
+   - XML을 직접 수정
+   - 변경할 때마다 검증
+   - 완료되면 다시 압축
 ```
 
 <Tip>
@@ -739,12 +739,12 @@ Follow this style: type(scope): brief description, then detailed explanation.
 ```json  theme={null}
 {
   "skills": ["pdf-processing"],
-  "query": "Extract all text from this PDF file and save it to output.txt",
+  "query": "이 PDF 파일에서 모든 텍스트를 추출해서 output.txt에 저장해 줘",
   "files": ["test-files/document.pdf"],
   "expected_behavior": [
-    "Successfully reads the PDF file using an appropriate PDF processing library or command-line tool",
-    "Extracts text content from all pages in the document without missing any pages",
-    "Saves the extracted text to a file named output.txt in a clear, readable format"
+    "적절한 PDF 처리 라이브러리나 명령줄 도구를 사용해 PDF 파일을 성공적으로 읽는다",
+    "문서의 모든 페이지에서 텍스트 콘텐츠를 빠짐없이 추출한다",
+    "추출한 텍스트를 output.txt라는 파일에 명확하고 읽기 쉬운 형식으로 저장한다"
   ]
 }
 ```
@@ -836,16 +836,16 @@ Unix 스타일 경로는 모든 플랫폼에서 작동하지만, Windows 스타�
 필요하지 않으면 여러 접근을 제시하지 마세요:
 
 ````markdown  theme={null}
-**Bad example: Too many choices** (confusing):
-"You can use pypdf, or pdfplumber, or PyMuPDF, or pdf2image, or..."
+**나쁜 예: 선택지가 너무 많음** (혼란스러움):
+"pypdf를 쓰거나, pdfplumber를 쓰거나, PyMuPDF를 쓰거나, pdf2image를 쓰거나..."
 
-**Good example: Provide a default** (with escape hatch):
-"Use pdfplumber for text extraction:
+**좋은 예: 기본값 제시** (예외 경로 포함):
+"텍스트 추출에는 pdfplumber를 사용하세요:
 ```python
 import pdfplumber
 ```
 
-For scanned PDFs requiring OCR, use pdf2image with pytesseract instead."
+OCR이 필요한 스캔된 PDF에는 대신 pdf2image와 pytesseract를 사용하세요."
 ````
 
 ## Advanced: 실행 가능한 코드를 포함한 Skill
@@ -860,19 +860,19 @@ Skill용 스크립트를 작성할 때, Claude에게 떠넘기지 말고 오류 
 
 ```python  theme={null}
 def process_file(path):
-    """Process a file, creating it if it doesn't exist."""
+    """파일을 처리하고, 존재하지 않으면 생성한다."""
     try:
         with open(path) as f:
             return f.read()
     except FileNotFoundError:
         # 실패하지 않고 기본 콘텐츠로 파일 생성
-        print(f"File {path} not found, creating default")
+        print(f"파일 {path}을(를) 찾을 수 없어 기본값으로 생성합니다")
         with open(path, 'w') as f:
             f.write('')
         return ''
     except PermissionError:
         # 실패하지 않고 대안 제공
-        print(f"Cannot access {path}, using default")
+        print(f"{path}에 접근할 수 없어 기본값을 사용합니다")
         return ''
 ```
 
@@ -922,23 +922,23 @@ Claude가 스크립트를 작성할 수 있더라도, 사전 제작 스크립트
 
 **중요한 구분**: Claude가 다음 중 무엇을 해야 하는지 지시에서 명확히 하세요:
 
-* **스크립트 실행** (가장 일반적): "Run `analyze_form.py` to extract fields"
-* **참조로 읽기** (복잡한 로직용): "See `analyze_form.py` for the field extraction algorithm"
+* **스크립트 실행** (가장 일반적): "필드를 추출하려면 `analyze_form.py`를 실행하세요"
+* **참조로 읽기** (복잡한 로직용): "필드 추출 알고리즘은 `analyze_form.py`를 참고하세요"
 
 대부분의 유틸리티 스크립트에서는 더 신뢰성 있고 효율적이므로 실행이 선호됩니다. 스크립트 실행이 어떻게 작동하는지에 대한 디테일은 아래 [Runtime environment](#runtime-environment) 섹션을 참고하세요.
 
 **예시**:
 
 ````markdown  theme={null}
-## Utility scripts
+## 유틸리티 스크립트
 
-**analyze_form.py**: Extract all form fields from PDF
+**analyze_form.py**: PDF에서 모든 폼 필드를 추출
 
 ```bash
 python scripts/analyze_form.py input.pdf > fields.json
 ```
 
-Output format:
+출력 형식:
 ```json
 {
   "field_name": {"type": "text", "x": 100, "y": 200},
@@ -946,14 +946,14 @@ Output format:
 }
 ```
 
-**validate_boxes.py**: Check for overlapping bounding boxes
+**validate_boxes.py**: 겹치는 bounding box가 있는지 확인
 
 ```bash
 python scripts/validate_boxes.py fields.json
-# Returns: "OK" or lists conflicts
+# 반환값: "OK" 또는 충돌 목록
 ```
 
-**fill_form.py**: Apply field values to PDF
+**fill_form.py**: 필드 값을 PDF에 적용
 
 ```bash
 python scripts/fill_form.py input.pdf fields.json output.pdf
@@ -965,15 +965,15 @@ python scripts/fill_form.py input.pdf fields.json output.pdf
 입력이 이미지로 렌더링될 수 있을 때, Claude가 분석하게 합니다:
 
 ````markdown  theme={null}
-## Form layout analysis
+## 폼 레이아웃 분석
 
-1. Convert PDF to images:
+1. PDF를 이미지로 변환:
    ```bash
    python scripts/pdf_to_images.py form.pdf
    ```
 
-2. Analyze each page image to identify form fields
-3. Claude can see field locations and types visually
+2. 각 페이지 이미지를 분석하여 폼 필드를 식별
+3. Claude가 필드 위치와 유형을 시각적으로 확인할 수 있음
 ````
 
 <Note>
@@ -1059,8 +1059,8 @@ Skill이 MCP (Model Context Protocol) 도구를 사용한다면, "tool not found
 **예시**:
 
 ```markdown  theme={null}
-Use the BigQuery:bigquery_schema tool to retrieve table schemas.
-Use the GitHub:create_issue tool to create issues.
+테이블 스키마를 가져오려면 BigQuery:bigquery_schema 도구를 사용하세요.
+이슈를 생성하려면 GitHub:create_issue 도구를 사용하세요.
 ```
 
 여기서:
@@ -1075,13 +1075,13 @@ Use the GitHub:create_issue tool to create issues.
 패키지가 사용 가능하다고 가정하지 마세요:
 
 ````markdown  theme={null}
-**Bad example: Assumes installation**:
-"Use the pdf library to process the file."
+**나쁜 예: 설치되어 있다고 가정**:
+"pdf 라이브러리를 사용해 파일을 처리하세요."
 
-**Good example: Explicit about dependencies**:
-"Install required package: `pip install pypdf`
+**좋은 예: 의존성을 명시**:
+"필요한 패키지를 설치하세요: `pip install pypdf`
 
-Then use it:
+그다음 사용하세요:
 ```python
 from pypdf import PdfReader
 reader = PdfReader("file.pdf")
@@ -1136,15 +1136,15 @@ Skill을 공유하기 전에, 검증하세요:
 ## 다음 단계
 
 <CardGroup cols={2}>
-  <Card title="Get started with Agent Skills" icon="rocket" href="/en/docs/agents-and-tools/agent-skills/quickstart">
-    Create your first Skill
+  <Card title="Agent Skills 시작하기" icon="rocket" href="/en/docs/agents-and-tools/agent-skills/quickstart">
+    첫 Skill 만들기
   </Card>
 
-  <Card title="Use Skills in Claude Code" icon="terminal" href="/en/docs/claude-code/skills">
-    Create and manage Skills in Claude Code
+  <Card title="Claude Code에서 Skill 사용하기" icon="terminal" href="/en/docs/claude-code/skills">
+    Claude Code에서 Skill 만들고 관리하기
   </Card>
 
-  <Card title="Use Skills with the API" icon="code" href="/en/api/skills-guide">
-    Upload and use Skills programmatically
+  <Card title="API로 Skill 사용하기" icon="code" href="/en/api/skills-guide">
+    프로그래밍 방식으로 Skill 업로드하고 사용하기
   </Card>
 </CardGroup>

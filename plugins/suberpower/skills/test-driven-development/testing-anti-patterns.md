@@ -13,9 +13,9 @@ test는 mock의 동작이 아니라 실제 동작을 검증해야 합니다. moc
 ## 철의 법칙들
 
 ```
-1. NEVER test mock behavior
-2. NEVER add test-only methods to production classes
-3. NEVER mock without understanding dependencies
+1. NEVER mock의 동작을 test하지 말 것
+2. NEVER production 클래스에 test 전용 메서드를 추가하지 말 것
+3. NEVER 의존성을 이해하지 않고 mock하지 말 것
 ```
 
 ## Anti-Pattern 1: mock 동작 test
@@ -51,13 +51,13 @@ test('renders sidebar', () => {
 ### 게이트 함수
 
 ```
-BEFORE asserting on any mock element:
-  Ask: "Am I testing real component behavior or just mock existence?"
+BEFORE mock 요소에 대해 assert하기 전에:
+  질문: "실제 컴포넌트의 동작을 test하고 있는가, 아니면 그저 mock의 존재를 test하고 있는가?"
 
-  IF testing mock existence:
-    STOP - Delete the assertion or unmock the component
+  IF mock의 존재를 test하고 있다면:
+    STOP - assertion을 삭제하거나 컴포넌트의 mock을 해제할 것
 
-  Test real behavior instead
+  대신 실제 동작을 test할 것
 ```
 
 ## Anti-Pattern 2: production의 test 전용 메서드
@@ -102,17 +102,17 @@ afterEach(() => cleanupSession(session));
 ### 게이트 함수
 
 ```
-BEFORE adding any method to production class:
-  Ask: "Is this only used by tests?"
+BEFORE production 클래스에 메서드를 추가하기 전에:
+  질문: "이것은 test에서만 사용되는가?"
 
-  IF yes:
-    STOP - Don't add it
-    Put it in test utilities instead
+  IF 그렇다면:
+    STOP - 추가하지 말 것
+    대신 test 유틸리티에 넣을 것
 
-  Ask: "Does this class own this resource's lifecycle?"
+  질문: "이 클래스가 이 리소스의 lifecycle을 소유하는가?"
 
-  IF no:
-    STOP - Wrong class for this method
+  IF 아니라면:
+    STOP - 이 메서드에는 잘못된 클래스임
 ```
 
 ## Anti-Pattern 3: 이해 없이 mock하기
@@ -151,27 +151,27 @@ test('detects duplicate server', () => {
 ### 게이트 함수
 
 ```
-BEFORE mocking any method:
-  STOP - Don't mock yet
+BEFORE 어떤 메서드든 mock하기 전에:
+  STOP - 아직 mock하지 말 것
 
-  1. Ask: "What side effects does the real method have?"
-  2. Ask: "Does this test depend on any of those side effects?"
-  3. Ask: "Do I fully understand what this test needs?"
+  1. 질문: "실제 메서드는 어떤 side effect를 가지는가?"
+  2. 질문: "이 test가 그 side effect 중 하나라도 의존하는가?"
+  3. 질문: "이 test가 무엇을 필요로 하는지 완전히 이해하고 있는가?"
 
-  IF depends on side effects:
-    Mock at lower level (the actual slow/external operation)
-    OR use test doubles that preserve necessary behavior
-    NOT the high-level method the test depends on
+  IF side effect에 의존한다면:
+    더 낮은 레벨에서 mock할 것 (실제로 느리거나 외부에 있는 작업)
+    OR 필요한 동작을 보존하는 test double을 사용할 것
+    NOT test가 의존하는 상위 레벨 메서드를 mock하는 것
 
-  IF unsure what test depends on:
-    Run test with real implementation FIRST
-    Observe what actually needs to happen
-    THEN add minimal mocking at the right level
+  IF test가 무엇에 의존하는지 확실하지 않다면:
+    FIRST 실제 구현으로 test를 실행할 것
+    무엇이 실제로 일어나야 하는지 관찰할 것
+    THEN 올바른 레벨에서 최소한의 mocking을 추가할 것
 
-  Red flags:
-    - "I'll mock this to be safe"
-    - "This might be slow, better mock it"
-    - Mocking without understanding the dependency chain
+  위험 신호:
+    - "안전하게 하려고 이걸 mock해야지"
+    - "이건 느릴 수 있으니 mock하는 게 낫겠어"
+    - 의존성 사슬을 이해하지 않고 mocking하는 것
 ```
 
 ## Anti-Pattern 4: 불완전한 mock
@@ -210,19 +210,19 @@ const mockResponse = {
 ### 게이트 함수
 
 ```
-BEFORE creating mock responses:
-  Check: "What fields does the real API response contain?"
+BEFORE mock response를 만들기 전에:
+  확인: "실제 API response는 어떤 필드를 포함하는가?"
 
-  Actions:
-    1. Examine actual API response from docs/examples
-    2. Include ALL fields system might consume downstream
-    3. Verify mock matches real response schema completely
+  할 일:
+    1. 문서/예제에서 실제 API response를 조사할 것
+    2. 시스템이 downstream에서 사용할 수 있는 ALL 필드를 포함할 것
+    3. mock이 실제 response 스키마와 완전히 일치하는지 검증할 것
 
-  Critical:
-    If you're creating a mock, you must understand the ENTIRE structure
-    Partial mocks fail silently when code depends on omitted fields
+  중요:
+    mock을 만든다면 ENTIRE 구조를 이해해야 함
+    부분적 mock은 코드가 생략된 필드에 의존할 때 조용히 실패함
 
-  If uncertain: Include all documented fields
+  확실하지 않다면: 문서화된 모든 필드를 포함할 것
 ```
 
 ## Anti-Pattern 5: 사후 고려된 integration test
