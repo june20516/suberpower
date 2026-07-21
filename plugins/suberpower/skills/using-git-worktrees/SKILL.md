@@ -111,10 +111,10 @@ npm test / cargo test / pytest / go test ./...
 ### Report
 
 ```
-Worktree ready at <full-path>
+Worktree 준비 완료: <full-path>
 Base: <BASE_REF>
-Tests passing (<N> tests, 0 failures)
-Ready to implement <feature-name>
+테스트 통과 (<N>개 테스트, 실패 0)
+<feature-name> 구현 준비 완료
 ```
 
 ## Quick Reference

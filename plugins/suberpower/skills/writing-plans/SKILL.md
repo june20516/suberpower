@@ -63,14 +63,14 @@ task를 정의하기 전에, 어떤 파일이 생성 또는 수정될지, 그리
 ## Task Structure
 
 ````markdown
-### Task N: [Component Name]
+### Task N: [컴포넌트 이름]
 
 **Files:**
 - Create: `exact/path/to/file.py`
 - Modify: `exact/path/to/existing.py:123-145`
 - Test: `tests/exact/path/to/test.py`
 
-- [ ] **Step 1: Write the failing test**
+- [ ] **Step 1: 실패하는 test 작성**
 
 ```python
 def test_specific_behavior():
@@ -78,22 +78,22 @@ def test_specific_behavior():
     assert result == expected
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [ ] **Step 2: test를 실행하여 실패를 확인**
 
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
+실행: `pytest tests/path/test.py::test_name -v`
+기대: "function not defined"와 함께 FAIL
 
-- [ ] **Step 3: Write minimal implementation**
+- [ ] **Step 3: 최소한의 implementation 작성**
 
 ```python
 def function(input):
     return expected
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [ ] **Step 4: test를 실행하여 통과를 확인**
 
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: PASS
+실행: `pytest tests/path/test.py::test_name -v`
+기대: PASS
 
 - [ ] **Step 5: Commit**
 

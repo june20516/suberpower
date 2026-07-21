@@ -23,8 +23,8 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 
 **예시:**
 ```markdown
-✅ Write code before test? Delete it. Start over. No exceptions.
-❌ Consider writing tests first when feasible.
+✅ test보다 코드를 먼저 작성했나요? 삭제하세요. 처음부터 다시 시작하세요. 예외 없습니다.
+❌ 가능하다면 test를 먼저 작성하는 것을 고려해 보세요.
 ```
 
 ### 2. Commitment
@@ -42,8 +42,8 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 
 **예시:**
 ```markdown
-✅ When you find a skill, you MUST announce: "I'm using [Skill Name]"
-❌ Consider letting your partner know which skill you're using.
+✅ skill을 찾으면 반드시 공표해야 합니다: "[Skill Name]을 사용합니다"
+❌ 어떤 skill을 사용하는지 파트너에게 알리는 것을 고려해 보세요.
 ```
 
 ### 3. Scarcity
@@ -61,8 +61,8 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 
 **예시:**
 ```markdown
-✅ After completing a task, IMMEDIATELY request code review before proceeding.
-❌ You can review code when convenient.
+✅ task를 완료한 후, 진행하기 전에 IMMEDIATELY code review를 요청하세요.
+❌ 편할 때 code review를 하면 됩니다.
 ```
 
 ### 4. Social Proof
@@ -80,8 +80,8 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 
 **예시:**
 ```markdown
-✅ Checklists without TodoWrite tracking = steps get skipped. Every time.
-❌ Some people find TodoWrite helpful for checklists.
+✅ TodoWrite 추적 없는 체크리스트 = 단계가 누락됩니다. 매번 그렇습니다.
+❌ 어떤 사람들은 체크리스트에 TodoWrite가 유용하다고 느낍니다.
 ```
 
 ### 5. Unity
@@ -98,8 +98,8 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 
 **예시:**
 ```markdown
-✅ We're colleagues working together. I need your honest technical judgment.
-❌ You should probably tell me if I'm wrong.
+✅ 우리는 함께 일하는 동료입니다. 당신의 솔직한 기술적 판단이 필요합니다.
+❌ 제가 틀렸다면 말해주시는 게 좋을 것 같습니다.
 ```
 
 ### 6. Reciprocity

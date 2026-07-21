@@ -89,39 +89,39 @@ agent들이 돌아왔을 때:
 3. **출력에 대해 구체적임** - agent가 무엇을 반환해야 하는가?
 
 ```markdown
-Fix the 3 failing tests in src/agents/agent-tool-abort.test.ts:
+src/agents/agent-tool-abort.test.ts의 실패하는 테스트 3개를 수정하세요:
 
-1. "should abort tool with partial output capture" - expects 'interrupted at' in message
-2. "should handle mixed completed and aborted tools" - fast tool aborted instead of completed
-3. "should properly track pendingToolCount" - expects 3 results but gets 0
+1. "should abort tool with partial output capture" - 메시지에 'interrupted at'을 기대하지만 없음
+2. "should handle mixed completed and aborted tools" - 빠른 tool이 완료되지 않고 abort됨
+3. "should properly track pendingToolCount" - 결과 3개를 기대하지만 0개를 받음
 
-These are timing/race condition issues. Your task:
+이것들은 timing/race condition 문제입니다. 당신이 할 일:
 
-1. Read the test file and understand what each test verifies
-2. Identify root cause - timing issues or actual bugs?
-3. Fix by:
-   - Replacing arbitrary timeouts with event-based waiting
-   - Fixing bugs in abort implementation if found
-   - Adjusting test expectations if testing changed behavior
+1. 테스트 파일을 읽고 각 테스트가 무엇을 검증하는지 파악하세요
+2. 근본 원인을 식별하세요 - timing 문제인가, 실제 bug인가?
+3. 다음 방법으로 수정하세요:
+   - 임의의 timeout을 event 기반 대기로 교체
+   - abort 구현에 bug가 있다면 수정
+   - 테스트 대상 동작이 바뀌었다면 테스트 기댓값을 조정
 
-Do NOT just increase timeouts - find the real issue.
+timeout을 늘리기만 하지 마세요 - 진짜 원인을 찾으세요.
 
-Return: Summary of what you found and what you fixed.
+반환할 것: 무엇을 발견했고 무엇을 수정했는지에 대한 요약.
 ```
 
 ## 흔한 실수
 
-**❌ 너무 광범위함:** "Fix all the tests" - agent가 길을 잃습니다
-**✅ 구체적임:** "Fix agent-tool-abort.test.ts" - 집중된 범위
+**❌ 너무 광범위함:** "모든 테스트를 고쳐줘" - agent가 길을 잃습니다
+**✅ 구체적임:** "agent-tool-abort.test.ts를 고쳐줘" - 집중된 범위
 
-**❌ Context 없음:** "Fix the race condition" - agent가 어디인지 모릅니다
+**❌ Context 없음:** "race condition을 고쳐줘" - agent가 어디인지 모릅니다
 **✅ Context 있음:** 오류 메시지와 테스트 이름을 붙여 넣으세요
 
 **❌ 제약 조건 없음:** agent가 모든 것을 refactor할 수 있습니다
-**✅ 제약 조건 있음:** "Do NOT change production code" 또는 "Fix tests only"
+**✅ 제약 조건 있음:** "production 코드는 변경하지 마세요" 또는 "테스트만 수정하세요"
 
-**❌ 모호한 출력:** "Fix it" - 무엇이 변경되었는지 모릅니다
-**✅ 구체적임:** "Return summary of root cause and changes"
+**❌ 모호한 출력:** "고쳐줘" - 무엇이 변경되었는지 모릅니다
+**✅ 구체적임:** "근본 원인과 변경 사항의 요약을 반환하세요"
 
 ## 사용하지 말아야 할 때
 
@@ -143,9 +143,9 @@ Return: Summary of what you found and what you fixed.
 
 **Dispatch:**
 ```
-Agent 1 → Fix agent-tool-abort.test.ts
-Agent 2 → Fix batch-completion-behavior.test.ts
-Agent 3 → Fix tool-approval-race-conditions.test.ts
+Agent 1 → agent-tool-abort.test.ts 수정
+Agent 2 → batch-completion-behavior.test.ts 수정
+Agent 3 → tool-approval-race-conditions.test.ts 수정
 ```
 
 **결과:**

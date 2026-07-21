@@ -364,8 +364,8 @@ mock이나 test 유틸리티를 추가할 때, 흔한 함정을 피하기 위해
 ## 최종 규칙
 
 ```
-Production code → test exists and failed first
-Otherwise → not TDD
+Production 코드 → test가 존재하고 먼저 실패했다
+그 외 → TDD가 아니다
 ```
 
 human partner의 허가 없이는 예외 없음.
