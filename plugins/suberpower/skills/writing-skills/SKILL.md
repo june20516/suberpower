@@ -275,7 +275,7 @@ wc -w skills/path/SKILL.md
 - `creating-skills`, `testing-skills`, `debugging-with-logs`
 - 능동적, 당신이 취하는 동작을 묘사
 
-### 4. 다른 skill 상호 참조
+### 5. 다른 skill 상호 참조
 
 **다른 skill을 참조하는 문서를 작성할 때:**
 
@@ -637,6 +637,7 @@ helper1, helper2, step3, pattern4
 미래의 Claude가 당신의 skill을 어떻게 찾는지:
 
 1. **문제 발생** ("tests are flaky")
+2. **skill 검색** (description을 grep하고, 카테고리를 훑어봄)
 3. **SKILL 발견** (description 일치)
 4. **개요 훑기** (이게 관련 있나?)
 5. **패턴 읽기** (빠른 참조 표)
