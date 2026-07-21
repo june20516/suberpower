@@ -41,7 +41,7 @@ baseline 이후 upstream `skills/` 경로에 **83개 커밋**이 쌓여 있습�
 1. **비교** — baseline SHA와 현재 upstream HEAD 사이의 `skills/` 변경을 산정
 2. **보고·선별** — 사용자에게 정리해 보고하고, 반영 대상과 커스터마이징 의사를 확인
 3. **번역 적용** — [translation-glossary.md](./translation-glossary.md)의 규칙에 따라 번역
-4. **검증** — `./scripts/check-divergence.sh` 실행. **실패하면 divergence가 파괴된 것이므로 배포 전에 복구합니다**
+4. **검증** — `./scripts/check-divergence.sh --sync` 실행. auto 검사 실패는 divergence 파괴이므로 배포 전에 복구합니다. `assisted`·`manual` 항목은 확인 후 `--ack`로 명시해야 통과합니다
 5. **배포** — `plugin.json`·`marketplace.json` version bump 후 commit
 6. **이 파일의 baseline SHA를 갱신**
 

@@ -25,7 +25,8 @@ claude plugin install suberpower@suberpower
 - [Upstream 동기화 상태](./docs/suberpowers/upstream-sync.md) — baseline SHA, 미반영 변경, 동기화 절차
 
 ```bash
-./scripts/check-divergence.sh   # divergence가 유지되는지 검증
+./scripts/check-divergence.sh          # 평소 — 자동 검사만
+./scripts/check-divergence.sh --sync   # 동기화 후 — 기계로 못 재는 항목까지 확인 강제
 ```
 
 ## 라이선스 / 원작자
