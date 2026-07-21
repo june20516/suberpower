@@ -73,7 +73,7 @@ branch 상태와 함께 보고하세요:
 
 > "isolated worktree를 설정해 드릴까요? 현재 branch가 변경되지 않도록 보호해 줍니다."
 
-이미 선언된 선호가 있다면 질문 없이 따르세요. 사용자가 동의하지 않으면 현재 위치에서 작업하고 Step 4로 건너뛰세요.
+이미 선언된 선호가 있다면 질문 없이 따르세요. 사용자가 동의하지 않으면 worktree 생성(Step 1~3)을 건너뛰고 현재 위치에서 작업하며 Step 4 (Project Setup)로 이동하세요.
 
 ## Step 1: Determine Base Branch (프로젝트별 최초 1회)
 
@@ -142,10 +142,10 @@ npm test / cargo test / pytest / go test ./...
 ### Report
 
 ```
-Worktree ready at <full-path>
+Worktree 준비 완료: <full-path>
 Base: <BASE_REF>
-Tests passing (<N> tests, 0 failures)
-Ready to implement <feature-name>
+테스트 통과 (<N>개 테스트, 실패 0)
+<feature-name> 구현 준비 완료
 ```
 
 ## Quick Reference
