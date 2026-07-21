@@ -18,6 +18,11 @@ claude plugin install suberpower@suberpower
 - `plugins/suberpower/skills/` — 한국어로 번역된 스킬 14종
 - `plugins/suberpower/hooks/` — SessionStart 훅 (매 세션 시작 시 `using-suberpowers` 주입)
 
+## 유지보수 문서
+
+- [번역 용어집 및 표기 규칙](./docs/suberpowers/translation-glossary.md) — 용어 대응표, 강조 계층 보존 규칙, 치환 시 함정
+- [Upstream 동기화 상태](./docs/suberpowers/upstream-sync.md) — baseline SHA, 미반영 변경, 동기화 절차
+
 ## 라이선스 / 원작자
 
 MIT License. 원작자: Jesse Vincent ([obra/superpowers](https://github.com/obra/superpowers)). 자세한 내용은 [LICENSE](./LICENSE)를 참고하세요.
