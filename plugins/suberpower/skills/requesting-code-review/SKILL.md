@@ -73,6 +73,7 @@ HEAD_SHA=$(git rev-parse HEAD)
   PLAN_OR_REQUIREMENTS: docs/suberpowers/plans/deployment-plan.md의 Task 2
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
+  REPORT_FILE: ~/.claude/suberpowers/reviews/2026-08-13-deployment-task-2-review.md
 
 [Subagent 반환]:
   ~/.claude/suberpowers/reviews/2026-08-13-deployment-task-2-review.md
