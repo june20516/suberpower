@@ -10,7 +10,7 @@ REGISTRY="$REPO_DIR/docs/suberpowers/MITIGATIONS.md"
 CREATE_ISSUE=false
 [ "${1:-}" = "--create-issue" ] && CREATE_ISSUE=true
 
-issues=$(grep -oE 'anthropics/claude-code#[0-9]+' "$REGISTRY" | sort -u)
+issues=$(grep -oE 'anthropics/claude-code#[0-9]+' "$REGISTRY" | sort -u) || true
 if [ -z "$issues" ]; then
   echo "MITIGATIONS.md에서 추적할 이슈를 찾지 못했습니다" >&2
   exit 1
