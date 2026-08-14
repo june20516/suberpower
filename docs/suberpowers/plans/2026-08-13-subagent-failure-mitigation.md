@@ -380,6 +380,24 @@ upstream anthropics/claude-code#75318 완화: failed 통지/무통지 사망 시
 줄이기 위해 500줄/8파일 초과 diff는 분할 리뷰하게 한다."
 ```
 
+### Task 2-R: quality 리뷰 반영 (M-2, M-3) — 실행 중 추가됨
+
+Task 2 quality 리뷰(2026-08-14, 판정 With fixes)의 이슈를 반영하는 후속 커밋.
+Step 1 마커 블록의 원문은 역사적 기록으로 두고, 최종 문구는 SKILL.md가 기준이다.
+상세 근거: `~/.claude/suberpowers/reviews/2026-08-14-suberpower-task-2-quality.md`
+
+- [ ] I-1(부분 수용): 무통지 감지의 툴 이름(TaskList/ListAgents)을 harness 중립
+  표현으로 보완. 리뷰어는 "실재하지 않는 툴"이라 했으나 orchestrator가 이 세션에서
+  두 툴의 실재를 직접 확인 — 다만 비-Claude Code 플랫폼 지원을 위해 예시로 강등
+- [ ] I-2: M-3 그룹 격리의 구현 수단 명시 — reviewer별 파일 목록 +
+  `git diff BASE..HEAD -- <그룹 파일들>` 경로 제한, read-only이므로 병렬 dispatch 허용
+- [ ] I-3: 복구 절차가 reviewer(REPORT_FILE 계약) 기준임을 명시하고 implementer
+  실패 경로(커밋·작업 트리 = implementer의 체크포인트) 추가
+- [ ] m-1b/m-2/m-3/m-4: 순수 hang의 감지 한계 명시, 3단계 분할 기준을 M-3 그룹
+  기준으로 통일, 이어쓰기 시 커버리지 불확실성 처리, 분할 전환 시 부분 보고서 재사용
+- 보류: {FILE_SCOPE} placeholder를 code-reviewer.md에 추가하는 근본 해결은 후속
+  확장 후보 (M-3의 diff 경로 제한 지시로 당장은 충분)
+
 ---
 
 ### Task 3: 완화 등록부 MITIGATIONS.md (M-4)
