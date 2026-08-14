@@ -128,7 +128,16 @@ subagent(특히 reviewer)는 harness의 알려진 버그로 응답 없이 죽을
 **실패 감지:**
 - failed 통지: "Agent terminated early due to an API error: ..." → 즉시 복구 절차 진행
 - 무통지: dispatch 후 완료 통지 없이 turn이 재개되었는데 해당 agent가 실행 목록에
-  없거나 멈춰 있으면 실패로 간주 (agent 상태는 TaskList 또는 ListAgents로 확인)
+  없거나 멈춰 있으면 실패로 간주 (agent 상태는 세션이 제공하는 수단으로 확인 —
+  Claude Code라면 TaskList/ListAgents 툴, 다른 플랫폼이라면 해당 환경의 agent 상태
+  확인 수단. 수단이 없으면 완료/실패 통지 수신 여부로 판단)
+- 순수 hang(통지가 영영 오지 않는 경우)은 turn이 재개되지 않는 한 감지 기회가 없다 —
+  사용자 interrupt 등으로 turn이 재개된 뒤에야 위 기준으로 감지된다
+
+아래 복구 절차는 REPORT_FILE 계약이 있는 reviewer 기준이다. implementer가 죽은 경우에는
+`git log`와 작업 트리(`git status`, `git diff`)로 어디까지 진행됐는지 확인한 뒤, 완료된
+부분을 명시하고 남은 작업만 재dispatch하라 (사실상 아래 절차의 1~2단계와 같은 원리 —
+커밋과 작업 트리가 implementer의 체크포인트다).
 
 **복구 절차 (순서대로):**
 1. REPORT_FILE(체크포인트)을 orchestrator가 Read
@@ -140,10 +149,12 @@ subagent(특히 reviewer)는 harness의 알려진 버그로 응답 없이 죽을
    기록되어 있습니다. 기록된 항목의 재검증은 건너뛰고, 남은 범위를 이어서 검증해
    같은 파일을 완성하세요. 단, 남은 범위를 검증하다 기존 기록과 모순되는 근거를
    발견하면 해당 항목을 수정하세요. 마지막의 파일 간 종합 패스는 전체 범위를
-   대상으로 수행하세요."
+   대상으로 수행하세요. 검토 커버리지가 불확실하면(어떤 파일을 이미 봤는지 보고서로
+   알 수 없으면) 전체 범위를 다시 훑되, 기록된 항목의 재검증만 생략하세요."
    (기록된 항목은 확정 시점에 검증을 마친 출력이므로 이어쓰기의 기준점으로 신뢰할 수
    있다 — "출력 단위로만 기록"하는 M-1 원칙이 이 신뢰의 전제다.)
-3. 2회 재dispatch에도 실패하면: 리뷰 범위를 절반으로 분할해 각각 dispatch (아래 M-3)
+3. 2회 재dispatch에도 실패하면: 리뷰 범위를 M-3의 그룹 기준으로 분할해 각각 dispatch
+   (아래 M-3). 이전 시도의 부분 보고서는 폐기하지 말고 종합 시 함께 읽는다
 4. 그래도 실패하면 사람에게 escalate — 다른 원인(usage limit, 네트워크)일 수 있습니다
 
 **하지 말 것:**
@@ -162,8 +173,11 @@ git diff --stat [BASE_SHA]..[HEAD_SHA] | tail -1
 ```
 
 - 변경 500줄 이하이고 파일 8개 이하: 단일 reviewer로 진행
-- 그 이상: 연관된 파일끼리 그룹으로 나눠 reviewer를 순차 dispatch하고, 각 reviewer에
-  별도 REPORT_FILE을 주세요. orchestrator가 보고서들을 읽고 종합해 판정합니다.
+- 그 이상: 연관된 파일끼리 그룹으로 나눠 그룹별 reviewer를 dispatch하고(reviewer는
+  read-only이므로 병렬 dispatch 가능), 각 reviewer에 별도 REPORT_FILE을 주세요.
+  각 reviewer 프롬프트에는 리뷰 대상 파일 목록을 명시하고, diff 명령을
+  `git diff [BASE_SHA]..[HEAD_SHA] -- <그룹 파일들>`로 제한해 다른 그룹의 diff가
+  보이지 않게 하세요. orchestrator가 보고서들을 읽고 종합해 판정합니다.
 - 분할 리뷰는 그룹 경계를 넘는 상호작용을 보지 못합니다. 그룹은 호출 관계가 밀접한
   파일끼리 묶으세요. 각 reviewer는 자기 그룹만 봅니다 — reviewer에게 다른 그룹의
   범위, 컨텍스트, 결과를 알려주지 마세요. 그룹 간 접점(공유 인터페이스, 호출 관계)에서
