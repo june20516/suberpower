@@ -38,6 +38,7 @@
 - Modify: `plugins/suberpower/skills/subagent-driven-development/code-quality-reviewer-prompt.md` — REPORT_FILE 파라미터 추가 (M-1)
 - Modify: `plugins/suberpower/skills/subagent-driven-development/spec-reviewer-prompt.md` — 체크포인트 지시 추가 (M-1)
 - Modify: `plugins/suberpower/skills/requesting-code-review/code-reviewer.md` — 체크포인트 지시 + 짧은 최종 메시지 규칙 (M-1)
+- Modify: `plugins/suberpower/skills/requesting-code-review/SKILL.md` — standalone 진입 경로에 REPORT_FILE 계약 반영 (M-1, Task 1-R에서 추가)
 - Modify: `plugins/suberpower/skills/subagent-driven-development/SKILL.md` — 실패 처리 프로토콜(M-2) + 범위 분할(M-3)
 - Create: `docs/suberpowers/MITIGATIONS.md` — 완화 등록부, 추적의 단일 소스 (M-4)
 - Create: `scripts/check-upstream-fixes.sh` — 이슈 상태 확인 스크립트, 로컬/CI 겸용 (M-4)
@@ -273,6 +274,23 @@ upstream anthropics/claude-code#75318 완화: 긴 단일 응답 스트림이
 ~/.claude/suberpowers/reviews/ 에 보존되게 한다."
 ```
 
+### Task 1-R: quality 리뷰 반영 (M-1) — 실행 중 추가됨
+
+Task 1 quality 리뷰(2026-08-14, 판정 With fixes)의 이슈를 반영하는 후속 커밋.
+상세 근거: `~/.claude/suberpowers/reviews/2026-08-14-suberpower-task-1-quality.md`
+
+- [ ] I-1: `requesting-code-review/SKILL.md`에 REPORT_FILE 계약 추가 (준비 bash,
+  placeholder 목록, 3줄 반환 + "orchestrator는 REPORT_FILE을 Read" 지시) —
+  plan File Structure가 standalone 진입 경로를 누락했던 것의 보완
+- [ ] I-2: `code-reviewer.md`의 예시를 "예시 보고서(REPORT_FILE에 기록되는 내용)"로
+  개칭하고 3줄 응답 메시지 예시를 별도 추가. `subagent-driven-development/SKILL.md`의
+  워크플로우 예시 갱신은 Task 2에서 함께 수행
+- [ ] I-3: 같은 날 재review 시 REPORT_FILE 경로 충돌 방지 — `-r2`, `-r3` 접미사 규칙을
+  두 dispatch 가이드와 requesting-code-review 준비 bash에 추가
+- [ ] m-1/m-3/m-4: placeholder 설명의 파일 생성 주체 정정("경로는 orchestrator,
+  생성은 reviewer"), spec 보고서 뼈대(`## 검증 항목`/`## 판정`) 정의, find에 `-type f`
+- 보류: m-2(`~` 경로 확장 안내)는 실전에서 마찰이 관측되면 반영
+
 ---
 
 ### Task 2: SKILL.md 실패 처리 프로토콜 + 리뷰 범위 분할 (M-2, M-3)
@@ -336,6 +354,12 @@ git diff --stat [BASE_SHA]..[HEAD_SHA] | tail -1
   생길 수 있는 문제는 orchestrator가 종합 시 직접 확인합니다.
 
 ````
+
+- [ ] **Step 1b: 예시 워크플로우의 reviewer 반환 형식 갱신 (Task 1-R I-2 잔여분)**
+
+같은 파일의 "예시 워크플로우" 섹션에서 spec reviewer / code reviewer가 결과를 인라인으로
+반환하는 부분을 새 계약(3줄 요약: REPORT_FILE 경로, 판정, 이슈 개수 — orchestrator가
+REPORT_FILE을 Read로 확인)에 맞게 갱신한다.
 
 - [ ] **Step 2: 검증**
 
