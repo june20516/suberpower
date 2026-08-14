@@ -14,6 +14,7 @@ find ~/.claude/suberpowers/reviews -type f -name '*.md' -mtime +14 -delete  # 14
 # 예: ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-3-quality.md
 REPORT_FILE=~/.claude/suberpowers/reviews/$(date +%Y-%m-%d)-<프로젝트>-task-<N>-quality.md
 # 재review 라운드는 -r2, -r3 접미사로 새 파일을 쓴다 (이전 라운드 보고서를 덮어쓰지 않는다)
+# <프로젝트>/<N>은 실제 값으로 치환하고, reviewer에게는 확장된 절대 경로를 전달
 ```
 
 ```

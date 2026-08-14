@@ -36,7 +36,12 @@ mkdir -p ~/.claude/suberpowers/reviews
 find ~/.claude/suberpowers/reviews -type f -name '*.md' -mtime +14 -delete  # 14일 지난 보고서 청소
 REPORT_FILE=~/.claude/suberpowers/reviews/$(date +%Y-%m-%d)-<프로젝트>-<대상>-review.md
 # 같은 대상 재review 시에는 -r2, -r3 접미사로 새 파일을 쓴다 (이전 라운드 보고서를 덮어쓰지 않는다)
+# <프로젝트>/<대상>은 실제 값으로 치환하고, reviewer에게는 확장된 절대 경로를 전달
 ```
+
+**대형 diff 분할 (M-3):** dispatch 전에 `git diff --stat <BASE>..<HEAD> | tail -1`로 크기를 확인하세요. 변경 500줄 또는 8파일 초과면 subagent-driven-development SKILL.md의 "리뷰 범위 분할" 규칙대로 연관 파일 그룹별 reviewer로 나눠 dispatch하세요. merge 전 리뷰는 브랜치 전체 diff를 다루므로 이 기준을 넘기기 가장 쉬운 사용처입니다.
+
+**reviewer가 응답 없이 종료된 경우:** REPORT_FILE에 부분 보고서가 남아 있을 수 있습니다. subagent-driven-development SKILL.md의 "Subagent 실패 처리" 섹션을 따르세요 (upstream anthropics/claude-code#75318 완화 M-2).
 
 **3. code reviewer subagent dispatch:**
 

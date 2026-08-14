@@ -140,9 +140,10 @@ subagent(특히 reviewer)는 harness의 알려진 버그로 응답 없이 죽을
 커밋과 작업 트리가 implementer의 체크포인트다).
 
 **복구 절차 (순서대로):**
-1. REPORT_FILE(체크포인트)을 orchestrator가 Read
+1. REPORT_FILE(체크포인트)을 orchestrator(본문의 controller와 같은 역할)가 Read
    - 보고서가 사실상 완성돼 있으면(최종 판정 섹션까지 기록됨): 재dispatch 없이 그대로 사용
    - 미완성이면: 어디까지 진행되다 죽었는지 파악하고 2번으로
+   - 파일이 아예 없으면(생성 전에 죽음): 이어쓰기 문구 없이 처음부터 일반 dispatch (재dispatch 2회 한도에는 포함)
 2. 재dispatch (최대 2회): 같은 프롬프트에 다음을 덧붙여 **같은 REPORT_FILE을 이어서
    완성**하게 한다. 목표는 남은 범위만큼의 비용으로 복구하는 것이다.
    "이전 reviewer가 도중에 종료되었습니다. [REPORT_FILE]에 지금까지 확정된 항목이
@@ -174,10 +175,14 @@ git diff --stat [BASE_SHA]..[HEAD_SHA] | tail -1
 
 - 변경 500줄 이하이고 파일 8개 이하: 단일 reviewer로 진행
 - 그 이상: 연관된 파일끼리 그룹으로 나눠 그룹별 reviewer를 dispatch하고(reviewer는
-  read-only이므로 병렬 dispatch 가능), 각 reviewer에 별도 REPORT_FILE을 주세요.
-  각 reviewer 프롬프트에는 리뷰 대상 파일 목록을 명시하고, diff 명령을
-  `git diff [BASE_SHA]..[HEAD_SHA] -- <그룹 파일들>`로 제한해 다른 그룹의 diff가
-  보이지 않게 하세요. orchestrator가 보고서들을 읽고 종합해 판정합니다.
+  저장소에 대해 read-only이고 각자 자기 REPORT_FILE만 쓰므로 병렬 dispatch 가능),
+  각 reviewer에 별도 REPORT_FILE을 주세요(그룹명을 붙여 구분: 예
+  ...-task-3-quality-parser.md). 각 reviewer 프롬프트에는 리뷰 대상 파일 목록을
+  명시하고, diff 명령을 `git diff [BASE_SHA]..[HEAD_SHA] -- <그룹 파일들>`로 제한해
+  다른 그룹의 diff가 보이지 않게 하세요. code-reviewer.md 템플릿을 쓸 때는 템플릿
+  본문에 하드코딩된 전체 범위 diff 명령을 이 경로 제한 명령으로 교체해서
+  dispatch하세요 — 프롬프트 앞에 파일 목록만 덧붙이면 격리가 조용히 깨집니다.
+  orchestrator가 보고서들을 읽고 종합해 판정합니다.
 - 분할 리뷰는 그룹 경계를 넘는 상호작용을 보지 못합니다. 그룹은 호출 관계가 밀접한
   파일끼리 묶으세요. 각 reviewer는 자기 그룹만 봅니다 — reviewer에게 다른 그룹의
   범위, 컨텍스트, 결과를 알려주지 마세요. 그룹 간 접점(공유 인터페이스, 호출 관계)에서
