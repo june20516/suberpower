@@ -626,7 +626,7 @@ gh workflow run upstream-fix-tracker.yml && sleep 10 && gh run list --workflow=u
 
 - [ ] **Step 4: 알림 설정 확인 (수동, 1회)**
 
-GitHub에서 fork 레포 Watch 설정을 `Participating and @mentions` 이상 + Issues 포함으로 설정. 이슈 자동 생성 시 알림을 받는 경로다.
+GitHub에서 이 레포의 Watch 설정을 `Custom` → **Issues 체크**(또는 `All Activity`)로 설정. github-actions bot이 생성한 이슈는 Participating 알림 대상이 아니므로, Issues를 명시적으로 포함해야 자동 생성 이슈의 알림이 도달한다.
 
 ---
 
@@ -666,6 +666,22 @@ grep -rn "REPORT_FILE" ~/.claude/plugins/cache/suberpower/suberpower/1.3.0/skill
 기대: 매치 존재 (캐시가 아직 1.2.0이면 `claude plugin update suberpower` 실행)
 
 ---
+
+## 최종 리뷰 실행 기록 (Task 7, 2026-08-14)
+
+전체 diff가 11파일/448줄로 M-3 기준(8파일)을 초과해 **분할 리뷰를 dogfooding**했다:
+skills 그룹(완화 5파일)과 infra 그룹(추적·배포 6파일)을 격리 병렬 dispatch, 접점은
+orchestrator가 종합 확인.
+
+- infra 그룹: **Yes** (Minor 5) — 파싱·태그·경로·버전 계약 전부 실행 검증 통과
+- skills 그룹: **With fixes** (Important 3 / Minor 6)
+- 반영: skills I-1(standalone 경로에 M-3 분할·M-2 포인터 추가), I-2(spec 템플릿의
+  유령 diff 참조 정정), I-3(M-3 사용 시 템플릿 diff 명령 교체 명시), skills
+  m-1/m-2/m-4/m-5/m-6, infra m-2/m-3/m-4/m-5
+- 기각: skills m-3(TaskList/ListAgents 실체 불확실) — orchestrator가 세션에서 실재
+  확인, harness 중립 hedge 기존재
+- 보류: infra m-1(이슈당 gh api 2회) — 다음 스크립트 수정 시 정리
+- 상세: `~/.claude/suberpowers/reviews/2026-08-14-suberpower-final-{skills,infra}-review.md`
 
 ## 완화 제거 절차 (업스트림 수정 후)
 
