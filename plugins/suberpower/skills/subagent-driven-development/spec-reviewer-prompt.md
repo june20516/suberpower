@@ -4,6 +4,16 @@ spec 준수 reviewer subagent를 dispatch할 때 이 템플릿을 사용하세�
 
 **목적:** implementer가 요청된 것을 만들었는지 검증 (더도 말고 덜도 말고)
 
+**dispatch 전 준비 (M-1 체크포인트):** report 파일 경로를 먼저 만드세요.
+
+```bash
+mkdir -p ~/.claude/suberpowers/reviews
+find ~/.claude/suberpowers/reviews -type f -name '*.md' -mtime +14 -delete  # 14일 지난 보고서 청소
+REPORT_FILE=~/.claude/suberpowers/reviews/$(date +%Y-%m-%d)-<프로젝트>-task-<N>-spec.md
+# 재review 라운드는 -r2, -r3 접미사로 새 파일을 쓴다 (이전 라운드 보고서를 덮어쓰지 않는다)
+# <프로젝트>/<N>은 실제 값으로 치환하고, reviewer에게는 확장된 절대 경로를 전달
+```
+
 ```
 Task tool (general-purpose):
   description: "Review spec compliance for Task N"
@@ -17,6 +27,24 @@ Task tool (general-purpose):
     ## Implementer가 만들었다고 주장하는 것
 
     [implementer의 보고서에서 발췌]
+
+    ## 보고서 체크포인트 (필수)
+
+    review 결과를 다음 파일에 기록하면서 진행하세요: [REPORT_FILE 경로]
+
+    - review를 시작하면 즉시 위 파일을 생성하고 아래 "보고 형식"의 뼈대를 쓰세요.
+    - 검증 항목 하나를 확정할 때마다(누락 1건 확인, 추가 기능 1건 발견 등) 그 즉시
+      파일에 반영하세요. 마지막에 한꺼번에 쓰지 마세요.
+    - 점진 기록의 분할 단위는 입력이 아니라 출력입니다 — "파일 하나를 읽을
+      때마다"가 아니라 "보고서 항목 하나가 확정될 때마다" 기록하세요.
+    - 점진 기록은 출력 버퍼일 뿐, 분석 순서를 강제하지 않습니다. 판정을 기록하기 전에
+      검토 대상 구현 전체를 먼저 훑어 큰 그림을 파악하세요. 나중에 본 코드가 앞의 판단을
+      뒤집으면 이미 기록한 항목을 수정하세요 — 이 파일은 append-only 로그가 아닙니다.
+    - 개별 파일 검증을 마친 뒤, 여러 파일을 함께 봐야만 드러나는 문제(파일 간
+      상호작용, 일관성 위반)를 점검하는 패스를 한 번 더 돌고 결과를 기록하세요.
+    - 최종 응답 메시지는 3줄 이내: REPORT_FILE 경로, 판정(✅/❌), 이슈 개수.
+      긴 최종 메시지는 금지합니다 — 긴 단일 응답 스트림은 연결 절단으로 유실될 수
+      있습니다 (anthropics/claude-code#75318).
 
     ## CRITICAL: 보고서를 신뢰하지 마세요
 
@@ -55,7 +83,12 @@ Task tool (general-purpose):
 
     **보고서를 신뢰하지 말고, 코드를 읽어서 검증하세요.**
 
-    보고 형식:
+    보고 형식 (REPORT_FILE에 기록) — 파일 뼈대는 `## 검증 항목`(항목별 확정 내용)과
+    `## 판정`(맨 마지막에 작성) 두 섹션:
     - ✅ Spec 준수 (코드 검사 후 모든 것이 일치하는 경우)
     - ❌ 이슈 발견: [무엇이 누락되었거나 추가되었는지 file:line 참조와 함께 구체적으로 나열]
 ```
+
+**Spec reviewer가 반환하는 것:** 3줄 요약 (REPORT_FILE 경로, ✅/❌, 이슈 개수). **orchestrator는 통지를 받으면 반드시 REPORT_FILE을 Read로 읽으세요.**
+
+**reviewer가 응답 없이 종료된 경우:** REPORT_FILE에 부분 보고서가 남아 있을 수 있습니다. SKILL.md의 "Subagent 실패 처리" 섹션을 따르세요.

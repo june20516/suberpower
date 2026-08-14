@@ -30,6 +30,28 @@ Task tool (general-purpose):
     git diff {BASE_SHA}..{HEAD_SHA}
     ```
 
+    ## 보고서 체크포인트 (필수)
+
+    review 결과를 다음 파일에 기록하면서 진행하세요: {REPORT_FILE}
+
+    - review를 시작하면 즉시 위 파일을 생성하고 아래 "출력 형식"의 헤더 뼈대를 쓰세요.
+    - 섹션 하나를 완성할 때마다(Strengths 파악 완료, 이슈 1건 확정 등) 그 즉시 파일에
+      반영하세요. 마지막에 한꺼번에 쓰지 마세요.
+    - 점진 기록의 분할 단위는 입력이 아니라 출력입니다 — "diff 파일 하나를 읽을
+      때마다"가 아니라 "보고서 항목 하나가 확정될 때마다" 기록하세요.
+    - 점진 기록은 출력 버퍼일 뿐, 분석 순서를 강제하지 않습니다. 판정을 기록하기 전에
+      전체 diff를 먼저 훑어 큰 그림을 파악하세요. 나중에 본 코드가 앞의 판단을
+      뒤집으면 이미 기록한 항목을 수정하세요 — 이 파일은 append-only 로그가 아닙니다.
+    - 개별 파일 검증을 마친 뒤, 여러 파일을 함께 봐야만 드러나는 문제(파일 간
+      상호작용, 일관성 위반)를 점검하는 패스를 한 번 더 돌고 결과를 기록하세요.
+    - 파일 기록이 끝난 뒤, 최종 응답 메시지는 3줄 이내로:
+      1. REPORT_FILE 경로
+      2. 판정 (Yes | No | With fixes)
+      3. 이슈 개수 (Critical n / Important n / Minor n)
+    - 긴 최종 메시지는 금지합니다. 전체 내용은 파일로만 전달하세요.
+      (이유: 긴 단일 응답 스트림은 연결 절단으로 유실될 수 있습니다 —
+      anthropics/claude-code#75318)
+
     ## 무엇을 확인해야 하는가
 
     **Plan 정합성:**
@@ -73,6 +95,8 @@ Task tool (general-purpose):
     구현이 아니라 plan 자체에 문제가 있다면, 그렇다고 말하세요.
 
     ## 출력 형식
+
+    (아래 형식은 {REPORT_FILE}에 기록할 보고서의 형식입니다. 응답 메시지 형식이 아닙니다.)
 
     ### Strengths
     [무엇이 잘 되었는가? 구체적으로 작성하세요.]
@@ -125,10 +149,11 @@ Task tool (general-purpose):
 - `{PLAN_OR_REQUIREMENTS}` — 무엇을 해야 하는지 (plan 파일 경로, task 텍스트, 또는 요구사항)
 - `{BASE_SHA}` — 시작 commit
 - `{HEAD_SHA}` — 종료 commit
+- `{REPORT_FILE}` — review 보고서를 기록할 파일 경로 (orchestrator가 dispatch 전에 경로를 정한다 — 파일 생성은 reviewer가 한다)
 
-**Reviewer 반환:** Strengths, Issues (Critical / Important / Minor), Recommendations, Assessment
+**Reviewer 반환:** 3줄 요약 (REPORT_FILE 경로, Assessment 판정, 이슈 개수). 전체 보고서는 REPORT_FILE에 있다.
 
-## 예시 출력
+## 예시 보고서 (REPORT_FILE에 기록되는 내용)
 
 ```
 ### Strengths
@@ -164,4 +189,12 @@ Task tool (general-purpose):
 **Merge할 준비: With fixes**
 
 **근거:** 핵심 구현은 좋은 아키텍처와 테스트로 견고합니다. Important 이슈 (도움말 텍스트, 날짜 검증)는 쉽게 fix할 수 있으며 핵심 기능에 영향을 주지 않습니다.
+```
+
+## 예시 응답 메시지
+
+```
+~/.claude/suberpowers/reviews/2026-08-13-myproject-task-3-quality.md
+판정: With fixes
+이슈: Critical 0 / Important 2 / Minor 1
 ```

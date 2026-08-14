@@ -119,6 +119,75 @@ Implementer subagent는 네 가지 상태 중 하나를 보고합니다. 각각�
 
 escalate를 **절대** 무시하거나 변경 없이 같은 모델에게 재시도를 강요하지 마세요. implementer가 막혔다고 말했다면 무언가가 바뀌어야 합니다.
 
+## Subagent 실패 처리 (완화 M-2 — upstream anthropics/claude-code#75318)
+
+subagent(특히 reviewer)는 harness의 알려진 버그로 응답 없이 죽을 수 있습니다.
+긴 추론 후 긴 단일 응답을 출력하는 turn에서 API 스트림이 끊기면 subagent는 복구 없이
+종료됩니다. main 세션은 같은 에러에서 자동 복구되지만 subagent는 아닙니다.
+
+**실패 감지:**
+- failed 통지: "Agent terminated early due to an API error: ..." → 즉시 복구 절차 진행
+- 무통지: dispatch 후 완료 통지 없이 turn이 재개되었는데 해당 agent가 실행 목록에
+  없거나 멈춰 있으면 실패로 간주 (agent 상태는 세션이 제공하는 수단으로 확인 —
+  Claude Code라면 TaskList/ListAgents 툴, 다른 플랫폼이라면 해당 환경의 agent 상태
+  확인 수단. 수단이 없으면 완료/실패 통지 수신 여부로 판단)
+- 순수 hang(통지가 영영 오지 않는 경우)은 turn이 재개되지 않는 한 감지 기회가 없다 —
+  사용자 interrupt 등으로 turn이 재개된 뒤에야 위 기준으로 감지된다
+
+아래 복구 절차는 REPORT_FILE 계약이 있는 reviewer 기준이다. implementer가 죽은 경우에는
+`git log`와 작업 트리(`git status`, `git diff`)로 어디까지 진행됐는지 확인한 뒤, 완료된
+부분을 명시하고 남은 작업만 재dispatch하라 (사실상 아래 절차의 1~2단계와 같은 원리 —
+커밋과 작업 트리가 implementer의 체크포인트다).
+
+**복구 절차 (순서대로):**
+1. REPORT_FILE(체크포인트)을 orchestrator(본문의 controller와 같은 역할)가 Read
+   - 보고서가 사실상 완성돼 있으면(최종 판정 섹션까지 기록됨): 재dispatch 없이 그대로 사용
+   - 미완성이면: 어디까지 진행되다 죽었는지 파악하고 2번으로
+   - 파일이 아예 없으면(생성 전에 죽음): 이어쓰기 문구 없이 처음부터 일반 dispatch (재dispatch 2회 한도에는 포함)
+2. 재dispatch (최대 2회): 같은 프롬프트에 다음을 덧붙여 **같은 REPORT_FILE을 이어서
+   완성**하게 한다. 목표는 남은 범위만큼의 비용으로 복구하는 것이다.
+   "이전 reviewer가 도중에 종료되었습니다. [REPORT_FILE]에 지금까지 확정된 항목이
+   기록되어 있습니다. 기록된 항목의 재검증은 건너뛰고, 남은 범위를 이어서 검증해
+   같은 파일을 완성하세요. 단, 남은 범위를 검증하다 기존 기록과 모순되는 근거를
+   발견하면 해당 항목을 수정하세요. 마지막의 파일 간 종합 패스는 전체 범위를
+   대상으로 수행하세요. 검토 커버리지가 불확실하면(어떤 파일을 이미 봤는지 보고서로
+   알 수 없으면) 전체 범위를 다시 훑되, 기록된 항목의 재검증만 생략하세요."
+   (기록된 항목은 확정 시점에 검증을 마친 출력이므로 이어쓰기의 기준점으로 신뢰할 수
+   있다 — "출력 단위로만 기록"하는 M-1 원칙이 이 신뢰의 전제다.)
+3. 2회 재dispatch에도 실패하면: 리뷰 범위를 M-3의 그룹 기준으로 분할해 각각 dispatch
+   (아래 M-3). 이전 시도의 부분 보고서는 폐기하지 말고 종합 시 함께 읽는다
+4. 그래도 실패하면 사람에게 escalate — 다른 원인(usage limit, 네트워크)일 수 있습니다
+
+**하지 말 것:**
+- 실패를 무시하고 review 없이 다음 task로 진행 ("review 건너뛰기 금지"는 여전히 유효)
+- 무한 재dispatch (2회 초과 금지)
+- REPORT_FILE 확인 없이 재dispatch (이미 완성됐거나 절반 진행된 리뷰를 처음부터
+  다시 시키는 낭비)
+
+## 리뷰 범위 분할 (완화 M-3)
+
+diff가 크면 reviewer turn이 길어져 실패 확률이 올라갑니다. reviewer를 dispatch하기 전에
+diff 크기를 확인하세요:
+
+```bash
+git diff --stat [BASE_SHA]..[HEAD_SHA] | tail -1
+```
+
+- 변경 500줄 이하이고 파일 8개 이하: 단일 reviewer로 진행
+- 그 이상: 연관된 파일끼리 그룹으로 나눠 그룹별 reviewer를 dispatch하고(reviewer는
+  저장소에 대해 read-only이고 각자 자기 REPORT_FILE만 쓰므로 병렬 dispatch 가능),
+  각 reviewer에 별도 REPORT_FILE을 주세요(그룹명을 붙여 구분: 예
+  ...-task-3-quality-parser.md). 각 reviewer 프롬프트에는 리뷰 대상 파일 목록을
+  명시하고, diff 명령을 `git diff [BASE_SHA]..[HEAD_SHA] -- <그룹 파일들>`로 제한해
+  다른 그룹의 diff가 보이지 않게 하세요. code-reviewer.md 템플릿을 쓸 때는 템플릿
+  본문에 하드코딩된 전체 범위 diff 명령을 이 경로 제한 명령으로 교체해서
+  dispatch하세요 — 프롬프트 앞에 파일 목록만 덧붙이면 격리가 조용히 깨집니다.
+  orchestrator가 보고서들을 읽고 종합해 판정합니다.
+- 분할 리뷰는 그룹 경계를 넘는 상호작용을 보지 못합니다. 그룹은 호출 관계가 밀접한
+  파일끼리 묶으세요. 각 reviewer는 자기 그룹만 봅니다 — reviewer에게 다른 그룹의
+  범위, 컨텍스트, 결과를 알려주지 마세요. 그룹 간 접점(공유 인터페이스, 호출 관계)에서
+  생길 수 있는 문제는 orchestrator가 종합 시 직접 확인합니다.
+
 ## Prompt 템플릿
 
 - `./implementer-prompt.md` - implementer subagent dispatch용
@@ -150,11 +219,23 @@ Implementer: "알겠습니다. 지금 구현합니다..."
   - self-review: --force flag를 빠뜨린 것을 발견해 추가함
   - Commit 완료
 
+[REPORT_FILE 준비: ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-1-spec.md]
 [spec 준수 reviewer dispatch]
-Spec reviewer: ✅ Spec 준수 - 모든 요구사항 충족, 추가된 것 없음
+Spec reviewer:
+  ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-1-spec.md
+  판정: ✅
+  이슈: 0개
 
-[git SHA 확보, code quality reviewer dispatch]
-Code reviewer: Strengths: 좋은 테스트 커버리지, 깔끔함. Issues: 없음. 승인.
+[orchestrator가 REPORT_FILE을 Read] → 모든 요구사항 충족, 추가된 것 없음
+
+[git SHA 확보, REPORT_FILE 준비: ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-1-quality.md]
+[code quality reviewer dispatch]
+Code reviewer:
+  ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-1-quality.md
+  판정: Yes
+  이슈: Critical 0 / Important 0 / Minor 0
+
+[orchestrator가 REPORT_FILE을 Read] → Strengths: 좋은 테스트 커버리지, 깔끔함. Issues: 없음. 승인.
 
 [Task 1 완료 표시]
 
@@ -170,33 +251,63 @@ Implementer:
   - self-review: 모두 양호
   - Commit 완료
 
+[REPORT_FILE 준비: ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-2-spec.md]
 [spec 준수 reviewer dispatch]
-Spec reviewer: ❌ 이슈 발견:
+Spec reviewer:
+  ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-2-spec.md
+  판정: ❌
+  이슈: 2개
+
+[orchestrator가 REPORT_FILE을 Read] → 이슈 발견:
   - 누락: 진행 상황 보고 (spec에 "100개 항목마다 보고"라고 명시됨)
   - 추가: --json flag 추가됨 (요청되지 않음)
 
 [Implementer가 이슈 수정]
 Implementer: --json flag 제거, 진행 상황 보고 추가
 
+[REPORT_FILE 준비 (재review, -r2 접미사): ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-2-spec-r2.md]
 [Spec reviewer가 다시 review]
-Spec reviewer: ✅ 이제 Spec 준수
+Spec reviewer:
+  ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-2-spec-r2.md
+  판정: ✅
+  이슈: 0개
 
+[orchestrator가 REPORT_FILE을 Read] → 이제 Spec 준수
+
+[REPORT_FILE 준비: ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-2-quality.md]
 [code quality reviewer dispatch]
-Code reviewer: Strengths: 견고함. Issues (Important): 매직 넘버 (100)
+Code reviewer:
+  ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-2-quality.md
+  판정: With fixes
+  이슈: Critical 0 / Important 1 / Minor 0
+
+[orchestrator가 REPORT_FILE을 Read] → Strengths: 견고함. Issues (Important): 매직 넘버 (100)
 
 [Implementer가 수정]
 Implementer: PROGRESS_INTERVAL 상수로 추출
 
+[REPORT_FILE 준비 (재review, -r2 접미사): ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-2-quality-r2.md]
 [Code reviewer가 다시 review]
-Code reviewer: ✅ 승인
+Code reviewer:
+  ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-2-quality-r2.md
+  판정: Yes
+  이슈: Critical 0 / Important 0 / Minor 0
+
+[orchestrator가 REPORT_FILE을 Read] → ✅ 승인
 
 [Task 2 완료 표시]
 
 ...
 
 [모든 task 완료 후]
+[REPORT_FILE 준비: ~/.claude/suberpowers/reviews/2026-08-13-myproject-final-review.md]
 [최종 code-reviewer dispatch]
-Final reviewer: 모든 요구사항 충족, merge 준비 완료
+Final reviewer:
+  ~/.claude/suberpowers/reviews/2026-08-13-myproject-final-review.md
+  판정: Yes
+  이슈: Critical 0 / Important 0 / Minor 0
+
+[orchestrator가 REPORT_FILE을 Read] → 모든 요구사항 충족, merge 준비 완료
 
 완료!
 ```

@@ -29,7 +29,21 @@ BASE_SHA=$(git rev-parse HEAD~1)  # 또는 origin/main
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 
-**2. code reviewer subagent dispatch:**
+**2. dispatch 전 준비 (M-1 체크포인트):**
+
+```bash
+mkdir -p ~/.claude/suberpowers/reviews
+find ~/.claude/suberpowers/reviews -type f -name '*.md' -mtime +14 -delete  # 14일 지난 보고서 청소
+REPORT_FILE=~/.claude/suberpowers/reviews/$(date +%Y-%m-%d)-<프로젝트>-<대상>-review.md
+# 같은 대상 재review 시에는 -r2, -r3 접미사로 새 파일을 쓴다 (이전 라운드 보고서를 덮어쓰지 않는다)
+# <프로젝트>/<대상>은 실제 값으로 치환하고, reviewer에게는 확장된 절대 경로를 전달
+```
+
+**대형 diff 분할 (M-3):** dispatch 전에 `git diff --stat <BASE>..<HEAD> | tail -1`로 크기를 확인하세요. 변경 500줄 또는 8파일 초과면 subagent-driven-development SKILL.md의 "리뷰 범위 분할" 규칙대로 연관 파일 그룹별 reviewer로 나눠 dispatch하세요. merge 전 리뷰는 브랜치 전체 diff를 다루므로 이 기준을 넘기기 가장 쉬운 사용처입니다.
+
+**reviewer가 응답 없이 종료된 경우:** REPORT_FILE에 부분 보고서가 남아 있을 수 있습니다. subagent-driven-development SKILL.md의 "Subagent 실패 처리" 섹션을 따르세요 (upstream anthropics/claude-code#75318 완화 M-2).
+
+**3. code reviewer subagent dispatch:**
 
 `general-purpose` 타입으로 Task tool을 사용하고, `code-reviewer.md`의 template를 채우세요
 
@@ -38,8 +52,12 @@ HEAD_SHA=$(git rev-parse HEAD)
 - `{PLAN_OR_REQUIREMENTS}` - 무엇을 해야 하는지
 - `{BASE_SHA}` - 시작 commit
 - `{HEAD_SHA}` - 종료 commit
+- `{REPORT_FILE}` — review 보고서를 기록할 파일 경로 (orchestrator가 dispatch 전에 경로를 정한다 — 파일 생성은 reviewer가 한다)
 
-**3. feedback에 따라 행동:**
+**4. feedback에 따라 행동:**
+
+reviewer는 3줄 요약(REPORT_FILE 경로, 판정, 이슈 개수)만 반환합니다. **orchestrator는 통지를 받으면 반드시 REPORT_FILE을 Read로 읽으세요.**
+
 - Critical 이슈는 즉시 fix
 - Important 이슈는 진행 전에 fix
 - Minor 이슈는 나중을 위해 기록
@@ -60,13 +78,16 @@ HEAD_SHA=$(git rev-parse HEAD)
   PLAN_OR_REQUIREMENTS: docs/suberpowers/plans/deployment-plan.md의 Task 2
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
+  REPORT_FILE: ~/.claude/suberpowers/reviews/2026-08-13-deployment-task-2-review.md
 
 [Subagent 반환]:
-  Strengths: 깔끔한 아키텍처, 실제 테스트
-  Issues:
-    Important: 진행 상황 표시기 누락
-    Minor: 보고 간격을 위한 매직 넘버 (100)
-  Assessment: 진행해도 좋음
+  ~/.claude/suberpowers/reviews/2026-08-13-deployment-task-2-review.md
+  판정: With fixes
+  이슈: Critical 0 / Important 1 / Minor 1
+
+You: [REPORT_FILE을 Read로 읽음 — 전체 보고서는 여기에만 있다]
+  Important: 진행 상황 표시기 누락
+  Minor: 보고 간격을 위한 매직 넘버 (100)
 
 You: [진행 상황 표시기 fix]
 [Task 3로 계속]
