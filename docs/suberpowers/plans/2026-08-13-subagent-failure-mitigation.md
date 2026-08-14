@@ -501,7 +501,7 @@ REGISTRY="$REPO_DIR/docs/suberpowers/MITIGATIONS.md"
 CREATE_ISSUE=false
 [ "${1:-}" = "--create-issue" ] && CREATE_ISSUE=true
 
-issues=$(grep -oE 'anthropics/claude-code#[0-9]+' "$REGISTRY" | sort -u)
+issues=$(grep -oE 'anthropics/claude-code#[0-9]+' "$REGISTRY" | sort -u) || true
 if [ -z "$issues" ]; then
   echo "MITIGATIONS.md에서 추적할 이슈를 찾지 못했습니다" >&2
   exit 1
@@ -557,6 +557,19 @@ anthropics/claude-code#75367: open
 git add scripts/check-upstream-fixes.sh
 git commit -m "[M-4] 업스트림 이슈 상태 확인 스크립트 추가 (로컬/CI 겸용)"
 ```
+
+### Task 4-R: quality 리뷰 반영 (M-4) — 실행 중 추가됨
+
+Task 4 quality 리뷰(2026-08-14, 판정 With fixes, shellcheck 0건·실API 검증 포함).
+상세 근거: `~/.claude/suberpowers/reviews/2026-08-14-suberpower-task-4-quality.md`
+
+- [ ] I-1: 빈 레지스트리 가드가 pipefail로 dead code였던 문제 — `issues=$(grep ...) || true`
+  한 줄 수정 (plan 원문 결함, Step 1 블록에도 반영됨). orchestrator가 직접 수정하고
+  빈 레지스트리(메시지+exit 1)/정상(두 이슈 open+exit 0) 양 경로를 실행으로 검증
+- 보류(리뷰어 판정 수용): m-1 search 인덱싱 의존(주간 주기에서 무관), m-2 404 시
+  시끄러운 실패(의도된 동작), m-3 unknown arg 무시(CI에서 인자 고정)
+- 참고: 이 레포는 fork가 아님(`isFork: false`) — plan 서두의 "fork" 언급은 GitHub
+  Actions 60일 비활성 규칙과 무관하며, 스케줄 비활성화 규칙은 레포 종류와 무관하게 적용
 
 ---
 
