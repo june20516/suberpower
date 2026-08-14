@@ -464,6 +464,21 @@ git add docs/suberpowers/MITIGATIONS.md
 git commit -m "[M-4] 완화 등록부 추가: 완화 ↔ 업스트림 이슈 ↔ 제거 기준 연결"
 ```
 
+### Task 3-R: quality 리뷰 반영 (M-4) — 실행 중 추가됨
+
+Task 3 quality 리뷰(2026-08-14, 판정 With fixes)의 이슈를 반영하는 후속 커밋.
+Step 1 마커 블록의 원문은 역사적 기록으로 두고, 최종 문구는 MITIGATIONS.md가 기준이다.
+상세 근거: `~/.claude/suberpowers/reviews/2026-08-14-suberpower-task-3-quality.md`
+
+- [ ] I-1: "독립 커밋" 서술을 커밋 현실(완화당 다중 커밋, M-2/M-3 태그 공유)에 맞게
+  수정 — 역순 전체 revert, 커밋 공유 시 수동 삭제 경로 명시
+- [ ] I-2: M-3 정식 기능 존치 시나리오의 지침 추가 (행 삭제로 추적 종료 +
+  SKILL.md의 M-1/M-2 의존 참조 정리)
+- [ ] I-3: 신규 완화 ID는 M-5부터 (M-4는 인프라 태그로 예약됨) + `[M-n]` 태그 의무 명시
+- [ ] m-1/m-2: M-1 적용 위치 glob을 실제 파일 2종으로 정밀화, dispatch 계수 방법 명시
+- plan 소관(m-3): Task 4 스크립트에 state_reason 표시 추가(duplicate closure 노이즈
+  구분), 완화 제거 절차의 광역 `\[M-` grep을 완화별 태그로 정정 — plan에 직접 반영됨
+
 ---
 
 ### Task 4: 업스트림 상태 확인 스크립트 (M-4)
@@ -496,7 +511,8 @@ closed_any=false
 for ref in $issues; do
   num="${ref#*#}"
   state=$(gh api "repos/anthropics/claude-code/issues/$num" --jq '.state')
-  echo "$ref: $state"
+  reason=$(gh api "repos/anthropics/claude-code/issues/$num" --jq '.state_reason // ""')
+  echo "$ref: $state${reason:+ ($reason)}"
   if [ "$state" = "closed" ]; then
     closed_any=true
     if $CREATE_ISSUE; then
@@ -504,10 +520,11 @@ for ref in $issues; do
       existing=$(gh issue list --search "\"$title\" in:title" --state all \
         --json number --jq '.[].number' | head -1)
       if [ -z "$existing" ]; then
-        gh issue create --title "$title" --body "업스트림 이슈 https://github.com/anthropics/claude-code/issues/$num 이 닫혔습니다.
+        gh issue create --title "$title" --body "업스트림 이슈 https://github.com/anthropics/claude-code/issues/$num 이 닫혔습니다 (state_reason: ${reason:-unknown}).
 
-docs/suberpowers/MITIGATIONS.md에서 이 이슈에 연결된 완화(M-*)의 제거 기준을 확인하고,
-충족되면 등록부의 '제거 방법' 절차대로 revert 하세요."
+주의: duplicate 등 실제 수정이 아닌 사유로 닫혔을 수 있습니다.
+docs/suberpowers/MITIGATIONS.md의 공통 제거 기준(추적 이슈 모두 closed + 무재발 관찰)을
+확인하고, 충족되면 등록부의 '제거 방법' 절차대로 revert 하세요."
         echo "  -> 제거 검토 이슈 생성됨"
       else
         echo "  -> 제거 검토 이슈가 이미 존재함 (#$existing)"
@@ -642,7 +659,9 @@ grep -rn "REPORT_FILE" ~/.claude/plugins/cache/suberpower/suberpower/1.3.0/skill
 
 1. Claude Code를 최신으로 업데이트하고 릴리스 노트/이슈 코멘트에서 수정 버전을 확인
 2. `MITIGATIONS.md`의 공통 제거 기준 충족 여부 확인 (2주 또는 reviewer 20회 무사고)
-3. `git log --oneline --grep='\[M-'`로 완화 커밋을 찾아 M-1, M-2 순으로 revert
+3. 완화별 태그로 커밋을 찾아(`git log --oneline --grep='\[M-1\]'` 등 — 광역 `\[M-` grep은
+   [M-4] 인프라 커밋까지 매치하므로 사용하지 않는다) 최신 커밋부터 역순으로 revert.
+   상세 절차와 M-2/M-3 커밋 공유 주의사항은 MITIGATIONS.md의 '제거 방법' 참조
    (M-3 분할은 리뷰 품질 관점에서 유지할지 별도 판단)
 4. `MITIGATIONS.md` 행 삭제 → 남은 추적 대상이 없으면 워크플로우와 스크립트도 제거
 5. 버전 bump 후 push
