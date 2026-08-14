@@ -585,7 +585,7 @@ name: upstream-fix-tracker
 
 on:
   schedule:
-    - cron: '0 22 * * 0' # 매주 월요일 07:00 KST
+    - cron: '17 22 * * 0' # 매주 월요일 07:17 KST (정각은 GitHub 혼잡 시간대라 임의 분 사용)
   workflow_dispatch: {}
 
 permissions:
@@ -595,6 +595,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Check upstream issue states
