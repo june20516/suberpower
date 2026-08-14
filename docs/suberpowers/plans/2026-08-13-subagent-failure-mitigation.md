@@ -419,7 +419,7 @@ Claude Code harness 버그를 우회하기 위해 이 fork에 추가된 완화 �
 
 | ID | 완화 내용 | 적용 위치 | 업스트림 이슈 | 제거 기준 |
 |----|----------|----------|--------------|----------|
-| M-1 | reviewer 보고서 체크포인트 (파일에 점진 기록 + 3줄 최종 메시지) | subagent-driven-development/*-prompt.md, requesting-code-review/code-reviewer.md | anthropics/claude-code#75318 | 아래 공통 기준 |
+| M-1 | reviewer 보고서 체크포인트 (파일에 점진 기록 + 3줄 최종 메시지) | subagent-driven-development/*-prompt.md, requesting-code-review/code-reviewer.md, requesting-code-review/SKILL.md | anthropics/claude-code#75318 | 아래 공통 기준 |
 | M-2 | subagent 실패 감지·재dispatch 프로토콜 | subagent-driven-development/SKILL.md | anthropics/claude-code#75318 | 아래 공통 기준 |
 | M-3 | 대형 diff 리뷰 범위 분할 (500줄/8파일 초과 시) | subagent-driven-development/SKILL.md | anthropics/claude-code#75318 | 공통 기준. 단 분할 자체는 리뷰 품질에도 이로우므로 유지 여부 별도 판단 |
 
