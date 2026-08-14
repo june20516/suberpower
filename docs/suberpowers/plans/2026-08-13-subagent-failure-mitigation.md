@@ -258,7 +258,7 @@ grep -c "REPORT_FILE" plugins/suberpower/skills/subagent-driven-development/code
 ```bash
 grep -n "75318" plugins/suberpower/skills/*/*.md | wc -l
 ```
-기대: 3 이상
+기대: 2 이상 (code-quality-reviewer-prompt.md는 SKILL.md의 실패 처리 섹션을 참조할 뿐 이슈 번호를 직접 담지 않는다. Task 2에서 SKILL.md에 참조가 추가되면 3 이상)
 
 - [ ] **Step 6: Commit**
 
