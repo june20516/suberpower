@@ -8,8 +8,9 @@ spec 준수 reviewer subagent를 dispatch할 때 이 템플릿을 사용하세�
 
 ```bash
 mkdir -p ~/.claude/suberpowers/reviews
-find ~/.claude/suberpowers/reviews -name '*.md' -mtime +14 -delete  # 14일 지난 보고서 청소
+find ~/.claude/suberpowers/reviews -type f -name '*.md' -mtime +14 -delete  # 14일 지난 보고서 청소
 REPORT_FILE=~/.claude/suberpowers/reviews/$(date +%Y-%m-%d)-<프로젝트>-task-<N>-spec.md
+# 재review 라운드는 -r2, -r3 접미사로 새 파일을 쓴다 (이전 라운드 보고서를 덮어쓰지 않는다)
 ```
 
 ```
@@ -81,7 +82,8 @@ Task tool (general-purpose):
 
     **보고서를 신뢰하지 말고, 코드를 읽어서 검증하세요.**
 
-    보고 형식 (REPORT_FILE에 기록):
+    보고 형식 (REPORT_FILE에 기록) — 파일 뼈대는 `## 검증 항목`(항목별 확정 내용)과
+    `## 판정`(맨 마지막에 작성) 두 섹션:
     - ✅ Spec 준수 (코드 검사 후 모든 것이 일치하는 경우)
     - ❌ 이슈 발견: [무엇이 누락되었거나 추가되었는지 file:line 참조와 함께 구체적으로 나열]
 ```

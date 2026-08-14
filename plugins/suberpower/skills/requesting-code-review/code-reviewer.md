@@ -149,11 +149,11 @@ Task tool (general-purpose):
 - `{PLAN_OR_REQUIREMENTS}` — 무엇을 해야 하는지 (plan 파일 경로, task 텍스트, 또는 요구사항)
 - `{BASE_SHA}` — 시작 commit
 - `{HEAD_SHA}` — 종료 commit
-- `{REPORT_FILE}` — review 보고서를 기록할 파일 경로 (orchestrator가 dispatch 전에 생성)
+- `{REPORT_FILE}` — review 보고서를 기록할 파일 경로 (orchestrator가 dispatch 전에 경로를 정한다 — 파일 생성은 reviewer가 한다)
 
 **Reviewer 반환:** 3줄 요약 (REPORT_FILE 경로, Assessment 판정, 이슈 개수). 전체 보고서는 REPORT_FILE에 있다.
 
-## 예시 출력
+## 예시 보고서 (REPORT_FILE에 기록되는 내용)
 
 ```
 ### Strengths
@@ -189,4 +189,12 @@ Task tool (general-purpose):
 **Merge할 준비: With fixes**
 
 **근거:** 핵심 구현은 좋은 아키텍처와 테스트로 견고합니다. Important 이슈 (도움말 텍스트, 날짜 검증)는 쉽게 fix할 수 있으며 핵심 기능에 영향을 주지 않습니다.
+```
+
+## 예시 응답 메시지
+
+```
+~/.claude/suberpowers/reviews/2026-08-13-myproject-task-3-quality.md
+판정: With fixes
+이슈: Critical 0 / Important 2 / Minor 1
 ```

@@ -10,9 +10,10 @@ code quality reviewer subagent를 dispatch할 때 이 템플릿을 사용하세�
 
 ```bash
 mkdir -p ~/.claude/suberpowers/reviews
-find ~/.claude/suberpowers/reviews -name '*.md' -mtime +14 -delete  # 14일 지난 보고서 청소
+find ~/.claude/suberpowers/reviews -type f -name '*.md' -mtime +14 -delete  # 14일 지난 보고서 청소
 # 예: ~/.claude/suberpowers/reviews/2026-08-13-myproject-task-3-quality.md
 REPORT_FILE=~/.claude/suberpowers/reviews/$(date +%Y-%m-%d)-<프로젝트>-task-<N>-quality.md
+# 재review 라운드는 -r2, -r3 접미사로 새 파일을 쓴다 (이전 라운드 보고서를 덮어쓰지 않는다)
 ```
 
 ```
