@@ -276,7 +276,7 @@ node --check server.cjs && node --check helper.js && bash -n start-server.sh && 
 - Modify: `scripts/check-divergence.sh`, `docs/suberpowers/divergence.md`
 
 - [ ] **Step 1:** v6.4.2 기준으로 번역 반영 (Discard 옵션 제거, forge 중립 PR, untracked 파일 보호, provenance 버그 수정 포함). **포크 보존:** worktree 정리 대상 인식 목록에 `~/.claude/suberpowers/worktrees/`를 유지한다 (커밋 `d51996d`의 의도). upstream이 legacy 전역 경로 제거를 근거로 서술한 문장은 포크 전역 경로 기준으로 고쳐 쓴다.
-- [ ] **Step 2: 보호 마커** — 전역 경로 인식 블록을 `<!-- DIVERGENCE:D-002 start -->` / `<!-- DIVERGENCE:D-002 end -->`로 감싼다.
+- [ ] **Step 2: 보호 마커** — 전역 경로 인식 블록을 D-002 보호 구역 마커(divergence.md「보호 구역 마커」형식의 start·end 주석 한 쌍)로 감싼다.
 - [ ] **Step 3: 검사 확장** — `divergence.md` D-002의 범위에 이 파일을 추가하고 auto 검증 항목 "finishing-a-development-branch에 `~/.claude/suberpowers/worktrees/` 존재"를 적는다. `check-divergence.sh`의 D-002 블록에 같은 검사를 추가한다.
 - [ ] **Step 4: 검증**
 
@@ -354,7 +354,7 @@ upstream 원문의 이슈 흐름: SKILL.md 5단계가 `references/github-issues.
   - `## upstream 보고 (선택)` — 포크 이슈 생성 후, 생성된 포크 이슈를 다시 읽어 검토 결과(번역·포크 수정이 원인일 가능성 여부)를 한 줄로 보여주고, **같은 내용을 upstream에도 보고할지 선택 동작으로 제안**한다. upstream 본문은 포크 이슈 내용을 **영어로 옮긴** 것이다 — 영어 본문을 workspace에 파일로 쓰고 정확한 텍스트를 보여준 뒤, 승인 시에만 원문의 upstream 생성 명령(라벨 2개, `template=diagnosis_report.md` URL fallback 포함)으로 생성하고, 본문 끝에 포크 이슈 링크를 붙인다. 승인 없이 upstream에 생성하지 않는다
   - SKILL.md 5단계와 Red Flags의 "승인 전 issue·comment 금지" 문장을 위 순서에 맞게 고쳐 쓴다 (upstream 보고는 별도 승인이 필요하다는 점 명시)
 - [ ] **Step 3: 보호 마커와 divergence 등록**
-  - 개조한 `github-issues.md` 본문 전체와 SKILL.md 5단계를 `<!-- DIVERGENCE:D-008 start/end -->`로 감싼다
+  - 개조한 `github-issues.md` 본문 전체와 SKILL.md 5단계를 D-008 보호 구역 마커(divergence.md「보호 구역 마커」형식의 start·end 주석 한 쌍)로 감싼다
   - `divergence.md`에 `D-008 · diagnosing 이슈 흐름 (upstream→포크 검색, 포크 우선 보고)` 추가 — 정책 `MANUAL_MERGE`, 등급 `auto`(마커 존재 + `june20516/suberpower` 존재), 근거: 포크 사용 중 생긴 문제는 번역·포크 수정이 원인일 수 있어 upstream 직접 보고는 오보 위험
   - `check-divergence.sh`에 D-008 auto 검사 추가, `--list` 출력에 D-008 추가
   - D-001 bare `superpowers` 검사의 예외를 `github.com/obra/superpowers` → `obra/superpowers`로 넓히고, `divergence.md` D-001 검증 설명도 같이 고친다
