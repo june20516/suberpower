@@ -217,8 +217,8 @@ upstream은 `"Use when..."`으로 **시작**합니다. 이 포크는 **한국어
 upstream은 `obra/superpowers`에서 검색하고 일치가 없으면 그곳에 바로 issue를 만듭니다. 이 포크는 흐름을 이렇게 바꿨습니다.
 
 1. 검색: upstream(`obra/superpowers`)을 먼저, 그다음 포크(`june20516/suberpower`)를 같은 검색어로 검색
-2. 새 보고: 포크에 먼저 생성 (라벨·`diagnosis_report.md` 템플릿 없음, 내용은 한국어 가능)
-3. upstream 보고: 포크 issue를 검토한 뒤 **선택 동작**으로만 제안. 승인하면 영어로 옮긴 별도 본문을 보여 주고 **별도 승인** 후 생성 (upstream 원문 양식 heading 사용, 한국어 포크에서 관찰했다는 사실과 포크 issue 링크 명시)
+2. 보고는 포크 쪽이 기본: upstream에서 일치해도 일치한 포크 issue에 덧붙이거나, 없으면 포크에 새로 생성 (라벨·`diagnosis_report.md` 템플릿 없음, 내용은 한국어 가능, upstream에서만 일치했다면 그 링크를 본문에 기재)
+3. upstream 보고: 포크 쪽 기록이 생긴 뒤, report가 인용한 증거와 D-항목 범위가 겹치는지 사실만 밝히고(원인 판단·권고 없음) **선택 동작**으로만 제안 — 일치한 upstream issue에 comment 또는 새 issue. 승인하면 영어로 옮긴 별도 본문을 보여 주고 **별도 승인** 후 게시 (한국어 포크에서 관찰했다는 사실과 포크 issue 링크 명시, 새 issue는 upstream 원문 양식 heading 사용)
 
 두 범위 모두 D-008 보호 구역 마커(start·end 한 쌍)로 감쌌습니다.
 

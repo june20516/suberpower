@@ -50,13 +50,16 @@ finding도 없습니다. 모든 숫자는 transcript나 당신이 실행한 명�
    human partner가 요청할 때. `references/github-issues.md`에 따라 증상으로
    열린 issue와 닫힌 issue를 upstream(`obra/superpowers`)에서 먼저, 그다음
    포크(`june20516/suberpower`)에서 검색하세요. 일치하는 것을 저장소별로 보여
-   주고, 가장 가까운 issue에 report를 덧붙이자고 제안하세요. upstream issue에
-   다는 comment는 영어로 씁니다. 일치하는 것이 없으면 포크에 먼저 만드세요:
+   주세요. 기본 동작은 포크 쪽입니다: 일치하는 포크 issue가 있으면 가장 가까운
+   것에 report를 덧붙이자고 제안하고, 없으면 포크에 새로 만드세요.
    `templates/issue.md`를 채워(양식 heading은 영문 그대로, 내용은 한국어 가능)
-   작업 공간에 쓰고, 정확한 문구를 보여 준 뒤, 승인을 받은 후에만 issue를
-   만드세요. 그다음 포크 issue를 검토하고, 같은 내용을 upstream에도 영어로
-   보고할지 선택 동작으로 제안하세요. upstream 보고는 영어 본문을 따로 보여 주고
-   **별도로** 승인받은 후에만 합니다. `gh`는 파일을 첨부할 수 없습니다.
+   작업 공간에 쓰고, upstream에서만 일치했다면 그 issue 링크를 본문에 적은 뒤,
+   정확한 문구를 보여 주고 승인을 받은 후에만 issue를 만드세요. 포크 쪽 기록이
+   생긴 뒤에는 report가 인용한 증거가 포크 divergence 항목의 범위와 겹치는지
+   사실만 밝히고, 같은 내용을 upstream에도 영어로 보고할지(일치한 upstream
+   issue에 comment로, 또는 새 issue로) 선택 동작으로 제안하세요. upstream
+   보고는 영어 본문을 따로 보여 주고 **별도로** 승인받은 후에만 합니다.
+   `gh`는 파일을 첨부할 수 없습니다.
    bundle이 있으면 your human partner가 브라우저에서 첨부할 수 있도록 그 경로를 주세요.
 <!-- DIVERGENCE:D-008 end -->
 6. **Export** — your human partner가 bundle을 요청할 때만. 요청 없이
