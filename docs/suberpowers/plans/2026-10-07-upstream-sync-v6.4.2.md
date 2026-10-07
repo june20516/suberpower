@@ -416,10 +416,10 @@ grep -rn "spec-reviewer-prompt\|code-quality-reviewer-prompt\|testing-anti-patte
 ./scripts/check-divergence.sh --sync
 ```
 
-`assisted`(D-005·D-006·D-007)는 번역된 파일 목록을 근거로 판단을 subagent에게 맡기고, `manual`(D-002)은 사용자 확인을 받은 뒤:
+`assisted`(D-005·D-006·D-007)는 번역된 파일 목록을 근거로 판단을 subagent에게 맡기고, `manual`(D-002·D-008)은 사용자 확인을 받은 뒤:
 
 ```bash
-./scripts/check-divergence.sh --sync --ack D-002,D-005,D-006,D-007; echo "exit $?"   # 기대: exit 0
+./scripts/check-divergence.sh --sync --ack D-002,D-005,D-006,D-007,D-008; echo "exit $?"   # 기대: exit 0
 ```
 
 - [ ] **Step 5:** commit — `chore: 버전 2.0.0 — upstream v6.4.2 동기화`

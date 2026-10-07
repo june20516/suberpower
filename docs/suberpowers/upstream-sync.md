@@ -84,6 +84,7 @@ git diff <BASELINE_SHA> upstream-<tag> -- skills/  # 변경 산정
 
 **알려진 upstream 결함 (포크도 동일)**
 - `executing-plans/scripts/task-done` — 출력이 없는 test command는 통과해도 exit 1로 끝나고 ledger에 기록되지 않습니다 (`set -euo pipefail` 아래에서 빈 로그를 `grep`). upstream 보고 후보입니다
+- upstream `skills/using-superpowers/references/codex-tools.md`가 `finishing-a-development-branch`의 환경 감지를 Step 1로 잘못 가리킵니다 — 포크는 Step 2로 바로잡았습니다 (포크 고유 수정)
 
 ---
 

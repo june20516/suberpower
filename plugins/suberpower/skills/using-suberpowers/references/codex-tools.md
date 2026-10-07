@@ -83,7 +83,7 @@ BRANCH=$(git branch --show-current)
 - `GIT_DIR != GIT_COMMON` → 이미 linked worktree에 있음 (생성 건너뛰기)
 - `BRANCH`가 비어있음 → detached HEAD (sandbox에서 branch/push/PR 불가)
 
-각 skill이 이 신호를 어떻게 사용하는지는 `using-git-worktrees` Step 0과 `finishing-a-development-branch` Step 1을 참조하세요.
+각 skill이 이 신호를 어떻게 사용하는지는 `using-git-worktrees` Step 0과 `finishing-a-development-branch` Step 2을 참조하세요.
 
 ## Codex App 마무리
 

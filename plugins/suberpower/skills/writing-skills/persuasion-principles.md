@@ -43,7 +43,7 @@ LLM은 인간과 동일한 persuasion 원칙에 반응합니다. 이 심리학�
 **예시:**
 ```markdown
 ✅ skill을 찾으면 반드시 공표해야 합니다: "[Skill Name]을 사용합니다"
-❌ 어떤 skill을 사용하는지 파트너에게 알리는 것을 고려해 보세요.
+❌ 어떤 skill을 사용하는지 your human partner에게 알리는 것을 고려해 보세요.
 ```
 
 ### 3. Scarcity

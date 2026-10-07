@@ -405,7 +405,7 @@ agent는 사용자가 그 기능이 필요할 때만 REDLINING.md나 OOXML.md를
 
 그러면 agent는 파일 전체를 읽거나 필요에 따라 특정 섹션으로 이동할 수 있습니다.
 
-이 파일시스템 기반 아키텍처가 어떻게 progressive disclosure를 가능하게 하는지에 대한 디테일은 아래 Advanced 섹션의 [Runtime environment](#runtime-environment) 섹션을 참고하세요.
+이 파일시스템 기반 아키텍처가 어떻게 progressive disclosure를 가능하게 하는지에 대한 디테일은 아래 Advanced 섹션의 [런타임 환경](#런타임-환경) 섹션을 참고하세요.
 
 ## 워크플로우와 피드백 루프
 
@@ -850,7 +850,7 @@ OCR이 필요한 스캔된 PDF에는 대신 pdf2image와 pytesseract를 사용�
 
 ## Advanced: 실행 가능한 코드를 포함한 Skill
 
-아래 섹션들은 실행 가능한 스크립트를 포함한 Skill에 집중합니다. Skill이 마크다운 지시만 사용한다면, [Checklist for effective Skills](#checklist-for-effective-skills)로 건너뛰세요.
+아래 섹션들은 실행 가능한 스크립트를 포함한 Skill에 집중합니다. Skill이 마크다운 지시만 사용한다면, [효과적인 Skill 체크리스트](#효과적인-skill-체크리스트)로 건너뛰세요.
 
 ### 해결하라, 떠넘기지 말라
 
@@ -925,7 +925,7 @@ agent가 스크립트를 작성할 수 있더라도, 사전 제작 스크립트�
 * **스크립트 실행** (가장 일반적): "필드를 추출하려면 `analyze_form.py`를 실행하세요"
 * **참조로 읽기** (복잡한 로직용): "필드 추출 알고리즘은 `analyze_form.py`를 참고하세요"
 
-대부분의 유틸리티 스크립트에서는 더 신뢰성 있고 효율적이므로 실행이 선호됩니다. 스크립트 실행이 어떻게 작동하는지에 대한 디테일은 아래 [Runtime environment](#runtime-environment) 섹션을 참고하세요.
+대부분의 유틸리티 스크립트에서는 더 신뢰성 있고 효율적이므로 실행이 선호됩니다. 스크립트 실행이 어떻게 작동하는지에 대한 디테일은 아래 [런타임 환경](#런타임-환경) 섹션을 참고하세요.
 
 **예시**:
 
