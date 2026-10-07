@@ -68,9 +68,9 @@
       'align-items:center;justify-content:center;padding:2rem;text-align:center;' +
       'background:rgba(20,20,22,0.92);color:#f5f5f7;font-family:system-ui,sans-serif';
     el.innerHTML = '<div style="max-width:480px">' +
-      '<h2 style="margin:0 0 .5rem;font-weight:600">Companion 일시 중지됨</h2>' +
-      '<p style="margin:0;opacity:.85">이 brainstorm companion이 중지되었습니다. ' +
-      'coding agent에게 다시 띄워 달라고 요청하세요 — 이 페이지는 자동으로 다시 연결됩니다.</p></div>';
+      '<h2 style="margin:0 0 .5rem;font-weight:600">Brainstorm Companion 일시 중지됨</h2>' +
+      '<p style="margin:0;opacity:.85">Brainstorm Companion이 멈췄습니다. ' +
+      'coding agent에게 다시 시작해 달라고 요청하세요 — 다시 시작되면 이 페이지가 자동으로 연결됩니다.</p></div>';
     if (document.body) document.body.appendChild(el);
   }
 

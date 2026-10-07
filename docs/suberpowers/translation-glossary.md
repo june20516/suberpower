@@ -109,6 +109,12 @@
 | hand-derived / hand-checked | `손으로 도출한` / `손으로 검증한` | `직접`(본인이)과 구분 |
 | mutation check | `mutation 점검` | |
 | pressure test (skill 검증) | `압박 테스트` | writing-skills 기존 표기가 정본 |
+| handoff (단계 간 넘김) | `handoff` | 영문 유지. executing-plans 기존 표기가 정본. 예: `planning handoff` |
+| probe (spike의 조사 계획) | `probe` | 영문 유지 |
+| throwaway | `버릴 코드` | 코드가 아닐 수 있으면 `버릴 산출물` |
+| design brief | `설계 개요` | |
+| just-in-time | `필요한 시점에` | |
+| ratchet (one-way) | `한 방향으로만` | 비유를 풀어 서술. 예: `경로 변경은 한 방향으로만 일어납니다` |
 
 ---
 
@@ -119,6 +125,7 @@
 - **테스트 러너가 출력하는 문자열** — `FAIL: expected 'Email required', got undefined`
 - **철의 법칙(Iron Law)** — `NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST` 등 3종 (파일 간 통일)
 - **고유명사** — `Visual Companion`, `Brainstorm Companion`, skill 이름(`writing-plans`)
+- **brainstorming 경로 분류명** — `spike` / `bounded` / `architectural` (라벨은 `Spike` / `Bounded` / `Architectural`)
 - **gerund 네이밍 규칙 예시** — `"Processing PDFs"` 등. 영어 `-ing` 형태를 가르치는 내용이라 한국어 대응이 없음
 - **Conventional Commits 예시** — `feat(auth): implement JWT-based authentication`
 - **약속된 신호 문구** — `"Strange things are afoot at the Circle K"` (v6.4.2에서 upstream 제거)

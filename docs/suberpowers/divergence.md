@@ -69,7 +69,7 @@ divergence가 **유지되었는지 어떻게 확인할지**입니다. 한 항목
 - `plugins/`에 `superpowers:` (skill 호출 네임스페이스) → 0건
 - `plugins/`에 `docs/superpowers/`, `.superpowers/`, `~/.config/superpowers/`, `~/.claude/superpowers/` → 0건
 - upstream 저장소 URL(`github.com/obra/superpowers`)은 원작자 링크이므로 **검사에서 제외**
-- 외부 브랜드 자산 URL(`primeradiant.com/brand/`, brainstorming `server.cjs`의 로고 이미지)은 바꾸면 자산이 깨지므로 **검사에서 제외**
+- 외부 브랜드 자산 URL(brainstorming `server.cjs`의 로고 이미지 `primeradiant.com/brand/superpowers-visual-brainstorming-logo.png`)은 바꾸면 자산이 깨지므로 **검사에서 제외** (스크립트는 이 파일명이 든 줄만 제외)
 - 그 외 `superpowers` 문자열은 아래 3곳만 허용 (브랜드성 표현 + 출처 설명)
 
 | 위치 | 내용 |
