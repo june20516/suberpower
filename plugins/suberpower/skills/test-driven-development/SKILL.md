@@ -187,8 +187,8 @@ npm test path/to/test.test.ts
 말하기 전에, task가 test 파일 하나만 지목했더라도 프로젝트의 test 명령(인자 없는
 `pytest`, `npm test`, `cargo test` — repo가 쓰는 것)을 실행하세요. task의 범위 진술은
 결과물의 범위를 정할 뿐, 검증의 범위를 정하지 않습니다. 그 실행에서 나온 실패는 —
-직접 일으키지 않은 것까지 포함해 — 모두 이름을 밝혀 보고에 넣으세요. 스크롤로 지나가는
-것을 보고도 언급하지 않은 red test는 누락으로 조작된 보고입니다.
+직접 일으키지 않은 것까지 포함해 — 모두 이름을 밝혀 보고에 넣으세요. red test가 스크롤로
+지나가는 것을 보고도 언급하지 않았다면, 그 보고는 누락으로 조작된 것입니다.
 
 ### REFACTOR - 정리
 
@@ -212,7 +212,7 @@ test를 green으로 유지하세요. 동작을 추가하지 마세요.
 | **의도 표현** | 원하는 API를 시연 | 코드가 무엇을 해야 하는지 모호하게 함 |
 
 test를 작성하거나 변경할 때는 [writing-good-tests.md](writing-good-tests.md)를 읽으세요. test를 정직하게 유지하는 규칙이 있습니다:
-- test를 작성하기 전에, 그 test를 실패시킬 production 변경을 명명
+- test를 작성하기 전에, 그 test를 실패시킬 production 변경을 먼저 특정
 - 실제 동작에 assert하고, mock 동작에는 절대 assert하지 않음
 - test 전용 코드는 production 클래스가 아니라 test 유틸리티에 둠
 - 의존성을 mock하기 전에 그 side effect를 이해

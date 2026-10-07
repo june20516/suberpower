@@ -103,6 +103,12 @@
 | version floor | `최소 버전` | |
 | coordinator | `조율자` | controller(영문 유지)와 구분 |
 | instruction file | `instruction 파일` | CLAUDE.md 등 지시 파일의 일반화 |
+| name (the break/change) | `특정하다` / `구체적으로 말하다` | `명명`(이름 붙이기) 금지. test 제목 짓기로 오독됨 |
+| break (test가 잡아내는) | `깨짐` | |
+| code under test | `test 대상 코드` | `테스트 대상 코드` 사용 안 함 |
+| hand-derived / hand-checked | `손으로 도출한` / `손으로 검증한` | `직접`(본인이)과 구분 |
+| mutation check | `mutation 점검` | |
+| pressure test (skill 검증) | `압박 테스트` | writing-skills 기존 표기가 정본 |
 
 ---
 

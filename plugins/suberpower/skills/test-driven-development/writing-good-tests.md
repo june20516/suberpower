@@ -5,11 +5,11 @@ test용 정리/헬퍼 메서드를 추가할 때.
 
 ## 개요
 
-test는 특정한 깨짐을 잡아내기 위해 존재합니다. 여기의 모든 내용은 두 가지 원칙을
+test는 구체적인 깨짐을 잡아내기 위해 존재합니다. 여기의 모든 내용은 두 가지 원칙을
 따릅니다:
 
 ```
-1. 모든 test는 자신이 잡아내는 깨짐을 명명한다
+1. 모든 test는 자신이 잡아내는 깨짐을 특정한다
 2. 모든 test는 실제 대상을 실행한다
 ```
 
@@ -17,22 +17,22 @@ test는 특정한 깨짐을 잡아내기 위해 존재합니다. 여기의 모�
 실패하는 것을 확인한 test는 실패할 수 있음을 이미 증명했고, 실제 의존성이 느리거나
 외부에 있다고 드러날 때에만 mock을 쓸 자격을 얻습니다.
 
-## 원칙 1: 깨짐을 명명하기
+## 원칙 1: 깨짐을 특정하기
 
 test 본문을 작성하기 전에 답하세요: **어떤 production 변경이 이 test를 실패시켜야
 하는가 — 그리고 그 변경은 버그인가, 결정인가?** test는 잘못된 분기, 누락된 side
 effect, 잘못된 인자, 경계 case, 깨진 계약을 잡아낼 때 존재 이유를 얻습니다.
 
-**기대값은 독립적으로 도출하세요.** literal과 직접 검증한 fixture를 사용하세요.
-literal `want` 값을 가진 table-driven test가 권장하는 형태입니다. 테스트 대상 코드나
+**기대값은 독립적으로 도출하세요.** literal과 손으로 검증한 fixture를 사용하세요.
+literal `want` 값을 가진 table-driven test가 권장하는 형태입니다. test 대상 코드나
 그 헬퍼가 계산한 기대값은 그 코드가 무엇을 하든 통과합니다:
 
 ```typescript
-// ❌ 거울 assertion: 같은 builder가 양쪽을 계산함 — 항상 참
+// ❌ 거울(mirror) assertion: 같은 builder가 양쪽을 계산함 — 항상 참
 const expected = buildSearchQuery({ tag: 'urgent' });
 expect(buildSearchQuery({ tag: 'urgent' })).toBe(expected);
 
-// ✅ 직접 도출한 literal
+// ✅ 손으로 도출한 literal
 expect(buildSearchQuery({ tag: 'urgent' })).toBe('tag:"urgent"');
 ```
 
@@ -60,16 +60,16 @@ test입니다(전형적인 예: 라우터가 등록된 handler를 호출하는�
 
 ```
 BEFORE - test 본문을 작성하기 전:
-  이 test를 실패시킬 production 변경을 명명할 것.
+  이 test를 실패시킬 production 변경을 구체적으로 말할 것.
 
-  명명할 수 없음            → 관찰 가능한 동작을 중심으로 재설계할 것
+  특정할 수 없음            → 관찰 가능한 동작을 중심으로 재설계할 것
   "소스 텍스트가 바뀌었다"  → 산출물을 실행하고 그 효과를 assert할 것
   의도적 결정뿐임           → change detector임; 그 결정에 의존하는
                               동작을 test할 것
 
-  기대값이 테스트 대상 코드 없이 도출되었는지 확인할 것.
+  기대값이 test 대상 코드 없이 도출되었는지 확인할 것.
   IF 코드의 로직이나 헬퍼를 재사용한다면:
-    literal이나 직접 검증한 fixture로 교체할 것
+    literal이나 손으로 검증한 fixture로 교체할 것
 ```
 
 ## 원칙 2: 실제 대상을 실행하기
@@ -116,7 +116,7 @@ assert하세요 — 무엇이든 받아들이는 fake는 아무것도 검증하�
 **production 클래스에는 production 메서드만 둡니다.** test에서만 필요한 정리 코드는
 test 유틸리티에 두고, production 클래스의 `destroy()` 같은 형태로 절대 두지
 마세요. 질문하세요: 이 메서드는 test에서만 호출되는가? 이 클래스가 이 리소스의
-lifecycle을 소유하는가? 답이 어긋나면 → test 유틸리티로.
+lifecycle을 소유하는가? 첫 질문에 "예", 두 번째에 "아니오"라면 → test 유틸리티로.
 
 **복잡한 mock보다 실제 컴포넌트를 선호하세요.** mock setup이 test 로직보다 커지거나,
 mock이 실제 컴포넌트에 있는 메서드를 놓치거나, mock이 바뀔 때 test가 깨진다면, 실제
@@ -138,7 +138,7 @@ BEFORE - mock이나 test 헬퍼를 추가하기 전:
     mock을 해제하거나 assertion을 삭제할 것.
 ```
 
-## test는 implementation과 함께 나갑니다
+## test는 implementation과 함께 내보냅니다
 
 TDD 사이클 — 실패하는 test, 최소 implementation, 리팩터링 — 이 "완료"의 의미입니다.
 동작에 필요한 test를, 그리고 그것만 함께 내보내세요. 사소한 코드와 사람을 위한 산문은
@@ -162,9 +162,9 @@ test가 동어반복이라는 표시입니다.
 
 | 이럴 때... | 할 일 |
 |-------------|-----|
-| 어떤 test든 작성할 때 | 잡아내는 깨짐을 명명 — 결정이 아니라 버그 |
-| 기대값을 만들 때 | 직접 도출, 테스트 대상 코드로 절대 만들지 않음 |
-| script나 문서를 test할 때 | 실행하거나 / 소비자를 pressure test, 텍스트를 절대 grep하지 않음 |
+| 어떤 test든 작성할 때 | 잡아내는 깨짐을 특정 — 결정이 아니라 버그 |
+| 기대값을 만들 때 | 손으로 도출, test 대상 코드로 절대 만들지 않음 |
+| script나 문서를 test할 때 | 실행하거나 / 소비자를 압박 테스트, 텍스트를 절대 grep하지 않음 |
 | 의존성 test에 손이 갈 때 | 문서화된 그쪽 메커니즘이 아니라 당신의 경계 계약을 test |
 | mock된 요소에 assert하고 싶을 때 | 실제 컴포넌트를 test하거나 mock을 해제 |
 | 메서드를 mock하려 할 때 | side effect를 파악하고, 느린/외부 레벨을 mock |
@@ -185,4 +185,4 @@ test가 동어반복이라는 표시입니다.
 - assertion이 `*-mock` test ID를 확인하거나, mock을 제거하면 실패함
 - 메서드가 test 파일에서만 호출됨
 - mock setup이 test의 절반 이상이거나, 왜 mock이 필요한지 설명할 수 없음
-- "안전을 위해" mocking
+- "안전을 위해" mock함
