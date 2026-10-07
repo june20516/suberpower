@@ -10,7 +10,7 @@
 ```
 Subagent (general-purpose):
   description: "Re-review Task N fix round R"
-  model: [MODEL — REQUIRED: SKILL.md의 Model Selection에 따라 선택하세요. model을
+  model: [MODEL — REQUIRED: SKILL.md의 '모델 선택'에 따라 선택하세요. model을
          생략하면 세션에서 가장 비싼 model을 조용히 상속합니다]
   prompt: |
     당신은 한 task의 수정 라운드를 re-review합니다. 이전 review가 지적 사항을
@@ -102,7 +102,7 @@ Subagent (general-purpose):
 ```
 
 **Placeholders:**
-- `[MODEL]` — REQUIRED: SKILL.md의 Model Selection에 따른 reviewer model. 작은
+- `[MODEL]` — REQUIRED: SKILL.md의 '모델 선택'에 따른 reviewer model. 작은
   수정 diff에 대한 scoped re-review에는 저가~중간 등급이면 충분합니다
 - `[BRIEF_FILE]` — task brief 파일 (implementer가 작업한 것과 같은 파일)
 - `[FINDINGS]` — 이전 review의 Critical/Important 지적 사항과 spec 공백을

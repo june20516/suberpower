@@ -9,7 +9,7 @@ task의 diff를 한 번 읽고 두 가지 판정을 반환합니다: spec 준수
 ```
 Subagent (general-purpose):
   description: "Review Task N (spec + quality)"
-  model: [MODEL — REQUIRED: SKILL.md의 Model Selection에 따라 선택하세요. model을
+  model: [MODEL — REQUIRED: SKILL.md의 '모델 선택'에 따라 선택하세요. model을
          생략하면 세션에서 가장 비싼 model을 조용히 상속합니다]
   prompt: |
     당신은 한 task의 구현을 review합니다: 먼저 요구사항과 일치하는지, 그다음
@@ -36,7 +36,7 @@ Subagent (general-purpose):
 
     diff 파일을 한 번 읽으세요 — commit 목록, stat 요약, 주변 context를 포함한
     전체 diff가 들어 있으며, 이것이 이 변경을 보는 당신의 시야입니다. diff의
-    context 줄이 곧 변경된 파일입니다: 판단해야 할 hunk가 함수 중간에서 잘린
+    context 줄이 **곧** 변경된 파일입니다: 판단해야 할 hunk가 함수 중간에서 잘린
     경우가 아니라면 변경된 파일을 따로 Read하지 마세요 — 그렇게 했다면 보고서에
     밝히세요. git 명령을 다시 실행하지 마세요.
     diff 파일이 없으면 직접 diff를 가져오세요:
@@ -142,8 +142,8 @@ Subagent (general-purpose):
     블록의 그대로 복제, 삼켜진 error, 아무것도 assert하지 않는 테스트.
     "커버리지를 더 넓힐 수 있다"는 제안과 다듬기 제안은 Minor입니다.
     plan이나 brief가 이 기준에서 결함으로 보는 것(아무것도 assert하지 않는
-    테스트, 로직 블록의 그대로 복제)을 명시적으로 요구한다면, 그것도 지적
-    사항입니다 — plan-mandated라고 표시해 Important로 보고하세요. plan을 작성한
+    테스트, 로직 블록의 그대로 복제)을 명시적으로 요구한다면, 그것도
+    **지적 사항입니다** — plan-mandated라고 표시해 Important로 보고하세요. plan을 작성한
     쪽이 자기 작업을 채점하지는 않습니다. 결정은 사람이 합니다.
     이슈를 나열하기 전에 잘된 점을 인정하세요 — 정확한 칭찬은 implementer가
     나머지 feedback을 신뢰하도록 돕습니다.
@@ -178,7 +178,7 @@ Subagent (general-purpose):
 ```
 
 **Placeholders:**
-- `[MODEL]` — REQUIRED: SKILL.md의 Model Selection에 따른 reviewer model
+- `[MODEL]` — REQUIRED: SKILL.md의 '모델 선택'에 따른 reviewer model
 - `[BRIEF_FILE]` — REQUIRED: task brief 파일 (`bash scripts/task-brief PLAN N`이
   경로를 출력합니다. implementer가 작업한 것과 같은 파일)
 - `[GLOBAL_CONSTRAINTS]` — plan의 Global Constraints 섹션 또는 spec에서 그대로

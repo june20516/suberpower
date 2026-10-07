@@ -178,7 +178,7 @@ Task 1을 dispatch하기 전에, 확인하는 대로 무엇을 확인했는지 �
 옆에 결정을 기록한 뒤 Task 1을 dispatch하세요. 구현 과정에서야 드러나는 충돌은
 review 루프가 여전히 걸러 냅니다.
 
-## 모델 선택 (Model Selection)
+## 모델 선택
 
 비용을 절감하고 속도를 높이기 위해 각 역할을 처리할 수 있는 가장 약한 모델을 사용하세요.
 
@@ -228,8 +228,8 @@ dispatch prompt에 붙여 넣는 모든 것 — 그리고 subagent가 출력해 
 것 — 은 세션이 끝날 때까지 당신의 context에 상주하며, 이후 모든 turn에서 다시
 읽힙니다. 산출물은 파일로 넘기세요.
 
-**dispatch한 subagent를 기다릴 때:** 짧은 timeout으로 대기 인터페이스를
-polling하지 마세요. 그렇다고 기한 없이 말없이 기다리기만 하지도 마세요.
+**dispatch한 subagent를 기다릴 때:** 짧은 timeout으로 대기 인터페이스를 절대
+polling하지 마세요. 그렇다고 기한 없이 말없이 기다리기만 하는 일도 절대 하지 마세요.
 할 로컬 작업 — ledger 갱신, 다음 review 패키징, 보고서 읽기 — 이 있으면 계속
 작업하세요. 자식의 결과는 알아서 도착합니다. 정말 할 일이 없을 때는 기한을
 정해 기다리고(플랫폼이 허용한다면 5-10분), 그 사이마다 상태를 한 줄 남기고
@@ -251,7 +251,7 @@ dispatch하기 전에 BASE(`git rev-parse HEAD`)를 기록하세요 — review p
   소개한 brief 경로, (3) brief가 알 수 없는 이전 task의 인터페이스와 결정,
   (4) brief에서 당신이 발견한 모호함에 대한 해결, (5) report 파일 경로와 보고
   계약. 정확한 값(숫자, 매직 문자열, signature, test case)은 brief에만
-  나타나야 합니다. subagent에게 plan 파일 전체를 읽게 하지 마세요.
+  나타나야 합니다. subagent에게 plan 파일 전체를 절대 읽게 하지 마세요.
 - **Report 파일:** implementer의 report 파일 이름을 brief를 따라 지으세요
   (brief `…/task-N-brief.md` → report `…/task-N-report.md`) 그리고 dispatch
   prompt에 넣으세요. implementer는 전체 보고서를 그 파일에 쓰고, 상태, commit,
@@ -270,7 +270,7 @@ dispatch하기 전에 BASE(`git rev-parse HEAD`)를 기록하세요 — review p
   ledger 항목을 가리키는 포인터를 dispatch에 넣으세요.
 - dispatch 결과에서 implementer의 agent 식별자를 기록하세요 — 수정 루프
   라운드 1-3에서 이 agent를 재개합니다.
-- 여러 implementation subagent를 병렬로 dispatch하지 마세요 (충돌 발생).
+- 여러 implementation subagent를 절대 병렬로 dispatch하지 마세요 (충돌 발생).
 
 템플릿: [implementer-prompt.md](implementer-prompt.md)
 
@@ -301,7 +301,7 @@ implementer가 질문하면 — 시작 전이든 작업 중이든 — 명확하�
 task별 review는 task 범위의 관문입니다. 폭넓은 review는 브랜치 전체에 대한
 최종 review에서 한 번만 합니다. task review를 절대 건너뛰지 말고, 판정이 하나라도
 빠진 보고서를 절대 받아들이지 마세요 — spec 준수와 task quality가 **둘 다**
-필요합니다. implementer의 self-review는 task review를 대신하지 못합니다. 둘 다
+필요합니다. implementer의 self-review는 task review를 절대 대신하지 못합니다. 둘 다
 필요합니다.
 
 - reviewer에게 diff를 파일로 넘기세요: 이 skill의
@@ -392,7 +392,7 @@ Critical/Important는 미해결 지적 사항 목록에 합류합니다. 범위 
 **각 라운드 후,** ledger에 덧붙이세요:
 `Task <N>: fix round <R>/5 (<X> addressed, <Y> open — <지적 사항 한 줄 요약들>; commits <a7>..<b7>)`
 
-controller 세션에서 지적 사항을 직접 고치지 마세요 — 당신의 context는 조율을
+controller 세션에서 지적 사항을 절대 직접 고치지 마세요 — 당신의 context는 조율을
 위해 깨끗하게 유지되어야 하고, controller의 수정은 review를 건너뜁니다.
 
 **Breaker.** 라운드 5의 re-review 후에도 지적 사항이 열려 있다면, dispatch를

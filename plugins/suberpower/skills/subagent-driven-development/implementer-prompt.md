@@ -5,7 +5,7 @@ implementer subagent를 dispatch할 때 이 템플릿을 사용하세요.
 ```
 Subagent (general-purpose):
   description: "Implement Task N: [task 이름]"
-  model: [MODEL — REQUIRED: SKILL.md의 Model Selection에 따라 선택하세요. model을
+  model: [MODEL — REQUIRED: SKILL.md의 '모델 선택'에 따라 선택하세요. model을
          생략하면 세션에서 가장 비싼 model을 조용히 상속합니다]
   prompt: |
     당신은 Task N: [task 이름]을 구현합니다.
