@@ -45,7 +45,7 @@ skill은 `{WHAT_WAS_IMPLEMENTED}` 또는 `[FULL TEXT of task]`와 같은 placeho
 
 ### 병렬 dispatch
 
-Gemini CLI는 병렬 subagent dispatch를 지원합니다. 독립적인 subagent 작업을 병렬로 실행하려면 같은 응답에서 여러 `invoke_agent` 호출을 내리세요(또는 한 prompt에서 여러 `@generalist` 호출). 종속적인 작업은 순차적으로 유지하되, 단순한 히스토리를 보존하기 위해 독립적인 subagent 작업을 직렬화하지 마세요.
+Gemini CLI는 병렬 subagent dispatch를 지원합니다. 독립적인 subagent 작업을 병렬로 실행하려면 같은 응답에서 여러 `invoke_agent` 호출을 내리세요(또는 한 prompt에서 여러 `@generalist` 호출). 종속적인 작업은 순차적으로 유지하되, 히스토리를 단순하게 유지하려는 이유만으로 독립적인 subagent 작업을 직렬화하지 마세요.
 
 ## 추가 Gemini CLI tool
 
@@ -53,7 +53,7 @@ Gemini CLI는 병렬 subagent dispatch를 지원합니다. 독립적인 subagent
 
 | Tool | 용도 |
 |------|---------|
-| `save_memory` (legacy) | `experimental.memoryV2 = false`일 때 session 전반에 걸쳐 사실 영속화 |
+| `save_memory` (legacy) | `experimental.memoryV2 = false`일 때 세션 간에 사실을 영속화 |
 | `get_internal_docs` | Gemini CLI 번들 문서 조회 |
 | `ask_user` | 사용자에게 구조화된 질문 제시 (텍스트 / 단일 선택 / 다중 선택) |
 | `enter_plan_mode` / `exit_plan_mode` | 읽기 전용 plan mode로 들어가고 나오기 |

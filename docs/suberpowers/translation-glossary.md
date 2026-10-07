@@ -123,6 +123,12 @@
 | underlying model | `기반 모델` | `기본 모델` 사용 안 함. `파일시스템 기반 모델`(filesystem-based)과는 문맥으로 구분 |
 | micro-test | `micro-test` | 영문 유지. 조사를 붙여 `micro-test하다` |
 | Skill Discovery Optimization (SDO) | `Skill Discovery Optimization (SDO)` | heading·약어 모두 영문 유지. 본문 참조(`SDO 섹션`)가 heading 문자열에 의존. 구 명칭 CSO |
+| session | `세션` | 포크 다수 표기. 영문 `session` 사용 안 함 |
+| child (spawn된 agent) | `자식` | SDD 대기 규칙 번역이 정본. codex-tools.md도 이 표기 |
+| parent agent | `상위 agent` | |
+| seat (비용 맥락의 실행 단위) | `자리` | 맥락 없이 처음 나오면 `자리(실행 단위)`로 한 번 풀어 씀. 예: `review 자리` |
+| bounded stretch / bounded wait | `기한을 정한 대기` | 동사형 `기한을 정해 기다리다`. 한 번의 대기는 `대기 구간`. SDD 표기가 정본 |
+| Superpowers (브랜드, 문서 첫 등장) | `Superpowers(suberpowers 포크)` | 이후 등장은 `suberpowers`. 단, upstream 자체를 가리키면(예: 포크 이전 문서) `Superpowers` |
 
 ---
 

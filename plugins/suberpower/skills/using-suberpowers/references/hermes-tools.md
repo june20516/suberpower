@@ -20,7 +20,7 @@ skill은 행동 단위로 말합니다("subagent를 dispatch하세요", "todo를
 
 ## instruction 파일
 
-skill이 "instruction 파일"을 언급하면, Hermes Agent에서는 프로젝트 디렉터리의 **`AGENTS.md`**, 또는 전역으로는 `~/.hermes/SOUL.md`의 **`SOUL.md`**입니다.
+skill이 "instruction 파일"을 언급하면, Hermes Agent에서는 프로젝트 디렉터리의 **`AGENTS.md`**, 또는 전역으로는 **`SOUL.md`**(`~/.hermes/SOUL.md`)입니다.
 
 ## skill 호출
 
@@ -53,4 +53,4 @@ delegate_task(goal="...", context="...", toolsets=[...], role="leaf")
 
 ## 작업 추적
 
-session 안의 작업 추적에는 `todo` tool을 사용하세요. multi-agent 작업 보드가 필요하면, 사용 가능한 경우 `hermes kanban` CLI를 사용하세요. 이전의 `TodoWrite` 참조는 작업 추적 행동으로 취급하세요.
+세션 안의 작업 추적에는 `todo` tool을 사용하세요. multi-agent 작업 보드가 필요하면, 사용 가능한 경우 `hermes kanban` CLI를 사용하세요. 이전의 `TodoWrite` 참조는 작업 추적 행동으로 취급하세요.

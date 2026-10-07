@@ -13,56 +13,55 @@ preset이 선택하는 multi-agent 버전에 따라 다릅니다(현재 preset�
 preset은 V1로 동작합니다). 어떤 표든 — 이 문서를 포함해 — 실제 tool 목록과
 다르면 실제 tool 목록을 믿으세요.
 
-- **Spawn:** 하위 agent에게 깨끗한 context를 주려면
+- **Spawn:** 자식에게 깨끗한 context를 주려면
   `spawn_agent {fork_turns: "none"}`을 쓰세요. 기본값 `"all"`은 당신의
-  transcript 전체를 하위 agent에 복사합니다. Codex 0.145+에서는
+  transcript 전체를 자식에 복사합니다. Codex 0.145+에서는
   `~/.codex/agents/` 아래의 role 파일이 `agent_type`으로 격리된 fork에 붙습니다.
   전체 히스토리 fork도 `model`과 `reasoning_effort` override를 받습니다(거기서
   거부되는 것은 `agent_type`뿐입니다) — 격리된 fork가 SDD 기본값인 것은 context
   위생 때문이지, override에 격리된 fork가 필요해서가 아닙니다.
 - **수정 라운드:** `followup_task`로 implementer를 재개하세요 — 메시지를
-  전달하고, turn을 일으키며, harness가 evict한 하위 agent를 투명하게 다시
+  전달하고, turn을 일으키며, harness가 evict한 자식을 투명하게 다시
   로드합니다. spawn된 agent에는 다시 메시지를 보낼 수 없다는 가정으로 새
   implementer를 절대 dispatch하지 마세요. V2에서는 언제나 보낼 수 있습니다.
-- **수명 주기:** V2에는 `close_agent`가 없습니다. 끝난 하위 agent는 슬롯이
+- **수명 주기:** V2에는 `close_agent`가 없습니다. 끝난 자식은 슬롯이
   필요할 때 자동으로 evict되므로, 닫지 않고 두어도 비용이 들지 않습니다.
-  `close_agent`는 V1 session에만 있습니다 — 그곳에서는 reviewer는 review가
-  돌아오면 닫고, 각 implementer는 해당 task의 review가 통과한 뒤 닫으세요.
-- **모델 이름:** skill, 표, 이전 session에서 본 모델 이름을 현재 spawn
+  `close_agent`는 V1 세션에만 있습니다 — V1에서는 review 결과가 돌아오면
+  reviewer를 닫고, 각 implementer는 해당 task의 review가 통과한 뒤 닫으세요.
+- **모델 이름:** skill, 표, 이전 세션에서 본 모델 이름을 현재 spawn
   allowlist와 대조하지 않고 `spawn_agent`에 절대 그대로 옮기지 마세요 — V2는
   V2를 지원하는 preset만 받고, 나머지에는 hard error를 냅니다.
 
-## 하위 agent 기다리기
+## 자식 기다리기
 
-`wait_agent`는 polling이 아니라 이벤트 구독입니다: 긴 대기도 하위 agent에서
+`wait_agent`는 polling이 아니라 이벤트 구독입니다: 긴 대기도 자식에서
 mailbox 활동이 생기는 즉시 깨어나며, 지연은 짧은 대기와 같습니다. 짧은
-timeout으로 polling해도 얻는 것은 없고, poll마다 tool 호출 한 번 — 그리고
-context 재과금 — 의 비용이 듭니다. 측정한 session에서는 전체 wait 호출의 약
+timeout으로 polling해도 얻는 것은 없고, poll마다 tool 호출 한 번과 context
+재과금 비용이 듭니다. 측정한 세션에서는 전체 wait 호출의 약
 3분의 2가 timeout으로 끝난 짧은 poll이었습니다.
 
-- 아직 로컬 작업이 남아 있으면 아예 기다리지 마세요. 완료된 하위 agent의 최종
+- 아직 로컬 작업이 남아 있으면 아예 기다리지 마세요. 완료된 자식의 최종
   답변은 mailbox로 push되어 다음 turn에 함께 도착합니다.
-- 하위 agent가 남아 있는데 정말로 할 일이 없을 때는, 제한된 구간 단위로
-  기다리세요: `wait_agent`에 `timeout_ms` 300000-600000(5-10분). 각 구간이
-  끝나면 — 깨어났든 timeout이든 — 상태 줄을 하나 남기고, `list_agents`를
-  실행하고, 보고 없이 끝난 하위 agent를 찾아 확인하세요. 5분보다 짧은 poll을
-  절대 연달아 걸지 마세요. 이벤트 구독은 제한된 구간도 짧은 대기만큼 빠르게
-  깨웁니다.
+- 자식이 남아 있는데 정말 할 일이 없을 때는 기한을 정해 기다리세요:
+  `wait_agent`에 `timeout_ms` 300000-600000(5-10분). 각 대기 구간이 끝나면
+  — 깨어났든 timeout이든 — 상태를 한 줄 남기고, `list_agents`를 실행하고,
+  보고 없이 끝난 것이 있으면 찾아내세요. 5분보다 짧은 poll을 절대 연달아 걸지
+  마세요. 이벤트 구독은 기한을 정한 대기도 짧은 대기만큼 빠르게 깨웁니다.
 - 완료 메일은 idle 상태의 controller를 깨우지 못합니다(turn을 일으키지 않고
   전달됩니다). 그 idle 구간을 메우는 것이 `wait_agent`의 유일한 역할입니다.
-  아무 활동 없이 timeout된 구간은 상태를 맞춰 보라는 신호이지, 다음 구간을
+  아무 활동 없이 timeout된 대기 구간은 상태를 맞춰 보라는 신호이지, 다음 구간을
   줄이라는 신호가 아닙니다.
 
 ## spawn 시 모델 라우팅
 
 당신이 내리는 모든 `spawn_agent`는 — 당신 자신이 fan-out을 실행하는 spawn된
-하위 agent일 때도 — 실행 중인 skill의 '모델 선택' 규칙에 따라 `model`과
+자식일 때도 — 실행 중인 skill의 '모델 선택' 규칙에 따라 `model`과
 `reasoning_effort`를 **둘 다** 명시해야 합니다. `model`만 설정하는 것은
-함정입니다: 하위 agent의 effort가 당신의 것이 아니라 그 모델의 기본값으로
+함정입니다: 자식의 effort가 당신의 것이 아니라 그 모델의 기본값으로
 조용히 초기화됩니다.
 
 your human partner에게 `~/.codex/config.toml`에 머신 수준의 안전장치를 추가해
-달라고 요청하세요. 그러면 놓친 spawn도 session의 가장 비싼 모델을 조용히
+달라고 요청하세요. 그러면 놓친 spawn도 세션의 가장 비싼 모델을 조용히
 상속하는 대신 의도한 등급으로 라우팅됩니다:
 
 ```toml
