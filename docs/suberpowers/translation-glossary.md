@@ -97,6 +97,10 @@
 | completion contract | `완료 계약` | |
 | deferred (minor) | `연기된` | ledger 토큰 `minor (deferred)`는 영문 유지 |
 | gate | `관문` | |
+| transcript/transcription (plan이 코드를 베낀 것) | `옮겨 적기` / `옮겨 적은 것` | `전사본` 금지 |
+| transcript (세션 대화 기록) | `transcript` | 영문 유지. Claude Code 세션 jsonl |
+| copy (UI·사용자 노출 텍스트) | `문구` | 복사 아님. 필요하면 `사용자 노출 문구` |
+| version floor | `최소 버전` | |
 
 ---
 

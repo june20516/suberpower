@@ -33,7 +33,7 @@ task를 정의하기 전에, 어떤 파일이 생성 또는 수정될지, 그리
 
 ## Task Right-Sizing
 
-task는 자체 테스트 사이클을 갖추고 새 reviewer의 관문을 거칠 가치가 있는 가장 작은 단위입니다. task 경계를 그을 때: setup, 설정, scaffolding, 문서화 step은 그것을 필요로 하는 산출물의 task에 합치고, reviewer가 한 task는 거부하면서 이웃 task는 승인하는 것이 의미 있는 지점에서만 나누세요. 각 task는 독립적으로 테스트할 수 있는 산출물로 끝납니다.
+task는 자체 테스트 사이클을 갖추고 새 reviewer의 관문을 거칠 가치가 있는 가장 작은 단위입니다. task 경계를 그을 때: 준비(setup), 설정, scaffolding, 문서화 step은 그것을 필요로 하는 산출물의 task에 합치고, reviewer가 한 task는 거부하면서 이웃 task는 승인하는 것이 의미 있는 지점에서만 나누세요. 각 task는 독립적으로 테스트할 수 있는 산출물로 끝납니다.
 
 ## Step Granularity
 
@@ -73,7 +73,7 @@ task는 자체 테스트 사이클을 갖추고 새 reviewer의 관문을 거칠
 
 [spec이 함축하지만 어떤 task의 테스트도 다루지 않는 입력 유형 또는 실패
 양상 중, 이 소프트웨어를 쓰는 사람에게 문제를 일으킬 가능성이 가장 높은 다섯 가지
-— 한 줄에 하나씩, 입력이나 조건과 함께 합리적인 사람이 기대할 동작을 적고,
+— 한 줄에 하나씩, 입력이나 조건, 그리고 합리적인 사람이 기대할 동작을 함께 적고,
 가능성이 높은 것부터 나열합니다. spec은 비전 문서입니다: 소프트웨어가 해야 할
 일을 말할 뿐 소프트웨어가 마주칠 모든 것을 말하지는 않으며, spec이 어떤 입력에
 대해 침묵한다고 해서 그 입력이 프로그램을 망가뜨려도 된다는 허락은 아닙니다.
@@ -115,8 +115,8 @@ Expected: FAIL with "function not defined"
 
 - [ ] **Step 3: `exact/path/to/file.py`에 `function(input: InputType) -> ResultType` 구현**
 
-signature와 test가 선택의 여지를 남길 때(어떤 라이브러리 호출, 어떤 자료구조)는
-접근 방식을 한 줄로 적습니다. 코드 블록은 signature와 test가 결정하지 못하는
+signature와 테스트가 선택의 여지를 남길 때(어떤 라이브러리 호출, 어떤 자료구조)는
+접근 방식을 한 줄로 적습니다. 코드 블록은 signature와 테스트가 결정하지 못하는
 알고리즘에만 씁니다.
 
 - [ ] **Step 4: test를 실행하여 통과를 확인**
@@ -134,7 +134,7 @@ git commit -m "feat: add specific feature"
 
 ## What a Step Contains
 
-step은 implementer가 그 step으로부터 합리적인 것을 정확히 하나 작성할 수 있을 때 완성된 것입니다. 요구사항은 그것이 전부입니다: 완전함이 아니라, 모호하지 않음입니다. 각 종류의 step은 자신을 모호하지 않게 만드는 것만 담고, 그 이상은 담지 않습니다:
+step은 implementer가 그 step에서 작성할 수 있는 합리적인 결과가 정확히 하나뿐일 때 완성된 것입니다. 요구사항은 그것이 전부입니다: 완전함이 아니라, 모호하지 않음입니다. 각 종류의 step은 자신을 모호하지 않게 만드는 것만 담고, 그 이상은 담지 않습니다:
 
 - **테스트 step:** 테스트 이름과 assertion을 코드로, spec의 정확한 값을 넣어서 적습니다.
 - **코드 step:** 정확한 signature(이름, 파라미터, 반환 타입), 그 코드가 위치할 파일, 그리고 spec이 고정한 구체적인 값을 적습니다. body는 implementer가 작성합니다. body는 signature와 테스트가 결정하지 못하는 알고리즘이거나, spec이 고정한 정확한 문구일 때만 적습니다.
@@ -149,13 +149,13 @@ plan은 implementer가 혼자서는 내릴 수 없는 결정의 집합입니다.
 
 **1. Spec coverage:** spec의 각 섹션/요구사항을 훑어봅니다. 그것을 구현하는 task를 가리킬 수 있나요? 누락된 부분을 나열합니다.
 
-**2. Step scan:** 모든 step은 implementer가 합리적인 것을 정확히 하나 작성할 수 있게 해야 하며, 어떤 step도 그 이상을 담아서는 안 됩니다: 아무것도 결정하지 않는 줄은 공백이고, signature와 테스트가 이미 결정하는 함수 body는 전사본입니다. 둘 다 고치세요.
+**2. Step scan:** 모든 step은 implementer가 작성할 합리적인 결과를 정확히 하나로 좁혀야 하며, 어떤 step도 그 이상을 담아서는 안 됩니다: 아무것도 결정하지 않는 줄은 공백이고, signature와 테스트가 이미 결정하는 함수 body는 코드를 옮겨 적은 것일 뿐입니다. 둘 다 고치세요.
 
 **3. Type consistency:** 후반 task에서 사용한 type, method signature, property 이름이 이전 task에서 정의한 것과 일치하나요? Task 3에서 `clearLayers()`라 부른 함수를 Task 7에서 `clearFullLayers()`로 부르면 버그입니다.
 
 **4. Review Focus:** spec이 함축하는 각 입력 유형 또는 실패 양상마다, 테스트로 그것을 다루는 task가 있나요? 다뤄지지 않은 것 중 사람에게 문제를 일으킬 가능성이 가장 높은 다섯 가지를 Review Focus 섹션에 넣고, 그 섹션의 각 줄에 해당하는 테스트를 그 코드를 소유한 task에 추가합니다. 빈 섹션은 점검했지만 하나도 찾지 못했다는 뜻이지, 점검을 건너뛰었다는 뜻이 아닙니다.
 
-**5. Proportion:** plan의 길이를 spec의 길이와 비교합니다. 구현 대상 spec보다 몇 배나 긴 plan은 plan이 아니라 프로그램의 전사본입니다. 코드 블록이 문서의 대부분을 차지한다면, body를 signature, 테스트 이름, assertion으로 바꾸고, 각 step이 여전히 모호하지 않은지 확인합니다.
+**5. Proportion:** plan의 길이를 spec의 길이와 비교합니다. 구현 대상 spec보다 몇 배나 긴 plan은 plan이 아니라 프로그램을 옮겨 적은 사본입니다. 코드 블록이 문서의 대부분을 차지한다면, body를 signature, 테스트 이름, assertion으로 바꾸고, 각 step이 여전히 모호하지 않은지 확인합니다.
 
 문제를 발견하면 즉석에서 수정합니다. 다시 review할 필요 없습니다 — 그냥 수정하고 넘어가세요. spec 요구사항인데 해당 task가 없다면 task를 추가합니다.
 
