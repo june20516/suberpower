@@ -71,7 +71,7 @@
 | adapt (코드를) | `참고해 고쳐 쓰다` | `각색` 금지 (소설 각색으로 읽힘) |
 | directory | `디렉터리` | 표준어 |
 | refactoring | `리팩터링` | 표준어 |
-| your human partner | `your human partner` | `사람 파트너` 사용 안 함 |
+| your human partner | `your human partner` | `사람 파트너` 사용 안 함. upstream의 `your partner` 변형도 이 표기로 통일 |
 | synthesis | `종합` | `합성`(화학) 금지 |
 | academic (비판적 맥락) | `이론적` / `탁상공론식` | `학술적` 금지 |
 | systematic errors | `같은 실수를 일관되게 반복` | `체계적인 오류` 금지 (반대 인상) |
@@ -101,6 +101,8 @@
 | transcript (세션 대화 기록) | `transcript` | 영문 유지. Claude Code 세션 jsonl |
 | copy (UI·사용자 노출 텍스트) | `문구` | 복사 아님. 필요하면 `사용자 노출 문구` |
 | version floor | `최소 버전` | |
+| coordinator | `조율자` | controller(영문 유지)와 구분 |
+| instruction file | `instruction 파일` | CLAUDE.md 등 지시 파일의 일반화 |
 
 ---
 
@@ -113,7 +115,7 @@
 - **고유명사** — `Visual Companion`, `Brainstorm Companion`, skill 이름(`writing-plans`)
 - **gerund 네이밍 규칙 예시** — `"Processing PDFs"` 등. 영어 `-ing` 형태를 가르치는 내용이라 한국어 대응이 없음
 - **Conventional Commits 예시** — `feat(auth): implement JWT-based authentication`
-- **약속된 신호 문구** — `"Strange things are afoot at the Circle K"`
+- **약속된 신호 문구** — `"Strange things are afoot at the Circle K"` (v6.4.2에서 upstream 제거)
 - **인용 문헌**, 이미지 태그, 외부 링크
 
 ---

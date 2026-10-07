@@ -126,7 +126,7 @@ FOR 여러 항목의 feedback:
 - 작동하는 test/code를 참조합니다
 - 아키텍처 사안이라면 your human partner를 참여시킵니다
 
-**소리내어 push back 하기 불편하다면:** 그 긴장을 말로 드러낸 뒤, 발견한 문제를 your partner에게 알리세요. partner는 당신의 정직함을 고맙게 여길 것입니다.
+**소리 내어 push back하기 불편하다면:** 그 긴장을 말로 드러낸 뒤, 발견한 문제를 your human partner에게 알리세요. partner는 당신의 정직함을 고맙게 여길 것입니다.
 
 ## Acknowledging Correct Feedback
 
