@@ -167,7 +167,7 @@ rm -rf .suberpowers
 for f in SKILL.md implementer-prompt.md task-reviewer-prompt.md re-review-prompt.md; do
   scripts/sync-structure-check.sh plugins/suberpower/skills/subagent-driven-development/$f skills/subagent-driven-development/$f || echo "MISMATCH $f"
 done
-grep -rn "REPORT_FILE\|suberpowers/reviews\|spec-reviewer-prompt\|code-quality-reviewer-prompt\|M-2\|M-3" plugins/
+grep -rn "suberpowers/reviews\|75318\|리뷰 범위 분할\|Subagent 실패 처리\|spec-reviewer-prompt\|code-quality-reviewer-prompt\|M-2\|M-3" plugins/
 ```
 
 기대: MISMATCH 없음, grep 출력 없음 (Task 5 완료 전이면 `requesting-code-review`의 M-1 잔여는 허용 — Task 5에서 제거).
@@ -216,11 +216,11 @@ rm -rf .suberpowers
 - Modify: `plugins/suberpower/skills/requesting-code-review/SKILL.md`, `code-reviewer.md`
 - Modify: `plugins/suberpower/skills/receiving-code-review/SKILL.md`
 
-- [ ] **Step 1:** 세 파일을 v6.4.2 기준으로 반영. requesting-code-review의 M-1 내용(REPORT_FILE 계약, `~/.claude/suberpowers/reviews/`, 3줄 최종 메시지)은 원문에 없으므로 제거된다. `BASE_SHA` 대안은 `git merge-base origin/main HEAD`.
+- [ ] **Step 1:** 세 파일을 v6.4.2 기준으로 반영. requesting-code-review의 M-1 내용(REPORT_FILE 계약, `~/.claude/suberpowers/reviews/`, 3줄 최종 메시지)은 원문에 없으므로 제거된다. `BASE_SHA` 대안은 `git merge-base origin/main HEAD`. 포크 requesting-code-review/SKILL.md에 남은 삭제된 SDD 섹션(`리뷰 범위 분할`·`Subagent 실패 처리`) 참조도 원문 기준 교체로 사라져야 한다. 용어는 translation-glossary.md 3절(Task 2에서 추가된 지적 사항·수정 라운드 등)을 따른다.
 - [ ] **Step 2: 검증**
 
 ```bash
-grep -rn "REPORT_FILE\|suberpowers/reviews\|M-1" plugins/   # 기대: 출력 없음
+grep -rn "suberpowers/reviews\|75318\|리뷰 범위 분할\|Subagent 실패 처리\|M-1" plugins/   # 기대: 출력 없음
 ```
 
 구조 검증 후 commit — `동기화: code review skill 2종 (v6.4.2), M-1 제거`
@@ -322,7 +322,7 @@ T=$(mktemp -d); mkdir -p $T/src/a; touch $T/src/top.test.ts $T/src/a/x.test.ts
 upstream 경로는 `skills/using-superpowers/`다.
 
 - [ ] **Step 1:** SKILL.md를 v6.4.2 기준으로 반영 (graphviz 다이어그램 제거, Instruction-Priority 통합, How to Access Skills 축소). 이 파일은 SessionStart 훅이 매 세션 주입하므로 frontmatter와 첫 heading 구조를 바꾸지 않았는지 확인한다.
-- [ ] **Step 2:** references 생성·수정·삭제. 표의 도구 이름은 번역하지 않는다.
+- [ ] **Step 2:** references 생성·수정·삭제. 표의 도구 이름은 번역하지 않는다. 포크 `gemini-tools.md`의 삭제된 SDD prompt(`spec-reviewer-prompt.md`·`code-quality-reviewer-prompt.md`) 참조는 원문 기준 갱신으로 사라져야 한다.
 - [ ] **Step 3: 주입 확인**
 
 ```bash
@@ -404,7 +404,7 @@ CLAUDE_PLUGIN_ROOT=$PWD/plugins/suberpower plugins/suberpower/hooks/session-star
 - [ ] **Step 1: 잔여 참조 전수 검사**
 
 ```bash
-grep -rn "spec-reviewer-prompt\|code-quality-reviewer-prompt\|testing-anti-patterns\|plan-document-reviewer\|copilot-tools\|REPORT_FILE\|suberpowers/reviews\|diagnosing-superpowers" plugins/ README.md
+grep -rn "spec-reviewer-prompt\|code-quality-reviewer-prompt\|testing-anti-patterns\|plan-document-reviewer\|copilot-tools\|suberpowers/reviews\|75318\|리뷰 범위 분할\|Subagent 실패 처리\|diagnosing-superpowers" plugins/ README.md
 ```
 
 기대: 출력 없음.
