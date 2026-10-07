@@ -2,6 +2,8 @@
 
 [obra/superpowers](https://github.com/obra/superpowers)의 한국어 번역 포크입니다. TDD·디버깅·협업·계획·worktree 등 핵심 워크플로우 스킬을 한국어로 제공하며, worktree 방식을 개인 취향에 맞게 커스터마이징하기 위한 개인용 포크입니다.
 
+기준 upstream: **superpowers v6.4.2** (`8ca22db`, 2026-09-25). 포크 버전(`plugin.json`의 `version`)은 upstream과 별개로 매기며, 동기화 기록은 [docs/suberpowers/upstream-sync.md](docs/suberpowers/upstream-sync.md)에 있습니다.
+
 원본과 구분하기 위해 의도적으로 `suberpower`로 명명했습니다. 스킬 호출 네임스페이스는 `suberpower:<skill-name>` 형태입니다.
 
 ## 설치

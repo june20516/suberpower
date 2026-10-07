@@ -32,7 +32,7 @@ Upstream: [obra/superpowers](https://github.com/obra/superpowers)
 3. **번역 적용** — [translation-glossary.md](./translation-glossary.md)의 규칙에 따라 번역
 4. **검증** — `./scripts/check-divergence.sh --sync` 실행. auto 검사 실패는 divergence 파괴이므로 배포 전에 복구합니다. `assisted`·`manual` 항목은 확인 후 `--ack`로 명시해야 통과합니다
 5. **배포** — `plugin.json`·`marketplace.json` version bump 후 commit
-6. **이 파일의 baseline SHA를 갱신** — 기준 릴리스·날짜와 "이번 동기화의 포크 고유 사항"도 함께 갱신
+6. **이 파일의 baseline SHA를 갱신** — 기준 릴리스·날짜와 "이번 동기화의 포크 고유 사항"도 함께 갱신. 기준 upstream 버전 표기 3곳(`plugins/suberpower/.claude-plugin/plugin.json`·`.claude-plugin/marketplace.json`의 description, `README.md`의 "기준 upstream" 줄)도 새 릴리스로 바꿉니다
 
 ### 유용한 명령
 
