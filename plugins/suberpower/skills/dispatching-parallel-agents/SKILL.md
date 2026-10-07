@@ -65,7 +65,7 @@ digraph when_to_use {
 
 ### 3. Parallel로 Dispatch
 
-세 개의 subagent dispatch를 모두 같은 응답에서 실행하세요 — parallel로 실행됩니다:
+같은 응답에서 세 subagent를 모두 dispatch하세요 — parallel로 실행됩니다:
 
 ```text
 Subagent (general-purpose): "Fix agent-tool-abort.test.ts failures"

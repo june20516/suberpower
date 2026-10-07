@@ -115,6 +115,14 @@
 | design brief | `설계 개요` | |
 | just-in-time | `필요한 시점에` | |
 | ratchet (one-way) | `한 방향으로만` | 비유를 풀어 서술. 예: `경로 변경은 한 방향으로만 일어납니다` |
+| control (test arm) | `대조군` | 지침 없는 대조군 |
+| arm (비교 실험의 한쪽) | `~쪽` | 예: `금지 쪽`, `레시피 쪽` |
+| nuance clause | `단서 조항` | "~가 아니면" 류. exemption clause와 구분 |
+| exemption clause | `예외 조항` | "~에는 적용되지 않음" 류. nuance clause와 구분 |
+| observable predicate | `관찰 가능한 판별 조건` | |
+| underlying model | `기반 모델` | `기본 모델` 사용 안 함. `파일시스템 기반 모델`(filesystem-based)과는 문맥으로 구분 |
+| micro-test | `micro-test` | 영문 유지. 조사를 붙여 `micro-test하다` |
+| Skill Discovery Optimization (SDO) | `Skill Discovery Optimization (SDO)` | heading·약어 모두 영문 유지. 본문 참조(`SDO 섹션`)가 heading 문자열에 의존. 구 명칭 CSO |
 
 ---
 
