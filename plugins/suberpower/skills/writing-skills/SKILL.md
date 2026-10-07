@@ -147,7 +147,7 @@ Before/after 코드 비교
 
 **형식:** "...할 때 사용합니다"로 끝맺어 트리거 조건에 집중
 
-**중요: Description은 언제 사용하는지이지, skill이 무엇을 하는지가 아닙니다**
+**CRITICAL: Description은 언제 사용하는지이지, skill이 무엇을 하는지가 아닙니다**
 
 description은 트리거 조건만 설명해야 합니다. skill의 프로세스나 워크플로우를 description에 요약하지 마세요.
 
