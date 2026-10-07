@@ -47,7 +47,7 @@ is_acked() {
 # assisted/manual 항목 — ID|등급|질문
 #   assisted: 동기화 skill이 subagent에게 판단을 위임할 질문
 #   manual:   사람이 확인해야 하는 항목
-NONAUTO_ITEMS='D-002|manual|upstream이 using-git-worktrees를 변경했다면, 사람이 변경 의도를 읽고 반영 여부를 판단했는가?
+NONAUTO_ITEMS='D-002|manual|upstream이 using-git-worktrees 또는 finishing-a-development-branch의 worktree 정리 판정을 변경했다면, 사람이 변경 의도를 읽고 반영 여부를 판단했는가?
 D-005|assisted|새로 번역한 부분의 한국어가 자연스러운가? 직역투·비문·용어 불일치가 없는가?
 D-006|assisted|원문의 강조 등급이 유지되었는가? 대문자 강조가 평서문으로 풀린 곳은 없는가?
 D-007|assisted|번역하지 말아야 할 것(heading·기술 용어·상태값)을 번역하지 않았는가? 용어집 대응표를 따랐는가?'
@@ -98,6 +98,31 @@ git worktree add
 MARKERS
 else
   bad "파일 없음: $WT"
+fi
+
+# finishing-a-development-branch의 worktree 정리 판정이 전역 경로를 인식하는지
+FIN="$SKILLS/finishing-a-development-branch/SKILL.md"
+GLOBAL_WT='~/.claude/suberpowers/worktrees/'
+if [ -f "$FIN" ]; then
+  fin_start=$(grep -c 'DIVERGENCE:D-002 start' "$FIN")
+  fin_end=$(grep -c 'DIVERGENCE:D-002 end' "$FIN")
+  in_block=$(awk -v path="$GLOBAL_WT" '
+    /DIVERGENCE:D-002 start/ { inside = 1; next }
+    /DIVERGENCE:D-002 end/   { inside = 0; next }
+    inside && index($0, path) { found = 1 }
+    END { print found + 0 }
+  ' "$FIN")
+  if ! grep -qF "$GLOBAL_WT" "$FIN"; then
+    bad "finishing 전역 경로 소실: $GLOBAL_WT — provenance 판정이 upstream 판본으로 덮였는지 확인하세요"
+  elif [ "$fin_start" -eq 0 ] || [ "$fin_start" -ne "$fin_end" ]; then
+    bad "finishing D-002 마커 짝 불일치 (start ${fin_start}, end ${fin_end})"
+  elif [ "$in_block" -ne 1 ]; then
+    bad "finishing 전역 경로가 D-002 보호 구역 밖에만 있음"
+  else
+    ok "finishing 전역 경로 유지: $GLOBAL_WT (D-002 보호 구역 안)"
+  fi
+else
+  bad "파일 없음: $FIN"
 fi
 
 # ---------------------------------------------------------------- D-003

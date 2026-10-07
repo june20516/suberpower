@@ -84,7 +84,7 @@ divergence가 **유지되었는지 어떻게 확인할지**입니다. 한 항목
 
 ## D-002 · `using-git-worktrees` 전면 재작성
 
-**범위:** `plugins/suberpower/skills/using-git-worktrees/SKILL.md`
+**범위:** `plugins/suberpower/skills/using-git-worktrees/SKILL.md`, `plugins/suberpower/skills/finishing-a-development-branch/SKILL.md` (전역 경로 인식 블록)
 **정책:** `MANUAL_MERGE`
 **검증 등급:** `auto` + `manual`
 
@@ -92,14 +92,17 @@ upstream의 native 위임 방식을 걷어내고 **git 직접 조작**으로 재
 
 **근거:** 프로젝트 내부에 worktree를 만들면 메인 repo의 `git status`/`diff`가 오염됩니다. 랜덤 브랜치명 생성과 base 브랜치 임의 선택도 개인 워크플로우와 맞지 않았습니다.
 
+`finishing-a-development-branch`는 "이 worktree를 우리가 만들었는가"(provenance)로 정리 여부를 정합니다. upstream은 v6.0.0에서 전역 경로를 이 판정에서 뺐지만, 이 포크는 worktree를 전역 경로에 만들므로 판정이 `~/.claude/suberpowers/worktrees/`를 인식하지 못하면 이 포크가 만든 worktree가 정리되지 않습니다. 그래서 Step 6의 판정 블록을 D-002 보호 구역 마커로 감쌉니다.
+
 **검증 (`auto`):** 아래 마커가 모두 존재해야 합니다.
 - `~/.claude/suberpowers/worktrees/` (전역 경로 고정)
 - `Step 0: Detect Existing Isolation` (기존 isolation 감지)
 - `git worktree add` (git 직접 조작)
+- finishing-a-development-branch에 `~/.claude/suberpowers/worktrees/` 존재 (+ D-002 마커 짝, 경로가 마커 구역 안에 있음)
 
-**검증 (`manual`):** 이번 동기화에서 upstream이 이 파일을 변경했다면, 사람이 변경 의도를 읽고 반영 여부를 판단했는가?
+**검증 (`manual`):** 이번 동기화에서 upstream이 이 범위를 변경했다면, 사람이 변경 의도를 읽고 반영 여부를 판단했는가?
 
-**동기화 시:** upstream이 이 파일을 바꿔도 **자동 적용하지 마세요.** 변경 의도를 읽고, 이 포크의 재작성본에 반영할 가치가 있는 것만 손으로 옮깁니다.
+**동기화 시:** upstream이 이 범위를 바꿔도 **자동 적용하지 마세요.** 변경 의도를 읽고, 이 포크의 재작성본에 반영할 가치가 있는 것만 손으로 옮깁니다.
 
 ---
 
