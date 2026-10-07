@@ -247,9 +247,7 @@ function escapeHtmlText(value) {
 
 function brandMarkup() {
   const version = escapeHtmlText(SUPERPOWERS_VERSION);
-  const text = SUPERPOWERS_TELEMETRY_DISABLED
-    ? 'Prime Radiant Suberpowers v' + version
-    : 'Suberpowers v' + version;
+  const text = 'Suberpowers v' + version;
   const logo = SUPERPOWERS_TELEMETRY_DISABLED
     ? ''
     : '<img class="brand-logo" src="' + SUPERPOWERS_BRAND_IMAGE_URL + '?v=' + encodeURIComponent(SUPERPOWERS_VERSION) + '" alt="Prime Radiant" referrerpolicy="no-referrer" decoding="async">';
