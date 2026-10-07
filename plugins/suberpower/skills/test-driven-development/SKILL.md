@@ -21,7 +21,7 @@ test를 먼저 작성합니다. 실패하는 것을 확인합니다. test를 통
 - 리팩터링
 - 동작 변경
 
-**예외 (human partner에게 문의):**
+**예외 (your human partner에게 문의):**
 - 일회용 프로토타입
 - 생성된 코드
 - 설정 파일
@@ -307,7 +307,7 @@ PASS
 
 | 문제 | 해결 |
 |---------|----------|
-| test 작성법을 모름 | 원하는 API를 작성하세요. assertion부터 작성하세요. human partner에게 문의하세요. |
+| test 작성법을 모름 | 원하는 API를 작성하세요. assertion부터 작성하세요. your human partner에게 문의하세요. |
 | test가 너무 복잡 | 설계가 너무 복잡합니다. 인터페이스를 단순화하세요. |
 | 모든 것을 mock해야 함 | 코드가 너무 결합됨. 의존성 주입을 사용하세요. |
 | test setup이 큼 | 헬퍼를 추출하세요. 여전히 복잡? 설계를 단순화하세요. |
@@ -325,4 +325,4 @@ Production 코드 → test가 존재하고 먼저 실패했다
 그 외 → TDD가 아니다
 ```
 
-human partner의 허가 없이는 예외 없음.
+your human partner의 허가 없이는 예외 없음.
