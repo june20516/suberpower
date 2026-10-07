@@ -91,6 +91,12 @@
 | pre-flight (review) | `사전 점검` | |
 | park (finding) | `보류` | ledger 토큰 `parked`는 영문 유지 |
 | fix wave | `일괄 수정` | `수정 물결` 금지 (직역투) |
+| executor | `실행자` | inline executor → `inline 실행자` |
+| fix pass | `수정 패스` | fix wave(`일괄 수정`)와 구분 |
+| re-grade | `등급 재평가` / `등급을 다시 매기다` | |
+| completion contract | `완료 계약` | |
+| deferred (minor) | `연기된` | ledger 토큰 `minor (deferred)`는 영문 유지 |
+| gate | `관문` | |
 
 ---
 

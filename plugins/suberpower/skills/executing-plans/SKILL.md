@@ -18,7 +18,7 @@ ledger가 당신의 기억이며, TDD가 task별 관문이고, 최종 reviewer�
 눈입니다.
 
 **핵심 원칙:** 생각은 plan이 이미 끝냈습니다. plan을 정확히 실행하고, 각
-step을 실패하는 것을 지켜본 뒤 통과시킨 테스트로 증명하고, 당신 자신이
+step은 실패를 지켜본 뒤 통과시킨 테스트로 증명하고, 당신 자신이
 잊어버려도 살아남는 기록을 남기세요.
 
 **진행 서술:** tool 호출 사이의 서술은 많아야 짧은 한 줄로 하세요 — 기록은
@@ -46,7 +46,7 @@ spec이 구속력 있는 기준이고, plan은 그 spec을 풀어낸 논증이�
 - suberpower:writing-plans로 만든 plan이 있고, handoff에서 your human partner가
   inline 실행을 택한 경우.
 - harness에 subagent tool이 없는 경우(플랫폼별 참고 문서
-  `../using-suberpowers/references/` 참조). dispatch를 **절대** 꾸며 내지 말고,
+  `../using-suberpowers/references/` 참조). dispatch를 절대 꾸며 내지 말고,
   여기서 plan을 실행하세요.
 - task들이 대체로 독립적인 경우 — suberpower:subagent-driven-development와
   같은 전제 조건입니다.
@@ -81,7 +81,7 @@ digraph process {
 
     "준비: worktree, 작업 공간 + ledger, plan + spec 읽기, 사전 점검" [shape=box];
     "남은 task가 있는가?" [shape=diamond];
-    "브랜치 전체에 대한 최종 review (가능하면 새 reviewer)" [shape=box];
+    "브랜치 전체에 대한 최종 review (subagent tool이 있으면 새 reviewer)" [shape=box];
     "등급 재평가 후: Critical/Important → 수정 패스 단 한 번, 수정마다 RED→GREEN + suite 통과; Minor → ledger" [shape=box];
     "최종 review 깨끗함: 이 plan의 작업 공간 삭제" [shape=box];
     "suberpower:finishing-a-development-branch 사용" [shape=box style=filled fillcolor=lightgreen];
@@ -97,8 +97,8 @@ digraph process {
     "완료 계약을 충족했는가?" -> "task-done: 테스트 실행, 결과를 ledger에 기록, todo 완료 표시" [label="예"];
     "task-done: 테스트 실행, 결과를 ledger에 기록, todo 완료 표시" -> "남은 task가 있는가?";
     "남은 task가 있는가?" -> "task-start: brief + BASE, brief 읽기" [label="예"];
-    "남은 task가 있는가?" -> "브랜치 전체에 대한 최종 review (가능하면 새 reviewer)" [label="아니오"];
-    "브랜치 전체에 대한 최종 review (가능하면 새 reviewer)" -> "등급 재평가 후: Critical/Important → 수정 패스 단 한 번, 수정마다 RED→GREEN + suite 통과; Minor → ledger";
+    "남은 task가 있는가?" -> "브랜치 전체에 대한 최종 review (subagent tool이 있으면 새 reviewer)" [label="아니오"];
+    "브랜치 전체에 대한 최종 review (subagent tool이 있으면 새 reviewer)" -> "등급 재평가 후: Critical/Important → 수정 패스 단 한 번, 수정마다 RED→GREEN + suite 통과; Minor → ledger";
     "등급 재평가 후: Critical/Important → 수정 패스 단 한 번, 수정마다 RED→GREEN + suite 통과; Minor → ledger" -> "최종 review 깨끗함: 이 plan의 작업 공간 삭제";
     "최종 review 깨끗함: 이 plan의 작업 공간 삭제" -> "suberpower:finishing-a-development-branch 사용";
 }
@@ -139,21 +139,21 @@ your human partner의 명시적 동의 없이 main/master 브랜치에서 implem
 - `git clean -fdx`는 작업 공간을 지웁니다(git이 무시하는 임시 공간이기
   때문입니다). 그렇게 되면 `git log`로 복구하세요.
 
-plan을 한 번 읽고, context와 Global Constraints를 기록한 뒤, task마다 todo를
+plan을 한 번 읽고, 맥락과 Global Constraints를 기록한 뒤, task마다 todo를
 만드세요. plan이 Spec을 명시한다면 그것도 읽으세요: spec은 plan이 근거로 삼는
 기준이며, plan 안의 충돌은 spec에 비추어 해결합니다. 도달할 수 있는 spec이 없는
 plan이라면 ledger에 그렇다고 적으세요 — spec 없이 내린 결정은 잠정적입니다.
 
 **REQUIRED SUB-SKILL:** 지금, Task 1 전에 suberpower:test-driven-development를
-load하세요. 이 skill이 아래 모든 task의 모든 step을 지배합니다. step에 이미
-"실패하는 테스트를 먼저 작성하라"고 적힌 plan이라도 이 skill을 읽지 않아도
+load하세요. 그 skill이 아래 모든 task의 모든 step을 지배합니다. step에 이미
+"실패하는 테스트를 먼저 작성하라"고 적힌 plan이라도 TDD skill을 읽지 않아도
 되는 것은 아닙니다.
 
 Task 1 전에 plan에서 task 간 충돌을 훑으세요. 어디를 볼지는 plan의 Interfaces
 블록이 알려 줍니다: 앞선 task가 만드는 것을 소비하는 task마다 ledger에 한 행 —
 두 task, 한쪽이 만드는 것과 다른 쪽이 소비하는 것, 그리고 발견한 것. 아무것도
-공유하지 않는 task에는 행이 없습니다. task들이 아무것도 공유하지 않는 plan은
-`Pre-flight: no shared interfaces` 한 줄만 적습니다. 행이 드러낸 충돌은 각각
+공유하지 않는 task에는 행이 없습니다. task들이 아무것도 공유하지 않는 plan이라면
+ledger에 `Pre-flight: no shared interfaces` 한 줄만 적습니다. 행이 드러낸 충돌은 각각
 spec을 구속력 있는 기준으로 삼아 결정하고, 그 행 옆에 결정을 기록한 뒤 Task 1을
 시작하세요. 각 task 자체의 텍스트는 여기서가 아니라 그 brief를 읽을 때
 점검합니다.
@@ -218,8 +218,8 @@ task의 ledger 줄을 쓰기 전에, 다음이 모두 참이어야 하며 그 �
 ### 4. Complete the task
 
 brief가 task 전체에 대해 명시한 테스트 명령으로 이 skill의
-`scripts/task-done PLAN_FILE N BASE -- <test command>`를 실행하세요. 테스트를
-실행하고, 전체 출력을 작업 공간에 보관하고, 끝부분을 출력하며 — 통과했을 때만
+`scripts/task-done PLAN_FILE N BASE -- <test command>`를 실행하세요. 이 스크립트가
+테스트를 실행하고, 전체 출력을 작업 공간에 보관하고, 끝부분을 출력하며 — 통과했을 때만
 — ledger에 완료 줄을 덧붙입니다:
 
 `Task <N>: complete (commits <base7>..<head7>, tests: <command> → <result>)`
@@ -275,8 +275,8 @@ TDD로 검증합니다: 지적 사항을 재현하는 테스트를 작성하고,
 `Final: fixed <지적 사항> — <테스트 이름> RED→GREEN, suite <N>/<N>`으로
 기록하세요. 먼저 실패한 테스트가 없는 수정은 검증되지 않은 것이고, 패스 후
 suite가 통과하지 않았다면 패스는 끝나지 않은 것입니다. re-review를 dispatch하지
-마세요: "해결되었는가"에는 수정을 커버하는 테스트가 이미 답했고 "깨뜨린 것이
-없는가"에는 suite 실행이 이미 답한 diff를 다시 읽을 뿐입니다.
+마세요: re-review는 diff를 다시 읽을 뿐입니다 — "해결되었는가(ADDRESSED)"는
+수정을 커버하는 테스트가, "깨뜨린 것이 없는가"는 suite 실행이 이미 답했습니다.
 
 고치지 않기로 한 지적 사항은 결정입니다 — `Final: Ruling: <지적 사항> —
 <코드를 그대로 두는 이유> — <틀렸을 때 치르는 비용>` — 그리고 결정 목록을 통해
@@ -288,8 +288,8 @@ your human partner에게 전달됩니다. 두 번째 수정 패스는 없습니�
 메시지의 "Rulings I made(내가 내린 결정)" 아래에 내린 순서대로, 각각 틀렸을 때
 치르는 비용과 함께 적고, 모든 `minor (deferred)` 줄은 "Deferred minors" 아래에
 적으세요. 두 목록 모두 빠짐이 없어야 합니다. 당신이 your human partner를 대신해
-내린 결정 — 그리고 행동하지 않기로 한 지적 사항 — 이 your human partner에게
-닿는 유일한 통로는 당신의 최종 메시지입니다.
+내린 결정과, 행동하지 않기로 한 지적 사항이 your human partner에게 닿는 유일한
+통로는 당신의 최종 메시지입니다.
 
 최종 review가 깨끗하고 그 수정이 commit되면, 이 plan의 작업 공간 디렉터리를
 삭제하세요 — 이제 git 히스토리가 기록입니다. 형제 디렉터리는 다른 plan의
@@ -312,7 +312,7 @@ suberpower:finishing-a-development-branch를 사용하세요.
 | "subagent는 느리고 비싸니 최종 review도 건너뛰자" | inline은 이미 task별 reviewer를 없앴습니다. 브랜치 전체에 대한 review 한 번은 상한이 아니라 하한입니다. |
 | "reviewer가 Minor라고 했으니 Minor다" | 그 라벨은 spec의 침묵을 채점한 것입니다. 사람이 겪는 것을 기준으로 등급을 매기세요. 등급을 다시 매긴 뒤 관문을 적용하세요. |
 | "수정이 뻔하니 실패하는 테스트를 먼저 쓸 필요가 없다" | 실패하는 테스트만이 지적 사항이 실제였고 이제 사라졌다는 유일한 증거입니다. 그것 없이는 diff와 희망뿐입니다. |
-| "들어간 김에 minor도 고치겠다" | 당신이 고치는 minor 하나하나가 your human partner가 요청하지 않은 테스트, 수정, suite 실행입니다. ledger에 기록하세요. 결정은 your human partner가 합니다. |
+| "들어간 김에 Minor도 고치겠다" | 당신이 고치는 Minor 하나하나가 your human partner가 요청하지 않은 테스트, 수정, suite 실행입니다. ledger에 기록하세요. 결정은 your human partner가 합니다. |
 
 ## Example Workflow
 
@@ -350,7 +350,7 @@ Task 2: 복구 모드
 
 [모든 task 완료 후: review-package plan MERGE_BASE HEAD; 가장 강력한 모델로 code-reviewer dispatch]
 Reviewer: Important 지적 사항 하나 — 진행 상황 보고 간격이 하드코딩됨. Minor 둘.
-[등급 재평가: Important 유지; minor는 연기로 ledger에 기록]
+[등급 재평가: Important 유지; Minor는 연기로 ledger에 기록]
 [수정 패스: test_progress_interval_configurable RED → PROGRESS_INTERVAL 추출 → GREEN; suite 12/12; commit]
 [Ledger: Final: fixed 하드코딩된 간격 — test_progress_interval_configurable RED→GREEN, suite 12/12]
 

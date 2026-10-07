@@ -153,7 +153,7 @@ your human partner의 명시적 동의 없이 main/master 브랜치에서 implem
 - `git clean -fdx`는 작업 공간을 지웁니다(git이 무시하는 임시 공간이기
   때문입니다). 그렇게 되면 `git log`로 복구하세요.
 
-plan을 한 번 읽고, context와 Global Constraints를 기록한 뒤, task마다 todo를
+plan을 한 번 읽고, 맥락과 Global Constraints를 기록한 뒤, task마다 todo를
 만드세요. plan이 Spec을 명시한다면 그것도 읽으세요: spec은 plan이 근거로 삼는
 기준이며, plan 안의 충돌은 spec에 비추어 해결합니다. 도달할 수 있는 spec이 없는
 plan이라면 ledger에 그렇다고 적으세요 — spec 없이 내린 결정은 잠정적입니다.
