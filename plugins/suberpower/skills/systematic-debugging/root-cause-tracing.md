@@ -101,7 +101,7 @@ test 중에 무언가가 나타나는데 어느 test인지 모를 때:
 이 디렉터리의 bisection script `find-polluter.sh`를 사용하세요:
 
 ```bash
-./find-polluter.sh '.git' 'src/**/*.test.ts'
+bash ./find-polluter.sh '.git' 'src/**/*.test.ts'
 ```
 
 test를 하나씩 실행하고, 첫 번째 polluter에서 멈춥니다. 사용법은 script를 참조하세요.
