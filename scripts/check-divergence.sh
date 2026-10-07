@@ -55,7 +55,7 @@ D-007|assisted|번역하지 말아야 할 것(heading·기술 용어·상태값)
 SKILLS="plugins/suberpower/skills"
 
 if [ "$LIST_ONLY" -eq 1 ]; then
-  printf '\033[1mauto\033[0m      D-001 D-002 D-003 D-004 D-005\n'
+  printf '\033[1mauto\033[0m      D-001 D-002 D-003 D-004 D-005 D-008\n'
   printf '\033[1massisted\033[0m  D-005 D-006 D-007\n'
   printf '\033[1mmanual\033[0m    D-002\n\n'
   printf '근거와 검증 방법: docs/suberpowers/divergence.md\n'
@@ -71,16 +71,16 @@ for pat in 'superpowers:' 'docs/superpowers/' '\.superpowers/' '~/\.config/super
   else bad "치환 누락: $pat 이(가) $n 곳에 남아 있음"; fi
 done
 
-# upstream 저장소 URL(원작자 링크)과 외부 브랜드 자산 URL(brainstorming 로고 이미지)은
-# 유지 대상이므로 제외하고,
+# upstream 저장소 식별자(obra/superpowers — 원작자 링크, gh --repo, repo: 검색어)와
+# 외부 브랜드 자산 URL(brainstorming 로고 이미지)은 유지 대상이므로 제외하고,
 # 브랜드·출처 표현으로 허용된 3곳 외에 bare 'superpowers'가 있으면 실패
 allowed=3
-found=$(grep -rn "superpowers" plugins/ 2>/dev/null | grep -v "github.com/obra/superpowers\|primeradiant\.com/brand/superpowers-visual-brainstorming-logo\.png" | wc -l | tr -d ' ')
+found=$(grep -rn "superpowers" plugins/ 2>/dev/null | grep -v "obra/superpowers\|primeradiant\.com/brand/superpowers-visual-brainstorming-logo\.png" | wc -l | tr -d ' ')
 if [ "$found" -eq "$allowed" ]; then
   ok "브랜드·출처 표현 ${allowed}곳만 남음 (허용 목록과 일치)"
 else
   bad "bare 'superpowers'가 ${found}곳 (허용: $allowed). 신규 유입을 확인하세요:"
-  grep -rn "superpowers" plugins/ 2>/dev/null | grep -v "github.com/obra/superpowers\|primeradiant\.com/brand/superpowers-visual-brainstorming-logo\.png" | sed 's/^/       /'
+  grep -rn "superpowers" plugins/ 2>/dev/null | grep -v "obra/superpowers\|primeradiant\.com/brand/superpowers-visual-brainstorming-logo\.png" | sed 's/^/       /'
 fi
 
 # ---------------------------------------------------------------- D-002
@@ -177,6 +177,44 @@ for f in "$SKILLS"/*/SKILL.md; do
   fi
 done
 [ "$t_bad" -eq 0 ] && ok "모든 SKILL.md가 한글 ${MIN}자 이상"
+
+# ---------------------------------------------------------------- D-008
+head_ "D-008 · diagnosing 이슈 흐름 (MANUAL_MERGE)"
+
+DIAG="$SKILLS/diagnosing-suberpowers"
+GH_ISSUES="$DIAG/references/github-issues.md"
+UPSTREAM_REPO='obra/superpowers'
+FORK_REPO='june20516/suberpower'
+
+for f in "$GH_ISSUES" "$DIAG/SKILL.md"; do
+  if [ ! -f "$f" ]; then bad "파일 없음: $f"; continue; fi
+  s=$(grep -c 'DIVERGENCE:D-008 start' "$f")
+  e=$(grep -c 'DIVERGENCE:D-008 end' "$f")
+  if [ "$s" -gt 0 ] && [ "$s" -eq "$e" ]; then ok "D-008 마커 짝 유지: $f"
+  else bad "D-008 마커 짝 불일치: $f (start ${s}, end ${e}) — upstream 판본으로 덮었는지 확인하세요"; fi
+done
+
+if [ -f "$GH_ISSUES" ]; then
+  if grep -qF "$FORK_REPO" "$GH_ISSUES"; then ok "포크 저장소 유지: $FORK_REPO"
+  else bad "포크 저장소 소실: $FORK_REPO — 포크 우선 보고 흐름이 upstream 판본으로 덮였는지 확인하세요"; fi
+
+  # '## 검색' 절 안에서 각 저장소가 처음 등장하는 줄 번호를 비교합니다
+  order=$(awk -v up="$UPSTREAM_REPO" -v fork="$FORK_REPO" '
+    /^## / { in_search = ($0 ~ /^## 검색/) }
+    in_search && !up_line   && index($0, up)   { up_line = NR }
+    in_search && !fork_line && index($0, fork) { fork_line = NR }
+    END { print up_line + 0, fork_line + 0 }
+  ' "$GH_ISSUES")
+  up_line=${order% *}
+  fork_line=${order#* }
+  if [ "$up_line" -eq 0 ] || [ "$fork_line" -eq 0 ]; then
+    bad "검색 절에 두 저장소가 모두 있지 않음 (upstream 줄 ${up_line}, 포크 줄 ${fork_line})"
+  elif [ "$up_line" -lt "$fork_line" ]; then
+    ok "검색 순서 유지: $UPSTREAM_REPO(${up_line}행) → $FORK_REPO(${fork_line}행)"
+  else
+    bad "검색 순서 뒤집힘: $FORK_REPO(${fork_line}행)가 $UPSTREAM_REPO(${up_line}행)보다 먼저"
+  fi
+fi
 
 # ------------------------------------------------------- 보호 구역 마커
 head_ "보호 구역 마커 (auto)"

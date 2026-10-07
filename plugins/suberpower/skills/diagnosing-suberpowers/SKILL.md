@@ -45,13 +45,20 @@ finding도 없습니다. 모든 숫자는 transcript나 당신이 실행한 명�
    쓰고, 보여 주고, 경로를 알리세요. 인용한 내용이 실제로 무엇을 증명하는지
    확인하고, 뒷받침하는 case 파일을 보존하세요. symlink 별칭은 중복 사본이
    아닙니다.
+<!-- DIVERGENCE:D-008 start -->
 5. **GitHub issues** — report §7이 possible이나 likely라고 할 때, 또는 your
    human partner가 요청할 때. `references/github-issues.md`에 따라 증상으로
-   열린 issue와 닫힌 issue를 검색하세요. 일치하는 것을 보여 주고, 가장 가까운
-   issue에 report를 덧붙이자고 제안하세요. 일치하는 것이 없으면
-   `templates/issue.md`를 채워 작업 공간에 쓰고, 정확한 문구를 보여 준 뒤,
-   승인을 받은 후에만 issue를 만드세요. `gh`는 파일을 첨부할 수 없습니다.
+   열린 issue와 닫힌 issue를 upstream(`obra/superpowers`)에서 먼저, 그다음
+   포크(`june20516/suberpower`)에서 검색하세요. 일치하는 것을 저장소별로 보여
+   주고, 가장 가까운 issue에 report를 덧붙이자고 제안하세요. upstream issue에
+   다는 comment는 영어로 씁니다. 일치하는 것이 없으면 포크에 먼저 만드세요:
+   `templates/issue.md`를 채워(양식 heading은 영문 그대로, 내용은 한국어 가능)
+   작업 공간에 쓰고, 정확한 문구를 보여 준 뒤, 승인을 받은 후에만 issue를
+   만드세요. 그다음 포크 issue를 검토하고, 같은 내용을 upstream에도 영어로
+   보고할지 선택 동작으로 제안하세요. upstream 보고는 영어 본문을 따로 보여 주고
+   **별도로** 승인받은 후에만 합니다. `gh`는 파일을 첨부할 수 없습니다.
    bundle이 있으면 your human partner가 브라우저에서 첨부할 수 있도록 그 경로를 주세요.
+<!-- DIVERGENCE:D-008 end -->
 6. **Export** — your human partner가 bundle을 요청할 때만. 요청 없이
    절대 만들지 마세요. 문제 파악 단계의 목표가 bug report였다면, scrub한
    bundle을 요청 시 만들 수 있다고 한 번만 말하고 기다리세요. redaction 수준을
@@ -98,8 +105,9 @@ finding도 없습니다. 모든 숫자는 transcript나 당신이 실행한 명�
   bundle을 요청 시 만들 수 있다고 언급하세요. your human partner에게 조언하는
   것도 금지입니다.
 - **승인 관문.** your human partner가 scrub log와 파일 목록을 보기 전에는
-  압축하지 마세요. 정확한 문구를 승인받기 전에는 issue나 comment를 올리지
-  마세요.
+  압축하지 마세요. 정확한 문구를 승인받기 전에는 어느 저장소에도 issue나
+  comment를 올리지 마세요. 포크 issue 승인은 upstream 보고 승인이 아닙니다.
+  upstream에 올릴 영어 본문은 따로 승인받으세요.
 - **분석 전에 문제 파악.** your human partner가 답하기 전에는 2–7단계 중
   어느 것도 시작하지 마세요. 자리에 없다면 질문을 적어 두고 멈추세요. 당신이
   대신 재구성한 진술은 답이 아닙니다. 이미 범위가 정해진 요청 — 특정 event
@@ -115,4 +123,5 @@ finding도 없습니다. 모든 숫자는 transcript나 당신이 실행한 명�
 | "지금 전부 훑고 마지막에 물어보자" | 범위 없는 전수 조사는 엉뚱한 질문에 상대의 예산을 씁니다. 먼저 물어보세요. |
 | "bug report를 원하니 지금 bundle을 만들자" | bundle은 상대의 세션 데이터를 묶은 것입니다. 요청할 때만 만드세요. |
 | "작고 국소적인 수정이니 구조 변경은 필요 없다" | 아무리 작아도 당신이 정할 일이 아닙니다. 증거를 보고하세요. triage하는 사람이 결정합니다. |
+| "원작 문제 같으니 upstream에 바로 올리자" | 포크에서 생긴 문제는 번역이나 포크 수정이 원인일 수 있습니다. 포크에 먼저 올리고, upstream 보고는 선택으로 제안해 영어 본문을 따로 승인받으세요. |
 | "token당 가격은 잘 알려져 있다" | transcript에서 계산하지 않은 숫자는 지어낸 것입니다. 인용하거나 빼세요. |
