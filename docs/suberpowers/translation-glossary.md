@@ -11,7 +11,7 @@
 | 대상 | 처리 | 예 |
 |---|---|---|
 | 산문 | 한국어 | 본문 설명, 목록 항목, 표 내용 |
-| `##` heading | **영문 유지** | `## Overview`, `## When to Use` |
+| `##` heading | **파일의 기존 관례를 따름** (영문 파일은 영문 유지) | `## Overview`, `## When to Use` — 아래 참고 |
 | 기술 용어 | **영문 유지** | skill, subagent, commit, test, mock, edge case, dispatch |
 | 상태값 | **영문 유지** | `DONE`, `BLOCKED`, `NEEDS_CONTEXT`, `DONE_WITH_CONCERNS` |
 | 의사코드 제어 키워드 | **영문 + 대시** | `BEFORE - …하기 전:`, `IF …라면:`, `STOP - …` |
