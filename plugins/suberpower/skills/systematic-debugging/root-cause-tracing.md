@@ -101,7 +101,7 @@ test 중에 무언가가 나타나는데 어느 test인지 모를 때:
 이 디렉터리의 bisection script `find-polluter.sh`를 사용하세요:
 
 ```bash
-./find-polluter.sh '.git' 'src/**/*.test.ts'
+bash ./find-polluter.sh '.git' 'src/**/*.test.ts'
 ```
 
 test를 하나씩 실행하고, 첫 번째 polluter에서 멈춥니다. 사용법은 script를 참조하세요.
@@ -162,7 +162,7 @@ digraph principle {
 
 ## 실제 영향
 
-debugging session(2025-10-03)에서:
+debugging 세션(2025-10-03)에서:
 - 5단계 추적을 통해 root cause 발견
 - source에서 fix (getter 검증)
 - 4개 layer의 방어 추가

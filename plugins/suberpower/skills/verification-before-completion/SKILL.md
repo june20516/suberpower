@@ -7,8 +7,6 @@ description: 작업이 완료되었거나, 수정되었거나, 통과되었다�
 
 ## Overview
 
-verification 없이 작업이 완료되었다고 주장하는 것은 효율이 아니라 부정직함입니다.
-
 **핵심 원칙:** 항상 주장보다 evidence가 먼저입니다.
 
 **이 규칙의 문자를 위반하는 것은 이 규칙의 정신을 위반하는 것입니다.**
@@ -105,15 +103,6 @@ NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 ❌ agent 보고를 신뢰함
 ```
 
-## Why This Matters
-
-24개의 실패 메모리로부터:
-- your human partner가 "I don't believe you"라고 말함 - 신뢰가 깨짐
-- 정의되지 않은 함수가 배포됨 - 크래시 발생
-- 누락된 요구사항이 배포됨 - 불완전한 기능
-- 잘못된 완료에 시간 낭비 → 방향 수정 → 재작업
-- 위반함: "정직은 핵심 가치다. 거짓말을 하면 교체될 것이다."
-
 ## When To Apply
 
 **다음 모든 경우 전에 항상:**
@@ -129,11 +118,3 @@ NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 - 패러프레이즈와 동의어
 - 성공의 함의
 - 완료/정확성을 시사하는 모든 communication
-
-## The Bottom Line
-
-**verification에 지름길은 없습니다.**
-
-명령을 실행하세요. 출력을 읽으세요. 그런 후에 결과를 주장하세요.
-
-이것은 협상 불가입니다.

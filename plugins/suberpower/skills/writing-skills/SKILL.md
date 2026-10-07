@@ -9,7 +9,7 @@ description: 새로운 skill을 만들거나, 기존 skill을 편집하거나, �
 
 **skill을 작성한다는 것은 프로세스 문서에 적용된 Test-Driven Development입니다.**
 
-**개인용 skill은 agent별 디렉터리에 위치합니다 (Claude Code는 `~/.claude/skills`, Codex는 `~/.agents/skills/`)**
+**개인용 skill은 사용 중인 runtime의 skills 디렉터리에 위치합니다** (Claude Code는 `~/.claude/skills/`) — 다른 runtime의 경로는 [codex-tools.md](../using-suberpowers/references/codex-tools.md) 또는 [gemini-tools.md](../using-suberpowers/references/gemini-tools.md)를 참고하세요. Codex, Copilot CLI, Gemini CLI는 모두 `~/.agents/skills/`도 runtime 공통 별칭으로 인식합니다.
 
 테스트 케이스(subagent를 활용한 압박 시나리오)를 작성하고, 그것이 실패하는 모습(베이스라인 동작)을 관찰하고, skill(문서)을 작성하고, 테스트가 통과하는 모습(agent가 따름)을 관찰하고, 리팩터링(허점 차단)합니다.
 
@@ -21,7 +21,7 @@ description: 새로운 skill을 만들거나, 기존 skill을 편집하거나, �
 
 ## skill이란 무엇인가?
 
-**skill**은 검증된 기법, 패턴, 도구에 대한 참조 가이드입니다. skill은 미래의 Claude 인스턴스가 효과적인 접근법을 찾아 적용할 수 있도록 돕습니다.
+**skill**은 검증된 기법, 패턴, 도구에 대한 참조 가이드입니다. skill은 미래의 agent가 효과적인 접근법을 찾아 적용할 수 있도록 돕습니다.
 
 **skill에 해당하는 것:** 재사용 가능한 기법, 패턴, 도구, 참조 가이드
 
@@ -55,7 +55,7 @@ skill 작성 전체 프로세스는 RED-GREEN-REFACTOR를 따릅니다.
 **만들지 말아야 할 때:**
 - 일회성 해결책
 - 다른 곳에 잘 문서화된 표준 관행
-- 프로젝트 고유 규칙 (CLAUDE.md에 작성)
+- 프로젝트 고유 규칙 (instruction 파일에 작성)
 - 기계적인 제약 (regex/validation으로 강제 가능하다면 자동화하세요. 문서는 판단이 필요한 사안을 위해 남겨두세요)
 
 ## skill 유형
@@ -99,7 +99,7 @@ skills/
 - `description`: 3인칭으로, **언제** 사용하는지만 설명 (무엇을 하는지가 아님)
   - "...할 때 사용합니다"로 끝맺어 트리거 조건에 집중
   - 구체적 증상, 상황, 맥락 포함
-  - **skill의 프로세스나 워크플로우를 절대 요약하지 말 것** (이유는 CSO 섹션 참고)
+  - **skill의 프로세스나 워크플로우를 절대 요약하지 말 것** (이유는 SDO 섹션 참고)
   - 가능하면 500자 이내로 유지
 
 ```markdown
@@ -137,28 +137,28 @@ Before/after 코드 비교
 ```
 
 
-## Claude Search Optimization (CSO)
+## Skill Discovery Optimization (SDO)
 
-**발견을 위한 핵심:** 미래의 Claude가 당신의 skill을 찾을 수 있어야 합니다
+**발견을 위한 핵심:** 미래의 agent가 당신의 skill을 찾을 수 있어야 합니다
 
 ### 1. 풍부한 description 필드
 
-**목적:** Claude는 주어진 작업에 어떤 skill을 로드할지 결정하기 위해 description을 읽습니다. "지금 이 skill을 읽어야 하는가?"에 답이 되도록 만드세요.
+**목적:** agent는 주어진 작업에 어떤 skill을 로드할지 결정하기 위해 description을 읽습니다. "지금 이 skill을 읽어야 하는가?"에 답이 되도록 만드세요.
 
 **형식:** "...할 때 사용합니다"로 끝맺어 트리거 조건에 집중
 
-**중요: Description은 언제 사용하는지이지, skill이 무엇을 하는지가 아닙니다**
+**CRITICAL: Description은 언제 사용하는지이지, skill이 무엇을 하는지가 아닙니다**
 
 description은 트리거 조건만 설명해야 합니다. skill의 프로세스나 워크플로우를 description에 요약하지 마세요.
 
-**왜 중요한가:** 테스트 결과, description이 skill의 워크플로우를 요약하면 Claude가 skill의 전체 내용을 읽는 대신 description을 따르는 경향이 나타났습니다. "task 사이에 code review"라고 적힌 description은 Claude가 단 한 번의 review만 수행하게 만들었습니다. skill의 flowchart는 두 번의 review(spec compliance 후 code quality)를 명확히 보여주었음에도 말입니다.
+**왜 중요한가:** 테스트 결과, description이 skill의 워크플로우를 요약하면 agent가 skill의 전체 내용을 읽는 대신 description을 따르는 경향이 나타났습니다. "task 사이에 code review"라고 적힌 description은 agent가 단 한 번의 review만 수행하게 만들었습니다. skill의 flowchart는 두 번의 review(spec compliance 후 code quality)를 명확히 보여주었음에도 말입니다.
 
-description을 단순히 "독립적인 task로 구성된 implementation plan을 실행할 때 사용합니다"(워크플로우 요약 없음)로 바꾸자 Claude는 flowchart를 올바르게 읽고 2단계 review 프로세스를 따랐습니다.
+description을 단순히 "독립적인 task로 구성된 implementation plan을 실행할 때 사용합니다"(워크플로우 요약 없음)로 바꾸자 agent는 flowchart를 올바르게 읽고 2단계 review 프로세스를 따랐습니다.
 
-**함정:** 워크플로우를 요약하는 description은 Claude가 따라가는 지름길을 만들어냅니다. skill 본문은 Claude가 건너뛰는 문서가 되어버립니다.
+**함정:** 워크플로우를 요약하는 description은 agent가 따라가는 지름길을 만들어냅니다. skill 본문은 agent가 건너뛰는 문서가 되어버립니다.
 
 ```yaml
-# ❌ BAD: 워크플로우 요약 - Claude가 skill을 읽는 대신 이것을 따를 수 있음
+# ❌ BAD: 워크플로우 요약 - agent가 skill을 읽는 대신 이것을 따를 수 있음
 description: plan 실행 시 사용 - task마다 subagent를 dispatch하고 task 사이에 code review 수행
 
 # ❌ BAD: 너무 많은 프로세스 디테일
@@ -198,7 +198,7 @@ description: React Router를 사용하며 인증 리다이렉트를 다룰 때 �
 
 ### 2. 키워드 커버리지
 
-Claude가 검색할 만한 단어들을 사용:
+agent가 검색할 만한 단어들을 사용:
 - 에러 메시지: "Hook timed out", "ENOTEMPTY", "race condition"
 - 증상: "flaky", "hanging", "zombie", "pollution"
 - 동의어: "timeout/hang/freeze", "cleanup/teardown/afterEach"
@@ -313,12 +313,12 @@ digraph when_flowchart {
 - 선형 지시 → 번호 목록
 - 의미 없는 라벨 (step1, helper2)
 
-graphviz 스타일 규칙은 @graphviz-conventions.dot를 참고하세요.
+graphviz 스타일 규칙은 이 디렉터리의 `graphviz-conventions.dot`를 참고하세요.
 
 **your human partner에게 시각화:** 이 디렉터리의 `render-graphs.js`로 skill의 flowchart를 SVG로 렌더링할 수 있습니다:
 ```bash
-./render-graphs.js ../some-skill           # 각 다이어그램을 따로
-./render-graphs.js ../some-skill --combine # 모든 다이어그램을 하나의 SVG로
+node ./render-graphs.js ../some-skill           # 각 다이어그램을 따로
+node ./render-graphs.js ../some-skill --combine # 모든 다이어그램을 하나의 SVG로
 ```
 
 ## 코드 예시
@@ -370,6 +370,8 @@ pptx/
   scripts/       # 실행 가능한 도구
 ```
 언제: 참조 자료가 인라인으로 두기에는 너무 클 때
+
+본문에서 번들 스크립트는 인터프리터를 통해 호출하세요(`bash scripts/tool.sh`, `node scripts/tool.js`). 경로만으로는 절대 호출하지 마세요: 일부 harness의 플러그인 패키저는 실행 권한 비트를 제거하므로, 그런 환경에서는 경로만 쓴 `scripts/tool.sh`가 `Permission denied`로 실패합니다.
 
 ## Iron Law (TDD와 동일)
 
@@ -456,9 +458,28 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 
 **이 모든 것이 의미하는 바: 배포 전에 테스트하라. 예외 없음.**
 
+## 실패에 맞는 형식 선택
+
+지침을 작성하기 전에 베이스라인 실패를 분류하세요. 한 실패 유형을 방탄화하는 형식이 다른 유형에서는 측정 가능할 만큼 역효과를 냅니다.
+
+| 베이스라인 실패 | 맞는 형식 | 틀린 형식 |
+|---|---|---|
+| 압박 속에서 규칙을 건너뛰거나 위반함 (알면서도 그렇게 함) | 금지 + 합리화 표 + red flags (아래 방탄화 섹션 참고) | 부드러운 지침 ("…를 선호하세요", "…를 고려하세요") |
+| 따르기는 하지만 출력의 형태가 틀림 (비대한 prompt, 묻힌 판정, spec 재진술) | 긍정형 레시피 또는 계약: 출력이 **무엇인지**를 명시 (구성 요소와 그 순서) | 금지 목록 ("재진술하지 마세요", "절대 진행 과정을 서술하지 마세요") |
+| 이미 만들어 내는 산출물에서 필수 요소를 빠뜨림 | 구조적: 채워 넣는 템플릿에 REQUIRED 필드나 슬롯 | 템플릿 근처의 산문 리마인더 |
+| 동작이 조건에 따라 달라져야 함 | 관찰 가능한 판별 조건에 연결된 조건문 ("brief가 있으면 그것을 참조하세요") | 무조건 규칙 + 예외 조항 |
+
+**형태 문제에서 금지가 역효과를 내는 이유:** 경쟁하는 유인("prompt를 자기 완결적으로 만들어라")이 있으면 agent는 "X 하지 마세요"와 협상합니다. dispatch prompt 지침의 문구를 직접 맞비교한 테스트에서, 금지 쪽은 레시피 쪽보다 원치 않는 내용을 분명히 더 많이 만들어 냈고(분포가 완전히 분리됨), 지침이 없는 대조군보다도 나빠지는 경향을 보였습니다 — 가정하지 말고 자신의 경우를 micro-test하되, 금지를 기본 선택지로 삼는 일은 절대 하지 마세요. 레시피는 협상할 여지를 남기지 않습니다: 출력이 명시된 형태와 일치하거나, 일치하지 않거나 둘 중 하나입니다.
+
+**어떤 형식을 고르든 지킬 규칙:**
+- **단서 조항을 달지 마세요.** "중요한 경우가 아니면 X 하지 마세요"는 협상을 다시 엽니다 — 같은 문구 테스트에서, 가장 성적이 좋던 레시피에 단서 조항 하나만 덧붙여도 일관되던 결과가 들쭉날쭉해졌습니다. 진짜 예외는 관찰 가능한 판별 조건에 연결된 별도의 조건문으로 표현하세요.
+- **예외 조항으로는 규칙의 적용 범위를 좁힐 수 없습니다.** "이 제한은 code block에는 적용되지 않습니다"라고 써도 code block은 여전히 억제됩니다. 출력의 일부가 예외여야 한다면, 규칙이 그 부분에 닿을 수 없도록 구조를 바꾸세요.
+
 ## 합리화에 대비한 skill 방탄화
 
 규율을 강제하는 skill(예: TDD)은 합리화에 저항해야 합니다. agent는 영리하고, 압박을 받으면 허점을 찾아냅니다.
+
+**범위:** 이 도구 모음은 규율 실패용입니다 — 규칙을 알면서도 압박 속에서 건너뛰는 agent. 출력 형태가 틀리거나 요소가 빠지는 경우에는 금지 기반 방탄화가 역효과를 냅니다. 대신 '실패에 맞는 형식 선택'의 형식을 사용하세요.
 
 **심리학 참고:** persuasion 기법이 왜 작동하는지 이해하면 체계적으로 적용할 수 있습니다. authority, commitment, scarcity, social proof, unity 원칙의 연구 기반(Cialdini, 2021; Meincke et al., 2025)은 persuasion-principles.md를 참고하세요.
 
@@ -522,7 +543,7 @@ agent가 합리화하고 있을 때 스스로 체크하기 쉽게 만듭니다:
 **이 모든 것이 의미하는 바: 코드를 삭제하라. TDD로 처음부터 다시 시작하라.**
 ```
 
-### 위반 증상에 맞춰 CSO 업데이트
+### 위반 증상에 맞춰 SDO 업데이트
 
 description에 추가: 규칙을 위반하기 직전의 증상:
 
@@ -553,7 +574,19 @@ skill 없이 subagent로 압박 시나리오를 실행하세요. 정확한 동�
 
 agent가 새 합리화를 발견했나요? 명시적 반론을 추가합니다. 방탄이 될 때까지 재테스트합니다.
 
-**테스팅 방법론:** 완전한 테스팅 방법론은 @testing-skills-with-subagents.md를 참고하세요:
+### 전체 시나리오 전에 문구 micro-test
+
+전체 압박 시나리오 실행은 최종 관문이지만, 반복할 때마다 느리고 비용이 큽니다. 먼저 micro-test로 문구 자체를 검증하세요:
+
+1. **호출마다 새 context 샘플 하나** — raw API 호출, 또는 API 접근 권한이 없다면 single-shot subagent. 시스템 prompt = 지침이 실제로 놓일 현실적인 context (지침만 떼어 낸 것이 아니라 전체 skill이나 prompt 템플릿), 사용자 메시지 = 그 실패를 유도하는 task.
+2. **지침 없는 대조군을 항상 포함하세요.** 대조군에서 실패가 나타나지 않으면 고칠 것이 없습니다 — 멈추고, 지침을 작성하지 마세요.
+3. **변형마다 5회 이상 반복하세요.** 단일 샘플은 거짓말을 합니다.
+4. **표시된 일치 항목은 모두 직접 읽으세요.** 원한다면 프로그램으로 채점해도 되지만, 템플릿을 그대로 따라 쓴 부분과 인용된 반례가 일치 항목으로 위장합니다. 자동 집계만으로는 실패와 성공을 모두 과대평가합니다.
+5. **분산도 지표입니다.** 지침이 제대로 작동하면 반복 결과가 같은 형태로 수렴합니다. 다섯 번 반복에서 다섯 가지 해석이 나온다면 문구에 구속력이 없다는 뜻입니다 — 단어를 더하기 전에 형식부터 더 엄격하게 다듬으세요.
+
+micro-test는 문구를 검증할 뿐, 규율 skill의 압박 시나리오를 대체하지 않습니다.
+
+**테스팅 방법론:** 완전한 테스팅 방법론은 [testing-skills-with-subagents.md](testing-skills-with-subagents.md)를 참고하세요:
 - 압박 시나리오 작성 방법
 - 압박 유형 (시간, 매몰비용, 권위, 피로)
 - 체계적으로 허점 막기
@@ -595,7 +628,7 @@ helper1, helper2, step3, pattern4
 
 ## skill 작성 체크리스트 (TDD 적용)
 
-**중요: 아래 각 체크리스트 항목에 대해 TodoWrite로 todo를 생성하세요.**
+**IMPORTANT: 아래 각 체크리스트 항목마다 todo를 생성하세요.**
 
 **RED 단계 - 실패하는 테스트 작성:**
 - [ ] 압박 시나리오 작성 (규율 skill은 3+ 결합 압박)
@@ -610,6 +643,8 @@ helper1, helper2, step3, pattern4
 - [ ] 검색을 위해 키워드를 전반에 분포 (에러, 증상, 도구)
 - [ ] 핵심 원칙이 있는 명료한 개요
 - [ ] RED에서 식별된 구체적 베이스라인 실패에 대응
+- [ ] 지침의 형식이 실패 유형과 맞음 ('실패에 맞는 형식 선택' 참고)
+- [ ] 동작을 형성하는 지침이라면: 지침 없는 대조군과 비교해 문구를 micro-test함 (5회 이상 반복, 표시된 일치 항목은 모두 직접 읽음) — 순수 참조 skill은 해당 없음
 - [ ] 인라인 코드 또는 별도 파일 링크
 - [ ] 훌륭한 예시 하나 (다중 언어 아님)
 - [ ] skill과 함께 시나리오 실행 - agent가 이제 따르는지 검증
@@ -634,7 +669,7 @@ helper1, helper2, step3, pattern4
 
 ## 발견 워크플로우
 
-미래의 Claude가 당신의 skill을 어떻게 찾는지:
+미래의 agent가 당신의 skill을 어떻게 찾는지:
 
 1. **문제 발생** ("tests are flaky")
 2. **skill 검색** (description을 grep하고, 카테고리를 훑어봄)
@@ -644,13 +679,3 @@ helper1, helper2, step3, pattern4
 6. **예시 로드** (구현할 때만)
 
 **이 흐름에 최적화** - 검색 가능한 용어를 일찍, 자주 배치
-
-## 결론
-
-**skill을 만든다는 것은 프로세스 문서를 위한 TDD입니다.**
-
-같은 Iron Law: 실패하는 테스트 없이는 skill 없음.
-같은 사이클: RED (베이스라인) → GREEN (skill 작성) → REFACTOR (허점 차단).
-같은 이점: 더 나은 품질, 더 적은 놀라움, 방탄 결과.
-
-코드에 TDD를 따른다면, skill에도 따르세요. 같은 규율을 문서에 적용한 것입니다.

@@ -7,8 +7,6 @@ description: bug, test 실패, 예상치 못한 동작을 만났을 때, fix를 
 
 ## 개요
 
-무작위 fix는 시간을 낭비하고 새로운 bug를 만듭니다. 임시 패치는 근본 문제를 가립니다.
-
 **핵심 원칙:** fix를 시도하기 전에 항상 root cause를 먼저 찾으세요. 증상만 고치는 것은 실패입니다.
 
 **이 프로세스의 문구를 위반하는 것은 debugging의 정신을 위반하는 것입니다.**
@@ -188,6 +186,7 @@ Phase 1을 완료하지 않았다면, fix를 제안할 수 없습니다.
    - 이제 test가 통과하나요?
    - 다른 test가 깨지지 않았나요?
    - 문제가 실제로 해결되었나요?
+   - 성공을 주장하기 전에 `suberpower:verification-before-completion` skill을 사용하세요
 
 4. **Fix가 동작하지 않으면**
    - 멈추세요
@@ -237,7 +236,7 @@ Phase 1을 완료하지 않았다면, fix를 제안할 수 없습니다.
 - "그건 발생하지 않나요?" - 검증 없이 가정했다는 의미
 - "그게 우리에게 ...를 보여줄까요?" - 증거 수집을 추가해야 했다는 의미
 - "추측 그만하세요" - 이해 없이 fix를 제안하고 있다는 의미
-- "Ultrathink this" - 증상이 아닌 근본에 의문을 가지라는 의미
+- "Ultra-think this" - 증상이 아닌 근본에 의문을 가지라는 의미
 - "막혔어요?" (좌절하며) - 당신의 접근 방식이 동작하지 않는다는 의미
 
 **이런 신호를 볼 때:** 멈추세요. Phase 1로 돌아가세요.
@@ -282,15 +281,3 @@ Phase 1을 완료하지 않았다면, fix를 제안할 수 없습니다.
 - **`root-cause-tracing.md`** - 원래의 trigger를 찾기 위해 call stack을 통해 bug를 역방향 추적
 - **`defense-in-depth.md`** - root cause를 찾은 후 여러 layer에 검증 추가
 - **`condition-based-waiting.md`** - 임의의 timeout을 condition polling으로 대체
-
-**관련 skill:**
-- **suberpower:test-driven-development** - 실패하는 test case 작성용 (Phase 4, Step 1)
-- **suberpower:verification-before-completion** - 성공을 주장하기 전에 fix가 동작했는지 검증
-
-## 실제 영향
-
-debugging session에서:
-- 체계적 접근: fix까지 15-30분
-- 무작위 fix 접근: 2-3시간의 허둥지둥
-- 첫 시도 fix 성공률: 95% 대 40%
-- 새로 도입되는 bug: 거의 0 대 흔함

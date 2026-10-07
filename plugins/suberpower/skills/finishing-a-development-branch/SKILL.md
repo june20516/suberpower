@@ -1,71 +1,58 @@
 ---
 name: finishing-a-development-branch
-description: 구현이 완료되고 모든 테스트가 통과되어 작업을 통합하는 방법을 결정해야 할 때 사용합니다 - merge, PR, 정리에 대한 구조화된 옵션을 제시하여 개발 작업 완료를 안내합니다
+description: 구현이 완료되고 모든 테스트가 통과되어 작업을 통합하는 방법을 결정해야 할 때 사용합니다
 ---
 
 # Finishing a Development Branch
 
 ## 개요
 
-명확한 옵션을 제시하고 선택된 워크플로를 처리하여 개발 작업 완료를 안내합니다.
-
 **핵심 원칙:** 테스트 확인 → 환경 감지 → 옵션 제시 → 선택 실행 → 정리.
 
 **시작 시 안내:** "finishing-a-development-branch skill을 사용하여 이 작업을 완료합니다."
 
-## 진행 절차
+## Step 1: 테스트 확인
 
-### Step 1: 테스트 확인
+프로젝트의 전체 테스트 스위트를 실행합니다 (`npm test` / `cargo test` / `pytest` / `go test ./...`).
 
-**옵션을 제시하기 전에 테스트 통과 여부를 확인합니다:**
+**테스트가 실패하면**, 실패를 보고하고 중단합니다 — 메뉴는 스위트가 통과한 뒤에 나옵니다:
 
-```bash
-# 프로젝트의 테스트 스위트 실행
-npm test / cargo test / pytest / go test ./...
-```
-
-**테스트가 실패하면:**
 ```
 테스트 실패 (<N>건). 완료 전에 반드시 수정해야 합니다:
 
 [실패 내역 표시]
-
-테스트가 통과될 때까지 merge/PR을 진행할 수 없습니다.
 ```
-
-중단합니다. Step 2로 진행하지 않습니다.
 
 **테스트가 통과하면:** Step 2로 진행합니다.
 
-### Step 2: 환경 감지
-
-**옵션을 제시하기 전에 workspace 상태를 판단합니다:**
+## Step 2: 환경 감지
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
 GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
+# 아직 workspace 안에 있을 때 지금 기록합니다 — Step 5가 디렉터리를 옮긴 뒤에
+# 정리(Step 6)가 이 값을 사용합니다
+WORKTREE_PATH=$(git rev-parse --show-toplevel)
 ```
 
 이를 통해 어떤 메뉴를 보여주고 정리를 어떻게 수행할지 결정합니다:
 
 | 상태 | 메뉴 | 정리 |
 |-------|------|---------|
-| `GIT_DIR == GIT_COMMON` (일반 repo) | 표준 4개 옵션 | 정리할 worktree 없음 |
-| `GIT_DIR != GIT_COMMON`, 명명된 branch | 표준 4개 옵션 | 출처 기반 (Step 6 참조) |
-| `GIT_DIR != GIT_COMMON`, detached HEAD | 축소된 3개 옵션 (merge 없음) | 정리 없음 (외부 관리) |
+| `GIT_DIR == GIT_COMMON` (일반 repo) | 표준 3개 옵션 | 정리할 worktree 없음 |
+| `GIT_DIR != GIT_COMMON`, 이름이 있는 branch | 표준 3개 옵션 | 출처(provenance) 기반 (Step 6 참조) |
+| `GIT_DIR != GIT_COMMON`, detached HEAD | 축소된 2개 옵션 (merge 없음) | 외부 관리 — 그대로 둠 |
 
-### Step 3: 베이스 branch 결정
+## Step 3: 베이스 branch 결정
 
-```bash
-# 일반적인 베이스 branch 시도
-git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
-```
+베이스 branch는 이 작업이 분기해 나온 branch입니다 — 보통 plan, 대화, 또는
+branch의 upstream에 이름이 나와 있습니다. 아직 알려져 있지 않다면 질문합니다:
+"이 branch는 <가장 유력한 추정>에서 분기되었습니다 - 맞나요?"
+merge 전에 확인하세요: 잘못된 베이스로 merge하면 되돌리는 비용이 큽니다.
 
-또는 질문합니다: "이 branch는 main에서 분기되었습니다 - 맞나요?"
+## Step 4: 옵션 제시
 
-### Step 4: 옵션 제시
-
-**일반 repo와 명명된 branch worktree — 다음 4개 옵션을 정확히 제시합니다:**
+**일반 repo와 이름이 있는 branch worktree — 다음 3개 옵션을 정확히 제시합니다:**
 
 ```
 구현이 완료되었습니다. 무엇을 하시겠습니까?
@@ -73,28 +60,29 @@ git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
 1. <base-branch>로 로컬에서 merge
 2. Push하고 Pull Request 생성
 3. branch를 그대로 유지 (나중에 직접 처리)
-4. 이 작업 폐기
 
 어떤 옵션을 선택하시겠습니까?
 ```
 
-**Detached HEAD — 다음 3개 옵션을 정확히 제시합니다:**
+**Detached HEAD — 다음 2개 옵션을 정확히 제시합니다:**
 
 ```
 구현이 완료되었습니다. detached HEAD 상태입니다 (외부에서 관리되는 workspace).
 
 1. 새 branch로 push하고 Pull Request 생성
 2. 그대로 유지 (나중에 직접 처리)
-3. 이 작업 폐기
 
 어떤 옵션을 선택하시겠습니까?
 ```
 
-**설명을 추가하지 마세요** - 옵션을 간결하게 유지합니다.
+메뉴는 적힌 그대로 제시하세요 — 간결하게, 모든 옵션은 위 목록에서만 가져옵니다.
+작업 폐기는 your human partner가 명시적으로 요청했을 때에만 그에 대한 응답으로
+이루어집니다 (아래 "your human partner가 작업 폐기를 요청하는 경우" 참조).
+답을 기다리세요. 통합 결정은 your human partner의 몫입니다.
 
-### Step 5: 선택 실행
+## Step 5: 선택 실행
 
-#### Option 1: 로컬 Merge
+### Option 1: 로컬 Merge
 
 ```bash
 # CWD 안전을 위해 메인 repo 루트 가져오기
@@ -108,44 +96,43 @@ git merge <feature-branch>
 
 # merge된 결과에서 테스트 확인
 <test command>
-
-# merge 성공 후에만: worktree 정리 (Step 6), 그 다음 branch 삭제
 ```
 
-그런 다음: worktree 정리 (Step 6), 그 다음 branch 삭제:
+merge된 결과에서 테스트가 실패하면: 중단하고, worktree와 branch를 그대로 둔 채
+조사하세요 — 아무것도 push되지 않았으므로 merge는 로컬에 머물러 있고 복구할 수
+있습니다.
+
+merge된 결과가 통과하면: worktree를 정리하고 (Step 6), 그 다음 branch를
+삭제합니다:
 
 ```bash
 git branch -d <feature-branch>
 ```
 
-#### Option 2: Push 및 PR 생성
+### Option 2: Push 및 PR 생성
 
 ```bash
-# branch push
 git push -u origin <feature-branch>
-
-# PR 생성
-gh pr create --title "<title>" --body "$(cat <<'EOF'
-## Summary
-<변경 사항 2-3개 bullet>
-
-## Test Plan
-- [ ] <검증 단계>
-EOF
-)"
+# detached HEAD에서는 remote에 새 branch 이름을 지정합니다:
+# git push origin HEAD:refs/heads/<new-branch>
 ```
 
-**worktree를 정리하지 마세요** — 사용자가 PR 피드백에 따라 반복 작업을 하기 위해 살아있어야 합니다.
+그런 다음 forge의 도구로 <base-branch>를 대상으로 하는 pull/merge request를
+생성하세요 — 사용할 수 있으면 forge의 CLI를, 아니면 대부분의 forge가 push 시
+출력하는 생성 URL을 사용합니다. repo에 PR 템플릿과 관례가 있으면 따르고, URL을
+your human partner에게 보고하세요.
 
-#### Option 3: 그대로 유지
+worktree를 유지하세요 — your human partner는 그곳에서 PR 피드백을 반영합니다.
+
+### Option 3: 그대로 유지
 
 보고: "branch <name>를 유지합니다. Worktree는 <path>에 보존됩니다."
 
-**worktree를 정리하지 마세요.**
+### your human partner가 작업 폐기를 요청하는 경우
 
-#### Option 4: 폐기
+이 경로는 작업을 버려 달라는 명시적 요청에 대한 응답으로만 존재합니다. 먼저
+확인합니다:
 
-**먼저 확인:**
 ```
 다음 항목이 영구적으로 삭제됩니다:
 - Branch <name>
@@ -155,41 +142,66 @@ EOF
 확인하려면 'discard'를 입력하세요.
 ```
 
-정확한 확인을 기다립니다.
+정확히 그 확인이 올 때까지 기다립니다. 확인이 오면:
 
-확인되면:
 ```bash
 MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
 cd "$MAIN_ROOT"
 ```
 
-그런 다음: worktree 정리 (Step 6), 그 다음 branch 강제 삭제:
+그런 다음 worktree를 정리하고 (Step 6) branch를 강제 삭제합니다:
+
 ```bash
 git branch -D <feature-branch>
 ```
 
-### Step 6: Workspace 정리
+## Step 6: Workspace 정리
 
-**Option 1과 4에만 적용됩니다.** Option 2와 3은 항상 worktree를 보존합니다.
-
-```bash
-GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
-GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
-WORKTREE_PATH=$(git rev-parse --show-toplevel)
-```
+**Option 1과 확인된 폐기에서만 실행됩니다.** Option 2와 3은 항상 worktree를
+보존합니다. 두 호출 경로 모두 이미 메인 repo 루트로 디렉터리를 옮겼습니다
+(worktree 제거는 worktree 밖에서 실행해야 하기 때문입니다). 정리에는 그 이동 전
+Step 2에서 기록한 `GIT_DIR`/`GIT_COMMON`/`WORKTREE_PATH` 값을 사용합니다.
 
 **`GIT_DIR == GIT_COMMON`인 경우:** 일반 repo이며 정리할 worktree가 없습니다. 완료.
 
-**worktree 경로가 `.worktrees/`, `worktrees/`, 또는 `~/.claude/suberpowers/worktrees/` 하위에 있는 경우:** Superpowers(suberpowers 포크)가 이 worktree를 생성했으므로 — 정리는 우리의 책임입니다.
+<!-- DIVERGENCE:D-002 start -->
+**`WORKTREE_PATH`가 `~/.claude/suberpowers/worktrees/`(`$HOME/.claude/suberpowers/worktrees/`), `.worktrees/`, 또는 `worktrees/` 하위에 있는 경우:**
+Superpowers(suberpowers 포크)가 이 worktree를 생성했으므로 정리는 우리의
+책임입니다. `suberpower:using-git-worktrees`는 worktree를 항상 전역 경로
+`~/.claude/suberpowers/worktrees/<project>/<branch>`에 생성합니다. 이 경로를
+놓치면 이 포크가 만든 worktree가 정리되지 않고 남습니다.
 
 ```bash
-MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
-cd "$MAIN_ROOT"
 git worktree remove "$WORKTREE_PATH"
 git worktree prune  # 자가 치유: 오래된 등록 정보 정리
 ```
+<!-- DIVERGENCE:D-002 end -->
 
-**그 외의 경우:** 호스트 환경(harness)이 이 workspace를 소유합니다. 제거하지 마세요. 플랫폼이 workspace 종료 도구를 제공하면 사용하세요. 그렇지 않으면 workspace를 그대로 둡니다.
+**제거가 거부되면** (`contains modified or untracked files`): 그 worktree에는
+다른 어디에도 없는 파일이 있습니다 — commit되지 않은 plan, 메모, 임시 작업물.
+스스로 판단해 `--force`를 절대 쓰지 마세요. 무엇이 걸려 있는지
+your human partner에게 보여주고 질문하세요:
+
+```bash
+git -C "$WORKTREE_PATH" status --porcelain -uall
+```
+
+```
+worktree 제거가 거부되었습니다 — 다음 파일은 한 번도 commit되지 않았습니다:
+
+<file list>
+
+1. 이 파일들을 정리 전에 <branch>에 commit
+2. 이 파일들을 <main repo root>로 옮기기
+3. 이 파일들을 삭제 (복구 불가)
+
+어떻게 하시겠습니까?
+```
+
+선택을 수행한 뒤 worktree를 제거합니다.
+
+**그 외의 경우:** 호스트 환경이 이 workspace를 소유합니다 — 그대로 두세요.
+플랫폼이 workspace 종료 도구를 제공하면 사용하세요.
 
 ## 빠른 참조
 
@@ -198,54 +210,19 @@ git worktree prune  # 자가 치유: 오래된 등록 정보 정리
 | 1. 로컬 merge | yes | - | - | yes |
 | 2. PR 생성 | - | yes | yes | - |
 | 3. 그대로 유지 | - | - | yes | - |
-| 4. 폐기 | - | - | - | yes (강제) |
+| 폐기 (명시적 요청 시에만) | - | - | - | yes (강제) |
 
-## 자주 발생하는 실수
+## 흔한 합리화
 
-**테스트 확인 건너뛰기**
-- **문제:** 망가진 코드를 merge하거나 실패하는 PR 생성
-- **해결:** 옵션을 제공하기 전에 항상 테스트를 확인합니다
-
-**열린 질문**
-- **문제:** "다음에 무엇을 할까요?"는 모호함
-- **해결:** 정확히 4개의 구조화된 옵션 제시 (detached HEAD는 3개)
-
-**Option 2에 대해 worktree 정리**
-- **문제:** PR 반복 작업에 필요한 worktree 제거
-- **해결:** Option 1과 4에만 정리 수행
-
-**worktree 제거 전에 branch 삭제**
-- **문제:** worktree가 여전히 branch를 참조하고 있어 `git branch -d` 실패
-- **해결:** 먼저 merge, worktree 제거, 그 다음 branch 삭제
-
-**worktree 내부에서 git worktree remove 실행**
-- **문제:** CWD가 제거되는 worktree 내부에 있을 때 명령이 조용히 실패함
-- **해결:** `git worktree remove` 전에 항상 메인 repo 루트로 `cd`
-
-**harness가 소유한 worktree 정리**
-- **문제:** harness가 생성한 worktree를 제거하면 phantom 상태 발생
-- **해결:** `.worktrees/`, `worktrees/`, 또는 `~/.claude/suberpowers/worktrees/` 하위의 worktree만 정리
-
-**폐기 시 확인 없음**
-- **문제:** 실수로 작업 삭제
-- **해결:** 입력된 "discard" 확인 요구
-
-## 경고 신호
-
-**절대 금지:**
-- 실패하는 테스트로 진행
-- 결과에서 테스트 확인 없이 merge
-- 확인 없이 작업 삭제
-- 명시적 요청 없이 force-push
-- merge 성공 확인 전에 worktree 제거
-- 만들지 않은 worktree 정리 (출처 확인)
-- worktree 내부에서 `git worktree remove` 실행
-
-**항상:**
-- 옵션 제공 전에 테스트 확인
-- 메뉴 제시 전에 환경 감지
-- 정확히 4개 옵션 제시 (detached HEAD는 3개)
-- Option 4에 대해 입력된 확인 받기
-- Option 1 & 4에만 worktree 정리
-- worktree 제거 전에 메인 repo 루트로 `cd`
-- 제거 후 `git worktree prune` 실행
+| 핑계 | 현실 |
+|--------|---------|
+| "이번 세션 초반에 테스트가 통과했다" | 통합하려는 바로 그 트리에서 스위트를 실행하세요. 통과한 실행은 그 실행이 돌았던 트리만 증명합니다. |
+| "merge를 원하는 게 뻔하다" | 통합은 your human partner의 결정입니다. 메뉴를 제시하고 기다리세요. |
+| "이 기능은 끝난 것 같으니 폐기를 제안하자" | 메뉴는 적힌 그대로가 전부입니다. 폐기는 your human partner가 분명한 말로 요청할 때에만 일어납니다. |
+| "'응, 없애 줘'도 확인으로 친다" | 입력된 단어 `discard`만이 삭제를 승인합니다. |
+| "PR이 올라갔으니 이제 worktree는 잡동사니다" | PR 피드백은 그 worktree에서 고칩니다. 작업이 반영될 때까지 남겨 둡니다. |
+| "이 다른 worktree는 오래된 것 같으니 같이 정리하자" | Step 6은 이번 작업의 `WORKTREE_PATH` 하나만 정리합니다. 그것도 `~/.claude/suberpowers/worktrees/`, `.worktrees/`, `worktrees/` 하위일 때만입니다. 다른 worktree는 경로와 무관하게 건드리지 마세요. |
+| "제거가 거부됐다 — `--force`는 정리를 마무리할 뿐이다" | 거부는 그 worktree에만 있는 파일이 있다는 뜻입니다. `--force`는 그 파일을 영구히 파괴합니다. your human partner에게 보여주고 질문하세요. |
+| "merge된 결과의 실패는 아마 flaky일 것이다" | merge된 결과가 실패하면 모든 것이 멈춥니다. 조사하는 동안 branch와 worktree는 그대로 둡니다. |
+| "베이스 branch는 당연히 main이다" | 분기 지점을 확인하거나 질문하세요. 잘못된 베이스로 merge하면 되돌리는 비용이 큽니다. |
+| "push가 거부됐다 — force-push하면 해결된다" | push 거부는 remote가 바뀌었다는 뜻입니다. 조사하세요. force-push는 your human partner가 명시적으로 요청할 때에만 합니다. |

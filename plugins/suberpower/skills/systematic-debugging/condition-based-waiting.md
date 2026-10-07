@@ -79,7 +79,7 @@ async function waitFor<T>(
 }
 ```
 
-실제 debugging session에서의 도메인별 helper(`waitForEvent`, `waitForEventCount`, `waitForEventMatch`)를 포함한 완전한 구현은 이 디렉터리의 `condition-based-waiting-example.ts`를 참조하세요.
+실제 debugging 세션에서의 도메인별 helper(`waitForEvent`, `waitForEventCount`, `waitForEventMatch`)를 포함한 완전한 구현은 이 디렉터리의 `condition-based-waiting-example.ts`를 참조하세요.
 
 ## 흔한 실수
 
@@ -108,7 +108,7 @@ await new Promise(r => setTimeout(r, 200));   // Then: wait for timed behavior
 
 ## 실제 영향
 
-debugging session(2025-10-03)에서:
+debugging 세션(2025-10-03)에서:
 - 3개 파일에 걸친 15개의 flaky test fix
 - pass rate: 60% → 100%
 - 실행 시간: 40% 빨라짐

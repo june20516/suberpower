@@ -1,18 +1,3 @@
-# Codex Tool 매핑
-
-skill은 Claude Code tool 이름을 사용합니다. skill에서 다음을 마주치면, 해당 플랫폼 대응 tool을 사용하세요:
-
-| skill에서의 참조 | Codex 대응 |
-|-----------------|------------------|
-| `Task` tool (subagent dispatch) | `spawn_agent` ([Subagent dispatch는 multi-agent 지원이 필요합니다](#subagent-dispatch-requires-multi-agent-support) 참조) |
-| 여러 개의 `Task` 호출 (병렬) | 여러 개의 `spawn_agent` 호출 |
-| Task가 결과를 반환 | `wait_agent` |
-| Task가 자동으로 완료 | `close_agent`로 슬롯 해제 |
-| `TodoWrite` (작업 추적) | `update_plan` |
-| `Skill` tool (skill 호출) | skill은 네이티브로 로드됩니다 — 지시를 따르기만 하면 됩니다 |
-| `Read`, `Write`, `Edit` (파일) | 네이티브 파일 tool을 사용하세요 |
-| `Bash` (명령 실행) | 네이티브 shell tool을 사용하세요 |
-
 ## Subagent dispatch는 multi-agent 지원이 필요합니다
 
 Codex config (`~/.codex/config.toml`)에 추가하세요:
@@ -22,9 +7,68 @@ Codex config (`~/.codex/config.toml`)에 추가하세요:
 multi_agent = true
 ```
 
-이렇게 하면 `dispatching-parallel-agents` 및 `subagent-driven-development`와 같은 skill에서 `spawn_agent`, `wait_agent`, `close_agent`를 사용할 수 있습니다.
+이렇게 하면 `dispatching-parallel-agents`, `subagent-driven-development` 같은
+skill이 쓰는 multi-agent tool이 활성화됩니다. 어떤 tool을 쓸 수 있는지는 model
+preset이 선택하는 multi-agent 버전에 따라 다릅니다(현재 preset은 V2, 이전
+preset은 V1로 동작합니다). 어떤 표든 — 이 문서를 포함해 — 실제 tool 목록과
+다르면 실제 tool 목록을 믿으세요.
 
-레거시 참고사항: `rust-v0.115.0` 이전의 Codex 빌드는 spawn된 agent를 기다리는 것을 `wait`로 노출했습니다. 현재 Codex는 spawn된 agent에 대해 `wait_agent`를 사용합니다. `wait`라는 이름은 이제 code-mode `exec/wait`에 속하며, 이는 `cell_id`로 yield된 exec cell을 재개합니다; spawn된 agent의 결과 tool이 아닙니다.
+- **Spawn:** 자식에게 깨끗한 context를 주려면
+  `spawn_agent {fork_turns: "none"}`을 쓰세요. 기본값 `"all"`은 당신의
+  transcript 전체를 자식에게 복사합니다. Codex 0.145+에서는
+  `~/.codex/agents/` 아래의 role 파일이 `agent_type`으로 격리된 fork에 붙습니다.
+  전체 히스토리 fork도 `model`과 `reasoning_effort` override를 받습니다(거기서
+  거부되는 것은 `agent_type`뿐입니다) — 격리된 fork가 SDD 기본값인 것은 context
+  위생 때문이지, override에 격리된 fork가 필요해서가 아닙니다.
+- **수정 라운드:** `followup_task`로 implementer를 재개하세요 — 메시지를
+  전달하고, turn을 일으키며, harness가 evict한 자식을 투명하게 다시
+  로드합니다. spawn된 agent에는 다시 메시지를 보낼 수 없다는 가정으로 새
+  implementer를 절대 dispatch하지 마세요. V2에서는 언제나 보낼 수 있습니다.
+- **수명 주기:** V2에는 `close_agent`가 없습니다. 끝난 자식은 슬롯이
+  필요할 때 자동으로 evict되므로, 닫지 않고 두어도 비용이 들지 않습니다.
+  `close_agent`는 V1 세션에만 있습니다 — V1에서는 review 결과가 돌아오면
+  reviewer를 닫고, 각 implementer는 해당 task의 review가 통과한 뒤 닫으세요.
+- **모델 이름:** skill, 표, 이전 세션에서 본 모델 이름을 현재 spawn
+  allowlist와 대조하지 않고 `spawn_agent`에 절대 그대로 옮기지 마세요 — V2는
+  V2를 지원하는 preset만 받고, 나머지에는 hard error를 냅니다.
+
+## 자식 기다리기
+
+`wait_agent`는 polling이 아니라 이벤트 구독입니다: 긴 대기도 자식에서
+mailbox 활동이 생기는 즉시 깨어나며, 지연은 짧은 대기와 같습니다. 짧은
+timeout으로 polling해도 얻는 것은 없고, poll마다 tool 호출 한 번과 context
+재과금 비용이 듭니다. 측정한 세션에서는 전체 wait 호출의 약
+3분의 2가 timeout으로 끝난 짧은 poll이었습니다.
+
+- 아직 로컬 작업이 남아 있으면 아예 기다리지 마세요. 완료된 자식의 최종
+  답변은 mailbox로 push되어 다음 turn에 함께 도착합니다.
+- 자식이 남아 있는데 정말 할 일이 없을 때는 기한을 정해 기다리세요:
+  `wait_agent`에 `timeout_ms` 300000-600000(5-10분). 각 대기 구간이 끝나면
+  — 깨어났든 timeout이든 — 상태를 한 줄 남기고, `list_agents`를 실행하고,
+  보고 없이 끝난 것이 있으면 찾아내세요. 5분보다 짧은 poll을 절대 연달아 걸지
+  마세요. 이벤트 구독은 기한을 정한 대기도 짧은 대기만큼 빠르게 깨웁니다.
+- 완료 메일은 idle 상태의 controller를 깨우지 못합니다(turn을 일으키지 않고
+  전달됩니다). 그 idle 구간을 메우는 것이 `wait_agent`의 유일한 역할입니다.
+  아무 활동 없이 timeout된 대기 구간은 상태를 맞춰 보라는 신호이지, 다음 구간을
+  줄이라는 신호가 아닙니다.
+
+## spawn 시 모델 라우팅
+
+당신이 내리는 모든 `spawn_agent`는 — 당신 자신이 fan-out을 실행하는 spawn된
+자식일 때도 — 실행 중인 skill의 '모델 선택' 규칙에 따라 `model`과
+`reasoning_effort`를 **둘 다** 명시해야 합니다. `model`만 설정하는 것은
+함정입니다: 자식의 effort가 당신의 것이 아니라 그 모델의 기본값으로
+조용히 초기화됩니다.
+
+your human partner에게 `~/.codex/config.toml`에 머신 수준의 안전장치를 추가해
+달라고 요청하세요. 그러면 놓친 spawn도 세션의 가장 비싼 모델을 조용히
+상속하는 대신 의도한 등급으로 라우팅됩니다:
+
+```toml
+[agents]
+default_subagent_model = "<a mid-tier model from your spawn allowlist>"
+default_subagent_reasoning_effort = "medium"
+```
 
 ## 환경 감지
 
@@ -39,7 +83,7 @@ BRANCH=$(git branch --show-current)
 - `GIT_DIR != GIT_COMMON` → 이미 linked worktree에 있음 (생성 건너뛰기)
 - `BRANCH`가 비어있음 → detached HEAD (sandbox에서 branch/push/PR 불가)
 
-각 skill이 이 신호를 어떻게 사용하는지는 `using-git-worktrees` Step 0과 `finishing-a-development-branch` Step 1을 참조하세요.
+각 skill이 이 신호를 어떻게 사용하는지는 `using-git-worktrees` Step 0과 `finishing-a-development-branch` Step 2을 참조하세요.
 
 ## Codex App 마무리
 

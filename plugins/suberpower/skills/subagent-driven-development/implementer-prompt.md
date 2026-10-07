@@ -3,14 +3,17 @@
 implementer subagent를 dispatch할 때 이 템플릿을 사용하세요.
 
 ```
-Task tool (general-purpose):
+Subagent (general-purpose):
   description: "Implement Task N: [task 이름]"
+  model: [MODEL — REQUIRED: SKILL.md의 '모델 선택'에 따라 선택하세요. model을
+         생략하면 세션에서 가장 비싼 model을 조용히 상속합니다]
   prompt: |
     당신은 Task N: [task 이름]을 구현합니다.
 
     ## Task 설명
 
-    [plan에 있는 task의 전체 원문 — 여기에 붙여넣으세요. subagent가 파일을 읽게 하지 마세요]
+    먼저 task brief를 읽으세요: [BRIEF_FILE]
+    여기에 plan에 있는 task의 전체 원문이 들어 있습니다.
 
     ## Context
 
@@ -40,6 +43,20 @@ Task tool (general-purpose):
 
     **작업 중에:** 예상치 못한 것이나 불명확한 것을 만나면 **질문하세요**.
     멈추고 명확히 하는 것은 언제나 괜찮습니다. 추측하거나 가정하지 마세요.
+
+    반복 작업 중에는 변경 중인 부분에 해당하는 테스트만 집중해서 실행하세요.
+    전체 test suite는 편집할 때마다가 아니라 commit하기 전에 한 번 실행하세요.
+
+    ## Subagent를 dispatch하지 마세요
+
+    이 task의 모든 작업을 직접 하세요. task의 일부를 구현하려고 subagent를
+    **절대** 띄우지 마세요. 무엇보다, 자신의 작업을 확인하려고 reviewer를 띄우는
+    일은 **절대** 하지 마세요. self-review(아래)는 자신의 diff를 직접 읽는 것을
+    뜻합니다. review는 controller의 일입니다: 당신이 보고하면 controller가
+    당신의 diff를 대상으로 새 reviewer를 dispatch합니다. 당신이 띄운 reviewer는
+    그 review를 전체 비용을 들여 중복할 뿐이고, 그 승인은 이 프로세스에서 아무
+    효력이 없습니다. "독립적인 review가 있으면 보고서가 더 탄탄해질 것"이라는
+    생각이 든다면 — 그 review는 이미 예정되어 있습니다. 대신 보고하세요.
 
     ## 코드 구성
 
@@ -95,18 +112,41 @@ Task tool (general-purpose):
     - 테스트가 mock의 동작이 아니라 실제 동작을 검증하는가?
     - 요구되었다면 TDD를 따랐는가?
     - 테스트가 충분한가?
+    - 테스트 출력이 깨끗한가? (불필요한 경고나 잡음이 없는가)
 
     self-review 중에 이슈를 발견하면, 보고하기 전에 지금 수정하세요.
 
+    ## Review 지적 사항을 받은 후
+
+    task review에서 이슈가 발견되면, 지적 사항과 함께 당신의 작업이 재개됩니다.
+    이를 수정하고, 수정한 코드를 커버하는 테스트를 다시 실행한 뒤, report 파일에
+    수정 보고서를 덧붙이세요: 무엇을 바꿨는지, 실행한 테스트(수정한 코드를 커버하는 것), 명령어,
+    출력. reviewer는 당신 대신 테스트를 다시 실행하지 않습니다 — 당신의 보고서가
+    곧 테스트 증거입니다. 그런 다음 첫 보고와 같은 짧은 상태 보고 형식으로
+    회신하세요.
+
     ## 보고 형식
 
-    완료되면 다음을 보고하세요:
-    - **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+    전체 보고서를 [REPORT_FILE]에 작성하세요:
     - 무엇을 구현했는가 (막혔다면 무엇을 시도했는가)
     - 무엇을 테스트했고 결과는 어땠는가
+    - **TDD 증거** (이 task에 TDD가 요구된 경우):
+      - RED: 실행한 명령, 구현 전의 관련 실패 출력, 그리고 그 실패가 예상된 이유
+      - GREEN: 실행한 명령과 구현 후의 관련 통과 출력
     - 변경된 파일
     - self-review 결과 (있는 경우)
     - 모든 이슈 또는 우려 사항
+
+    그런 다음 **오직** 아래 항목만 회신하세요 (15줄 이내 — 상세 내용은 report
+    파일에 있습니다):
+    - **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+    - 생성한 commit (짧은 SHA + 제목)
+    - 한 줄 테스트 요약 (예: "14/14 passing, output pristine")
+    - 우려 사항 (있는 경우)
+    - report 파일 경로
+
+    BLOCKED 또는 NEEDS_CONTEXT라면, 구체적인 내용을 최종 메시지 자체에
+    담으세요 — controller는 그 메시지를 보고 바로 조치합니다.
 
     작업을 완료했지만 정확성에 의문이 있다면 DONE_WITH_CONCERNS를 사용하세요.
     task를 완료할 수 없다면 BLOCKED를 사용하세요. 제공되지 않은 정보가

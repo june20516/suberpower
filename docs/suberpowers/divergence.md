@@ -68,22 +68,23 @@ divergence가 **유지되었는지 어떻게 확인할지**입니다. 한 항목
 **검증:**
 - `plugins/`에 `superpowers:` (skill 호출 네임스페이스) → 0건
 - `plugins/`에 `docs/superpowers/`, `.superpowers/`, `~/.config/superpowers/`, `~/.claude/superpowers/` → 0건
-- upstream 저장소 URL(`github.com/obra/superpowers`)은 원작자 링크이므로 **검사에서 제외**
+- upstream 저장소 식별자(`obra/superpowers` — 원작자 링크 `github.com/obra/superpowers`, `gh --repo obra/superpowers`, 검색어 `repo:obra/superpowers` 포함)는 저장소를 가리키는 이름이므로 **검사에서 제외** (스크립트는 `obra/superpowers`가 든 줄을 제외)
+- 외부 브랜드 자산 URL(brainstorming `server.cjs`의 로고 이미지 `primeradiant.com/brand/superpowers-visual-brainstorming-logo.png`)은 바꾸면 자산이 깨지므로 **검사에서 제외** (스크립트는 이 파일명이 든 줄만 제외)
 - 그 외 `superpowers` 문자열은 아래 3곳만 허용 (브랜드성 표현 + 출처 설명)
 
 | 위치 | 내용 |
 |---|---|
 | `hooks/session-start:2` | 주석 `SessionStart hook for superpowers plugin (suberpower fork)` |
-| `hooks/session-start:35` | 주입 문구 `You have superpowers. (이 포크: suberpowers)` |
-| `.claude-plugin/plugin.json` | `superpowers 스킬 라이브러리의 한국어 포크: …` |
+| `hooks/session-start:27` | 주입 문구 `You have superpowers. (이 포크: suberpowers)` |
+| `.claude-plugin/plugin.json` | `superpowers v6.4.2 기준 스킬 라이브러리의 한국어 포크: …` |
 
 > 브랜드성 일반 표현은 원문을 살리되 **이 포크임을 괄호로 부연**합니다. 설계 근거는 [2026-06-10 spec](./specs/2026-06-10-worktree-skill-improvement-design.md)의 4-C 참조.
 
 ---
 
-## D-002 · `using-git-worktrees` 전면 재작성
+## D-002 · `using-git-worktrees` 전면 재작성과 전역 worktree 경로 인식
 
-**범위:** `plugins/suberpower/skills/using-git-worktrees/SKILL.md`
+**범위:** `plugins/suberpower/skills/using-git-worktrees/SKILL.md`, `plugins/suberpower/skills/finishing-a-development-branch/SKILL.md` (전역 경로 인식 블록)
 **정책:** `MANUAL_MERGE`
 **검증 등급:** `auto` + `manual`
 
@@ -91,14 +92,18 @@ upstream의 native 위임 방식을 걷어내고 **git 직접 조작**으로 재
 
 **근거:** 프로젝트 내부에 worktree를 만들면 메인 repo의 `git status`/`diff`가 오염됩니다. 랜덤 브랜치명 생성과 base 브랜치 임의 선택도 개인 워크플로우와 맞지 않았습니다.
 
+`finishing-a-development-branch`는 "이 worktree를 우리가 만들었는가"(provenance)로 정리 여부를 정합니다. upstream은 v6.0.0에서 전역 경로를 이 판정에서 뺐지만, 이 포크는 worktree를 전역 경로에 만들므로 판정이 `~/.claude/suberpowers/worktrees/`를 인식하지 못하면 이 포크가 만든 worktree가 정리되지 않습니다. 그래서 Step 6의 판정 블록을 D-002 보호 구역 마커로 감쌉니다. 합리화 표의 정리 대상 행(마커 밖)도 같은 경로 목록을 유지합니다. upstream이 Step 6 조건 문장을 바꾸면 새 문장에 전역 경로(`~`·`$HOME` 병기)를 다시 넣습니다.
+
 **검증 (`auto`):** 아래 마커가 모두 존재해야 합니다.
 - `~/.claude/suberpowers/worktrees/` (전역 경로 고정)
 - `Step 0: Detect Existing Isolation` (기존 isolation 감지)
 - `git worktree add` (git 직접 조작)
+- finishing-a-development-branch에 `~/.claude/suberpowers/worktrees/` 존재 (+ D-002 마커 짝, 마커 구역 안의 `WORKTREE_PATH` 조건 줄에 경로가 있음)
+- finishing-a-development-branch 합리화 표 행(`|`로 시작하는 줄)에 `~/.claude/suberpowers/worktrees/` 존재
 
-**검증 (`manual`):** 이번 동기화에서 upstream이 이 파일을 변경했다면, 사람이 변경 의도를 읽고 반영 여부를 판단했는가?
+**검증 (`manual`):** 이번 동기화에서 upstream이 이 범위를 변경했다면, 사람이 변경 의도를 읽고 반영 여부를 판단했는가?
 
-**동기화 시:** upstream이 이 파일을 바꿔도 **자동 적용하지 마세요.** 변경 의도를 읽고, 이 포크의 재작성본에 반영할 가치가 있는 것만 손으로 옮깁니다.
+**동기화 시:** upstream이 이 범위를 바꿔도 **자동 적용하지 마세요.** 변경 의도를 읽고, 이 포크의 재작성본에 반영할 가치가 있는 것만 손으로 옮깁니다.
 
 ---
 
@@ -153,7 +158,7 @@ upstream은 `"Use when..."`으로 **시작**합니다. 이 포크는 **한국어
 
 **근거:** 동기화 중 가장 흔한 사고가 "upstream 파일을 그대로 복사"입니다. 이 검사가 그것을 잡습니다.
 
-**검증 (`auto`):** 각 SKILL.md의 한글 문자 수가 **400자 이상** (현재 최솟값 531자, `requesting-code-review`).
+**검증 (`auto`):** 각 SKILL.md의 한글 문자 수가 **400자 이상** (현재 최솟값 577자, `requesting-code-review`).
 
 **검증 (`assisted`):** 새로 번역한 부분의 한국어가 자연스러운가? 직역투·비문·용어 불일치가 없는가?
 
@@ -200,6 +205,36 @@ upstream은 `"Use when..."`으로 **시작**합니다. 이 포크는 **한국어
 **검증 (`assisted`):** 번역하지 말아야 할 것을 번역하지 않았는가? 용어집의 대응표를 따랐는가? 반대로, 번역해야 할 산문이 영문으로 남지 않았는가?
 
 용어 대응표는 [translation-glossary.md 3절](./translation-glossary.md#3-용어-대응표)을 참조하세요.
+
+---
+
+## D-008 · diagnosing 이슈 흐름 (upstream→포크 검색, 포크 우선 보고)
+
+**범위:** `plugins/suberpower/skills/diagnosing-suberpowers/references/github-issues.md` (본문 전체), `plugins/suberpower/skills/diagnosing-suberpowers/SKILL.md` (5단계 GitHub issues, 엄격한 규칙의 승인 관문, 위험 신호 표의 "upstream에 바로 올리자" 행)
+**정책:** `MANUAL_MERGE`
+**검증 등급:** `auto` + `manual`
+
+upstream은 `obra/superpowers`에서 검색하고 일치가 없으면 그곳에 바로 issue를 만듭니다. 이 포크는 흐름을 이렇게 바꿨습니다.
+
+1. 검색: upstream(`obra/superpowers`)을 먼저, 그다음 포크(`june20516/suberpower`)를 같은 검색어로 검색
+2. 보고는 포크 쪽이 기본: upstream에서 일치해도 일치한 포크 issue에 덧붙이거나, 없으면 포크에 새로 생성 (라벨·`diagnosis_report.md` 템플릿 없음, 내용은 한국어 가능, upstream에서만 일치했다면 그 링크를 본문에 기재)
+3. upstream 보고: 포크 쪽 기록이 생긴 뒤, report가 인용한 증거와 D-항목 범위가 겹치는지 사실만 밝히고(원인 판단·권고 없음) **선택 동작**으로만 제안 — 일치한 upstream issue에 comment 또는 새 issue. 승인하면 영어로 옮긴 별도 본문을 보여 주고 **별도 승인** 후 게시 (한국어 포크에서 관찰했다는 사실과 포크 issue 링크 명시, 새 issue는 upstream 원문 양식 heading 사용)
+
+github-issues.md 본문, SKILL.md 5단계, SKILL.md 승인 관문은 D-008 보호 구역 마커(start·end 한 쌍)로 감쌌습니다. 위험 신호 행은 표 안이라 마커를 두면 표가 끊기므로 행 문자열 검사로 보호합니다.
+
+**근거:** 포크를 쓰다가 생긴 문제는 번역이나 포크 고유 수정(이 문서의 D-항목)이 원인일 수 있습니다. upstream에 바로 보고하면 원작자에게 오보가 될 위험이 있습니다. upstream 보고는 영어로, 선택 동작으로, 별도 승인을 받아서만 합니다 — 2026-10-07 사용자 결정.
+
+**검증 (`auto`):**
+- `github-issues.md`와 `SKILL.md` 각각에 D-008 마커 짝이 맞음
+- SKILL.md D-008 보호 구역 안에 `포크 issue 승인은 upstream 보고 승인이 아닙니다` 존재 (승인 관문)
+- SKILL.md 위험 신호 표 행(`|`로 시작하는 줄)에 `upstream에 바로 올리자` 존재
+- `github-issues.md`에 `june20516/suberpower` 존재
+- `github-issues.md`에 `**별도로** 다시 승인` 존재 (upstream 별도 승인 관문)
+- `github-issues.md`에 `## 검색` 절이 있고, 그 절에서 `obra/superpowers`가 `june20516/suberpower`보다 먼저 등장
+
+**검증 (`manual`):** 이번 동기화에서 upstream이 diagnosing의 `github-issues.md`, SKILL.md 5단계, 엄격한 규칙의 승인 관문 bullet, 위험 신호 표의 "upstream에 바로 올리자" 행 중 하나라도 변경했다면, 사람이 변경 의도를 읽고 upstream 보고 경로에 반영했는가? 포크 쪽 승인 관문(`포크 issue 승인은 upstream 보고 승인이 아닙니다`)과 위험 신호 행이 유지되었는가?
+
+**동기화 시:** upstream이 `github-issues.md`, SKILL.md 5단계, 승인 관문 bullet, 위험 신호 표의 해당 행을 바꿔도 **자동 적용하지 마세요.** 바뀐 명령·플래그·URL·한계(예: 8,000자, 라벨, 템플릿 이름)는 upstream 보고 경로(`## upstream 보고 (선택)`)와 upstream 검색에만 옮기고, 포크 경로에는 포크에 실제로 있는 것만 반영합니다. 검색 순서(upstream → 포크), 포크 우선 생성, upstream 보고의 선택·영어·별도 승인은 유지합니다. 승인 관문 bullet은 D-008 보호 구역 안에 두고, 위험 신호 행은 표가 끊기지 않도록 마커 없이 행 문자열(`upstream에 바로 올리자`)을 유지합니다. upstream 양식(`templates/issue.md`)의 heading이 바뀌면 `## upstream 보고 (선택)`이 인용하는 원문 heading도 함께 고칩니다.
 
 ---
 

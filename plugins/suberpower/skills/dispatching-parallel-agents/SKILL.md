@@ -65,13 +65,16 @@ digraph when_to_use {
 
 ### 3. Parallel로 Dispatch
 
-```typescript
-// In Claude Code / AI environment
-Task("Fix agent-tool-abort.test.ts failures")
-Task("Fix batch-completion-behavior.test.ts failures")
-Task("Fix tool-approval-race-conditions.test.ts failures")
-// All three run concurrently
+같은 응답에서 세 subagent를 모두 dispatch하세요 — parallel로 실행됩니다:
+
+```text
+Subagent (general-purpose): "Fix agent-tool-abort.test.ts failures"
+Subagent (general-purpose): "Fix batch-completion-behavior.test.ts failures"
+Subagent (general-purpose): "Fix tool-approval-race-conditions.test.ts failures"
+# All three run concurrently.
 ```
+
+한 응답에 여러 dispatch 호출 = parallel 실행. 응답마다 하나씩 = 순차 실행.
 
 ### 4. 검토 및 통합
 
@@ -155,15 +158,6 @@ Agent 3 → tool-approval-race-conditions.test.ts 수정
 
 **통합:** 모든 수정 사항이 독립적이고, 충돌 없음, 전체 suite green
 
-**절약된 시간:** 순차적으로 푸는 것 대비 3개 문제를 parallel로 해결
-
-## 핵심 이점
-
-1. **Parallelization** - 여러 조사가 동시에 진행됨
-2. **집중** - 각 agent가 좁은 범위를 가지며, 추적할 context가 적음
-3. **독립성** - agent들이 서로 간섭하지 않음
-4. **속도** - 1개를 푸는 시간에 3개의 문제 해결
-
 ## 검증
 
 agent들이 돌아온 후:
@@ -171,12 +165,3 @@ agent들이 돌아온 후:
 2. **충돌 확인** - agent들이 같은 코드를 편집했는가?
 3. **전체 suite 실행** - 모든 수정 사항이 함께 작동하는지 확인하세요
 4. **표본 점검** - agent들은 같은 실수를 일관되게 반복할 수 있습니다
-
-## 실제 영향
-
-디버깅 세션에서 (2025-10-03):
-- 3개 파일에 걸쳐 6개 실패
-- 3개의 agent가 parallel로 dispatch됨
-- 모든 조사가 동시에 완료됨
-- 모든 수정 사항이 성공적으로 통합됨
-- agent 변경 사항 간 충돌 없음

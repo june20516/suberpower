@@ -11,12 +11,14 @@
 | 대상 | 처리 | 예 |
 |---|---|---|
 | 산문 | 한국어 | 본문 설명, 목록 항목, 표 내용 |
-| `##` heading | **영문 유지** | `## Overview`, `## When to Use` |
+| `##` heading | **파일의 기존 관례를 따름** (영문 파일은 영문 유지) | `## Overview`, `## When to Use` — 아래 참고 |
 | 기술 용어 | **영문 유지** | skill, subagent, commit, test, mock, edge case, dispatch |
 | 상태값 | **영문 유지** | `DONE`, `BLOCKED`, `NEEDS_CONTEXT`, `DONE_WITH_CONCERNS` |
 | 의사코드 제어 키워드 | **영문 + 대시** | `BEFORE - …하기 전:`, `IF …라면:`, `STOP - …` |
 
 영문 뒤에는 조사를 그대로 붙입니다: `dispatch하고`, `commit하세요`, `review하며`.
+
+**heading은 각 파일의 기존 관례를 우선합니다.** 이미 heading이 번역된 파일은 새 heading도 번역하고, 출력 형식 heading·판정 토큰·ledger 토큰은 영문으로 둡니다. 새로 추가되는 파일은 같은 skill 디렉터리의 기존 파일 관례를 따르고, skill 자체가 새것이면 heading을 번역합니다(포크 다수 관례).
 
 ### description 작성 규칙
 
@@ -69,7 +71,7 @@
 | adapt (코드를) | `참고해 고쳐 쓰다` | `각색` 금지 (소설 각색으로 읽힘) |
 | directory | `디렉터리` | 표준어 |
 | refactoring | `리팩터링` | 표준어 |
-| your human partner | `your human partner` | `사람 파트너` 사용 안 함 |
+| your human partner | `your human partner` | `사람 파트너` 사용 안 함. upstream의 `your partner` 변형도 이 표기로 통일 |
 | synthesis | `종합` | `합성`(화학) 금지 |
 | academic (비판적 맥락) | `이론적` / `탁상공론식` | `학술적` 금지 |
 | systematic errors | `같은 실수를 일관되게 반복` | `체계적인 오류` 금지 (반대 인상) |
@@ -78,6 +80,67 @@
 | source of truth | `기준점` | |
 | over/under-building | `과잉 구현과 구현 누락` | |
 | scene-setting | `배경 설명` | `장면 설정` 금지 |
+| finding (review) | `지적 사항` | |
+| fix round | `수정 라운드` | |
+| verdict | `판정` | reviewer가 내리는 것. 판정 토큰(`Approved`, `ADDRESSED` 등)은 영문 유지 |
+| adjudicate | `판결` | controller가 내리는 것. `판정`(verdict)과 구분 |
+| ruling | `결정` | ledger 토큰 `Ruling:`은 영문 유지 |
+| fix report | `수정 보고서` | |
+| scoped re-review | `범위 한정 re-review` | |
+| gap (spec) | `공백` | `격차` 사용 안 함 |
+| pre-flight (review) | `사전 점검` | |
+| park (finding) | `보류` | ledger 토큰 `parked`는 영문 유지 |
+| fix wave | `일괄 수정` | `수정 물결` 금지 (직역투) |
+| executor | `실행자` | inline executor → `inline 실행자` |
+| fix pass | `수정 패스` | fix wave(`일괄 수정`)와 구분 |
+| re-grade | `등급 재평가` / `등급을 다시 매기다` | |
+| completion contract | `완료 계약` | |
+| deferred (minor) | `연기된` | ledger 토큰 `minor (deferred)`는 영문 유지 |
+| gate | `관문` | 단, 이름 붙은 의사코드 구조 Gate Function은 각 파일 기존 표기를 따름(TDD: 게이트 함수, verification-before-completion: 영문 heading) |
+| transcript/transcription (plan이 코드를 베낀 것) | `옮겨 적기` / `옮겨 적은 것` | `전사본` 금지 |
+| transcript (세션 대화 기록) | `transcript` | 영문 유지. Claude Code 세션 jsonl |
+| copy (UI·사용자 노출 텍스트) | `문구` | 복사 아님. 필요하면 `사용자 노출 문구` |
+| version floor | `최소 버전` | |
+| coordinator | `조율자` | controller(영문 유지)와 구분 |
+| instruction file | `instruction 파일` | CLAUDE.md 등 지시 파일의 일반화 |
+| name (the break/change) | `특정하다` / `구체적으로 말하다` | `명명`(이름 붙이기) 금지. test 제목 짓기로 오독됨 |
+| break (test가 잡아내는) | `깨짐` | |
+| code under test | `test 대상 코드` | `테스트 대상 코드` 사용 안 함 |
+| hand-derived / hand-checked | `손으로 도출한` / `손으로 검증한` | `직접`(본인이)과 구분 |
+| mutation check | `mutation 점검` | |
+| pressure test (skill 검증) | `압박 테스트` | writing-skills 기존 표기가 정본 |
+| handoff (단계 간 넘김) | `handoff` | 영문 유지. executing-plans 기존 표기가 정본. 예: `planning handoff` |
+| probe (spike의 조사 계획) | `probe` | 영문 유지 |
+| throwaway | `버릴 코드` | 코드가 아닐 수 있으면 `버릴 산출물` |
+| design brief | `설계 개요` | |
+| just-in-time | `필요한 시점에` | |
+| ratchet (one-way) | `한 방향으로만` | 비유를 풀어 서술. 예: `경로 변경은 한 방향으로만 일어납니다` |
+| control (test arm) | `대조군` | 지침 없는 대조군 |
+| arm (비교 실험의 한쪽) | `~쪽` | 예: `금지 쪽`, `레시피 쪽` |
+| nuance clause | `단서 조항` | "~가 아니면" 류. exemption clause와 구분 |
+| exemption clause | `예외 조항` | "~에는 적용되지 않음" 류. nuance clause와 구분 |
+| observable predicate | `관찰 가능한 판별 조건` | |
+| underlying model | `기반 모델` | `기본 모델` 사용 안 함. `파일시스템 기반 모델`(filesystem-based)과는 문맥으로 구분 |
+| micro-test | `micro-test` | 영문 유지. 조사를 붙여 `micro-test하다` |
+| Skill Discovery Optimization (SDO) | `Skill Discovery Optimization (SDO)` | heading·약어 모두 영문 유지. 본문 참조(`SDO 섹션`)가 heading 문자열에 의존. 구 명칭 CSO |
+| session | `세션` | 포크 다수 표기. 영문 `session` 사용 안 함 |
+| child (spawn된 agent) | `자식` | SDD 대기 규칙 번역이 정본. codex-tools.md도 이 표기 |
+| parent agent | `상위 agent` | |
+| seat (비용 맥락의 실행 단위) | `자리` | 맥락 없이 처음 나오면 `자리(실행 단위)`로 한 번 풀어 씀. 예: `review 자리` |
+| bounded stretch / bounded wait | `기한을 정한 대기` | 동사형 `기한을 정해 기다리다`. 한 번의 대기는 `대기 구간`. SDD 표기가 정본 |
+| Superpowers (브랜드, 문서 첫 등장) | `Superpowers(suberpowers 포크)` | 이후 등장은 `suberpowers`. 단, upstream 자체를 가리키면(예: 포크 이전 문서) `Superpowers` |
+| finding (diagnosing 분석 결과) | `finding` | 영문 유지. 반환 형식 토큰 `finding:`과 일치. review의 `지적 사항`(finding (review))과 구분 |
+| stumble | `막힘` | diagnosing 분석 차원 |
+| intake (problem intake) | `문제 파악` | |
+| dimension (분석 차원) | `차원` | 라벨 `Dimension:`은 영문 유지 |
+| wall-clock | `실제 소요 시간` | |
+| provenance | `출처` | provenance label → `출처 등급`, provenance rules → `출처 등급 규칙`. source(`소스`)와 구분 |
+| source (데이터·파일시스템 소스) | `소스` | provenance(`출처`)와 구분 |
+| scrub / scrubber / scrub auditor | `scrub` / `scrubber` / `scrub auditor` | 영문 유지. 역할명 짝을 맞춤 |
+| bundle / audit | `bundle` / `audit` | 영문 유지 |
+| proprietary term | `비공개 용어` | `독점 용어` 금지 (monopoly로 읽힘). placeholder `<PROPRIETARY-n>`은 영문 유지 |
+| archive (zip/tar) | `압축` / `압축 파일` | archive 전용. condensed(줄여 옮긴 transcript)는 `축약한` / `줄여 옮긴` |
+| historical anchor | `과거 기준 위치` | source of truth의 `기준점`과 구분 |
 
 ---
 
@@ -88,9 +151,10 @@
 - **테스트 러너가 출력하는 문자열** — `FAIL: expected 'Email required', got undefined`
 - **철의 법칙(Iron Law)** — `NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST` 등 3종 (파일 간 통일)
 - **고유명사** — `Visual Companion`, `Brainstorm Companion`, skill 이름(`writing-plans`)
+- **brainstorming 경로 분류명** — `spike` / `bounded` / `architectural` (라벨은 `Spike` / `Bounded` / `Architectural`)
 - **gerund 네이밍 규칙 예시** — `"Processing PDFs"` 등. 영어 `-ing` 형태를 가르치는 내용이라 한국어 대응이 없음
 - **Conventional Commits 예시** — `feat(auth): implement JWT-based authentication`
-- **약속된 신호 문구** — `"Strange things are afoot at the Circle K"`
+- **약속된 신호 문구** — `"Strange things are afoot at the Circle K"` (v6.4.2에서 upstream 제거)
 - **인용 문헌**, 이미지 태그, 외부 링크
 
 ---

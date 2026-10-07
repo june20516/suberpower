@@ -28,20 +28,24 @@ UI 주제 *에 대한* 질문이 자동으로 시각적 질문이 되는 것은 
 
 서버는 HTML 파일이 있는 디렉터리를 감시하고 가장 최신 파일을 브라우저에 제공합니다. 당신은 `screen_dir`에 HTML 콘텐츠를 작성하고, 사용자는 브라우저에서 이를 보고 옵션을 선택하기 위해 클릭할 수 있습니다. 선택은 `state_dir/events`에 기록되며 다음 turn에서 읽을 수 있습니다.
 
-**콘텐츠 fragment vs 전체 문서:** HTML 파일이 `<!DOCTYPE` 또는 `<html`로 시작하면 서버는 있는 그대로 제공합니다(helper script만 주입). 그렇지 않으면 서버는 자동으로 콘텐츠를 frame template으로 감쌉니다 — 헤더, CSS 테마, 선택 표시기, 모든 인터랙티브 인프라를 추가합니다. **기본적으로 콘텐츠 fragment를 작성하세요.** 페이지에 대한 완전한 제어가 필요할 때만 전체 문서를 작성하세요.
+**콘텐츠 fragment vs 전체 문서:** HTML 파일이 `<!DOCTYPE` 또는 `<html`로 시작하면 서버는 있는 그대로 제공합니다(helper script만 주입). 그렇지 않으면 서버는 자동으로 콘텐츠를 frame template으로 감쌉니다 — 헤더, CSS 테마, 연결 상태, 모든 인터랙티브 인프라를 추가합니다. **기본적으로 콘텐츠 fragment를 작성하세요.** 페이지에 대한 완전한 제어가 필요할 때만 전체 문서를 작성하세요.
 
 ## 세션 시작
 
 ```bash
-# 영속성과 함께 서버 시작 (mockup이 프로젝트에 저장됨)
-scripts/start-server.sh --project-dir /path/to/project
+# 반드시 사용자가 companion을 승인한 뒤에 시작하세요. --open은 첫 화면에서 사용자의 브라우저를
+# 자동으로 열고, --project-dir은 mockup을 영속시키며 같은 포트로 재시작할 수 있게 합니다.
+bash scripts/start-server.sh --project-dir /path/to/project --open
 
-# 반환: {"type":"server-started","port":52341,"url":"http://localhost:52341",
+# 반환: {"type":"server-started","port":52341,
+#           "url":"http://localhost:52341/?key=ab12…",
 #           "screen_dir":"/path/to/project/.suberpowers/brainstorm/12345-1706000000/content",
 #           "state_dir":"/path/to/project/.suberpowers/brainstorm/12345-1706000000/state"}
 ```
 
-응답에서 `screen_dir`과 `state_dir`을 저장하세요. 사용자에게 URL을 열도록 알리세요.
+응답에서 `screen_dir`과 `state_dir`을 저장하세요. `--open`을 쓰면 첫 화면을 push할 때 브라우저가 스스로 열리므로 사용자에게 열어 달라고 요청할 필요는 없지만, 대비책으로 URL은 그래도 공유하세요(headless/원격 환경에서는 자동으로 열리지 않습니다).
+
+**URL에는 세션 키(`?key=…`)가 들어 있습니다.** 서버는 키가 없는 요청을 모두 거부하므로, 사용자에게는 항상 `url` 필드의 **완전한** URL을 전달하세요 — query string을 절대 잘라내지 말고, `http://host:port`만 따로 건네지도 마세요. 키는 HTTP와 WebSocket 접근을 막아, 엉뚱한 브라우저 탭이나 네트워크상의 다른 머신이 화면을 읽거나 이벤트를 주입하지 못하게 합니다. 처음 로드한 뒤에는 브라우저가 cookie로 키를 기억하므로, 새로고침과 `/files/*` asset은 키를 다시 붙이지 않아도 동작합니다.
 
 **연결 정보 찾기:** 서버는 시작 시 JSON을 `$STATE_DIR/server-info`에 작성합니다. 서버를 백그라운드에서 실행했고 stdout을 캡처하지 못했다면, 그 파일을 읽어 URL과 포트를 얻으세요. `--project-dir`을 사용할 때는 `<project>/.suberpowers/brainstorm/`에서 세션 디렉터리를 확인하세요.
 
@@ -49,32 +53,34 @@ scripts/start-server.sh --project-dir /path/to/project
 
 **플랫폼별 서버 실행:**
 
-**Claude Code (macOS / Linux):**
+**Claude Code:**
 ```bash
-# 기본 모드가 동작합니다 — script가 서버를 자체적으로 백그라운드로 실행합니다
-scripts/start-server.sh --project-dir /path/to/project
+# 기본 모드가 동작합니다 — script가 서버를 자체적으로 백그라운드로 실행합니다.
+bash scripts/start-server.sh --project-dir /path/to/project --open
 ```
 
-**Claude Code (Windows):**
-```bash
-# Windows는 자동 감지하여 foreground 모드를 사용하며, 이는 tool call을 차단합니다.
-# 서버가 대화 turn에 걸쳐 살아남도록 Bash tool call에서 run_in_background: true를 사용하세요.
-scripts/start-server.sh --project-dir /path/to/project
-```
-Bash tool을 통해 이를 호출할 때 `run_in_background: true`를 설정하세요. 그런 다음 다음 turn에서 `$STATE_DIR/server-info`를 읽어 URL과 포트를 얻으세요.
+Windows에서는 script가 자동 감지하여 foreground 모드로 전환합니다(tool call을 차단함). 서버가 대화 turn에 걸쳐 살아남도록 Bash tool call에서 `run_in_background: true`를 사용하고, 다음 turn에서 `$STATE_DIR/server-info`를 읽어 URL과 포트를 얻으세요.
 
 **Codex:**
 ```bash
 # Codex는 백그라운드 프로세스를 회수합니다. script가 CODEX_CI를 자동 감지하여
 # foreground 모드로 전환합니다. 평소처럼 실행하세요 — 추가 플래그가 필요 없습니다
-scripts/start-server.sh --project-dir /path/to/project
+bash scripts/start-server.sh --project-dir /path/to/project --open
 ```
 
 **Gemini CLI:**
 ```bash
 # --foreground를 사용하고 shell tool call에 is_background: true를 설정하여
 # 프로세스가 turn에 걸쳐 살아남도록 하세요
-scripts/start-server.sh --project-dir /path/to/project --foreground
+bash scripts/start-server.sh --project-dir /path/to/project --open --foreground
+```
+
+**Copilot CLI:**
+```bash
+# 서버가 turn에 걸쳐 살아남도록 Copilot CLI의 non-blocking/background shell 메커니즘으로
+# 시작하세요. script가 아니라 harness가 백그라운드 실행을 맡도록 --foreground를 유지하세요.
+# launcher가 .sh이므로 bash로 호출하세요(Windows에서는 PowerShell tool에서 Git Bash의 bash.exe를 호출).
+bash scripts/start-server.sh --project-dir /path/to/project --open --foreground
 ```
 
 **기타 환경:** 서버는 대화 turn에 걸쳐 백그라운드에서 계속 실행되어야 합니다. 환경이 분리된(detached) 프로세스를 회수한다면, `--foreground`를 사용하고 플랫폼의 백그라운드 실행 메커니즘으로 명령어를 실행하세요.
@@ -82,7 +88,7 @@ scripts/start-server.sh --project-dir /path/to/project --foreground
 URL이 브라우저에서 접근 불가능하다면(원격/컨테이너화된 설정에서 흔함), non-loopback 호스트에 바인딩하세요:
 
 ```bash
-scripts/start-server.sh \
+bash scripts/start-server.sh \
   --project-dir /path/to/project \
   --host 0.0.0.0 \
   --url-host localhost
@@ -93,10 +99,10 @@ scripts/start-server.sh \
 ## 루프
 
 1. **서버가 살아있는지 확인**한 다음, `screen_dir`의 새 파일에 **HTML을 작성**하세요:
-   - 각 쓰기 전에 `$STATE_DIR/server-info`가 존재하는지 확인하세요. 없거나(또는 `$STATE_DIR/server-stopped`가 존재한다면), 서버가 종료된 것이므로 — 계속하기 전에 `start-server.sh`로 재시작하세요. 서버는 30분간 비활성 시 자동 종료됩니다.
+   - **필수: URL을 언급하거나 화면을 push하기 전에 서버가 살아 있는지 확인하세요.** `$STATE_DIR/server-info`가 존재하고 `$STATE_DIR/server-stopped`가 없는지 확인하세요. 종료되었다면 **같은 `--project-dir`**로 `start-server.sh`를 실행해 재시작하세요 — 같은 포트를 재사용하므로 사용자가 열어 둔 탭은 스스로 다시 연결되고(서버가 내려가 있는 동안에는 "일시 중지됨" overlay를 보여줌) 새 URL을 보낼 필요가 없습니다. 서버는 4시간 동안 유휴 상태이면 자동 종료됩니다(`--idle-timeout-minutes`로 설정 가능).
    - 의미 있는 파일명을 사용하세요: `platform.html`, `visual-style.html`, `layout.html`
    - **파일명을 재사용하지 마세요** — 각 화면은 새 파일을 얻습니다
-   - Write tool 사용 — **cat/heredoc을 절대 사용하지 마세요**(터미널에 노이즈를 덤프함)
+   - 파일 생성 tool 사용 — **cat/heredoc을 절대 사용하지 마세요**(터미널에 노이즈를 덤프함)
    - 서버는 자동으로 최신 파일을 제공합니다
 
 2. **사용자에게 무엇을 기대할지 알리고 turn을 종료하세요:**
@@ -126,7 +132,7 @@ scripts/start-server.sh \
 
 ## 콘텐츠 Fragment 작성
 
-페이지 안에 들어가는 콘텐츠만 작성하세요. 서버가 자동으로 frame template(헤더, 테마 CSS, 선택 표시기, 모든 인터랙티브 인프라)으로 감쌉니다.
+페이지 안에 들어가는 콘텐츠만 작성하세요. 서버가 자동으로 frame template(헤더, 테마 CSS, 연결 상태, 모든 인터랙티브 인프라)으로 감쌉니다.
 
 **최소 예시:**
 
@@ -172,7 +178,7 @@ frame template은 콘텐츠를 위한 다음 CSS 클래스를 제공합니다:
 </div>
 ```
 
-**다중 선택:** 사용자가 여러 옵션을 선택하도록 하려면 컨테이너에 `data-multiselect`를 추가하세요. 각 클릭이 항목을 토글합니다. 표시기 바는 개수를 보여줍니다.
+**다중 선택:** 사용자가 여러 옵션을 선택하도록 하려면 컨테이너에 `data-multiselect`를 추가하세요. 각 클릭이 항목의 선택 스타일을 토글합니다.
 
 ```html
 <div class="options" data-multiselect>
@@ -252,7 +258,7 @@ frame template은 콘텐츠를 위한 다음 CSS 클래스를 제공합니다:
 {"type":"click","choice":"b","text":"Option B - Hybrid","timestamp":1706000115}
 ```
 
-전체 이벤트 스트림은 사용자의 탐색 경로를 보여줍니다 — 그들은 결정 전에 여러 옵션을 클릭할 수 있습니다. 마지막 `choice` 이벤트가 일반적으로 최종 선택이지만, 클릭 패턴은 물어볼 가치가 있는 망설임이나 선호를 드러낼 수 있습니다.
+전체 이벤트 스트림은 사용자의 탐색 경로를 보여줍니다 — 사용자는 결정 전에 여러 옵션을 클릭할 수 있습니다. 마지막 `choice` 이벤트가 일반적으로 최종 선택이지만, 클릭 패턴은 물어볼 가치가 있는 망설임이나 선호를 드러낼 수 있습니다.
 
 `$STATE_DIR/events`가 존재하지 않으면 사용자가 브라우저와 상호작용하지 않은 것이므로 — 터미널 텍스트만 사용하세요.
 
@@ -275,7 +281,7 @@ frame template은 콘텐츠를 위한 다음 CSS 클래스를 제공합니다:
 ## 정리하기
 
 ```bash
-scripts/stop-server.sh $SESSION_DIR
+bash scripts/stop-server.sh $SESSION_DIR
 ```
 
 세션이 `--project-dir`을 사용했다면 mockup 파일은 나중 참조를 위해 `.suberpowers/brainstorm/`에 영속됩니다. `/tmp` 세션만 중지 시 삭제됩니다.
