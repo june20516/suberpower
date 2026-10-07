@@ -75,7 +75,7 @@ divergence가 **유지되었는지 어떻게 확인할지**입니다. 한 항목
 | 위치 | 내용 |
 |---|---|
 | `hooks/session-start:2` | 주석 `SessionStart hook for superpowers plugin (suberpower fork)` |
-| `hooks/session-start:35` | 주입 문구 `You have superpowers. (이 포크: suberpowers)` |
+| `hooks/session-start:27` | 주입 문구 `You have superpowers. (이 포크: suberpowers)` |
 | `.claude-plugin/plugin.json` | `superpowers 스킬 라이브러리의 한국어 포크: …` |
 
 > 브랜드성 일반 표현은 원문을 살리되 **이 포크임을 괄호로 부연**합니다. 설계 근거는 [2026-06-10 spec](./specs/2026-06-10-worktree-skill-improvement-design.md)의 4-C 참조.
