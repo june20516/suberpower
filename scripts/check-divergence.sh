@@ -71,15 +71,16 @@ for pat in 'superpowers:' 'docs/superpowers/' '\.superpowers/' '~/\.config/super
   else bad "치환 누락: $pat 이(가) $n 곳에 남아 있음"; fi
 done
 
-# upstream 저장소 URL(원작자 링크)은 유지 대상이므로 제외하고,
+# upstream 저장소 URL(원작자 링크)과 외부 브랜드 자산 URL(primeradiant.com/brand/)은
+# 유지 대상이므로 제외하고,
 # 브랜드·출처 표현으로 허용된 3곳 외에 bare 'superpowers'가 있으면 실패
 allowed=3
-found=$(grep -rn "superpowers" plugins/ 2>/dev/null | grep -v "github.com/obra/superpowers" | wc -l | tr -d ' ')
+found=$(grep -rn "superpowers" plugins/ 2>/dev/null | grep -v "github.com/obra/superpowers\|primeradiant.com/brand/" | wc -l | tr -d ' ')
 if [ "$found" -eq "$allowed" ]; then
   ok "브랜드·출처 표현 ${allowed}곳만 남음 (허용 목록과 일치)"
 else
   bad "bare 'superpowers'가 ${found}곳 (허용: $allowed). 신규 유입을 확인하세요:"
-  grep -rn "superpowers" plugins/ 2>/dev/null | grep -v "github.com/obra/superpowers" | sed 's/^/       /'
+  grep -rn "superpowers" plugins/ 2>/dev/null | grep -v "github.com/obra/superpowers\|primeradiant.com/brand/" | sed 's/^/       /'
 fi
 
 # ---------------------------------------------------------------- D-002
