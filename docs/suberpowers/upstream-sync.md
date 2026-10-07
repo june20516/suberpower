@@ -76,6 +76,7 @@ git diff <BASELINE_SHA> upstream-<tag> -- skills/  # 변경 산정
 
 **포크 고유 코드 변경**
 - brainstorming `scripts/server.cjs` — 버전 manifest 탐색 목록에 `.claude-plugin/plugin.json` 추가 (포크에는 `package.json`이 없음)
+- brainstorming `scripts/server.cjs` — 텔레메트리(버전이 붙은 Prime Radiant 로고 요청) **기본 꺼짐**. `SUBERPOWERS_ENABLE_TELEMETRY`를 켰을 때만 로고를 불러오며, upstream 끄기 변수(`SUPERPOWERS_DISABLE_TELEMETRY` 등)가 우선합니다 (2026-10-07 사용자 결정)
 - `skills/writing-skills/package.json` = `{"type":"module"}` 추가 — `render-graphs.js`가 ESM이기 때문입니다. plugin 루트에 두면 `server.cjs`의 버전 탐색이 먼저 읽으므로 이 디렉터리에만 둡니다
 - diagnosing `prompts/stumbles.md` — 한국어 되짚기 표현 예시 추가
 

@@ -109,7 +109,12 @@ const TELEMETRY_DISABLE_ENV_VARS = [
   'DISABLE_TELEMETRY',
   'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC'
 ];
-const SUPERPOWERS_TELEMETRY_DISABLED = TELEMETRY_DISABLE_ENV_VARS.some(name => isTruthyEnv(process.env[name]));
+// Fork default: telemetry (the version-tagged logo request) is off unless
+// explicitly enabled. The upstream opt-out variables still win.
+const TELEMETRY_ENABLE_ENV_VAR = 'SUBERPOWERS_ENABLE_TELEMETRY';
+const SUPERPOWERS_TELEMETRY_DISABLED =
+  !isTruthyEnv(process.env[TELEMETRY_ENABLE_ENV_VAR]) ||
+  TELEMETRY_DISABLE_ENV_VARS.some(name => isTruthyEnv(process.env[name]));
 let ownerPid = process.env.BRAINSTORM_OWNER_PID ? Number(process.env.BRAINSTORM_OWNER_PID) : null;
 
 // Per-session secret key. The companion is reachable by any local browser tab
