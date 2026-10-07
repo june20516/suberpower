@@ -189,7 +189,7 @@ grep -rn "suberpowers/reviews\|75318\|리뷰 범위 분할\|Subagent 실패 처�
 E=plugins/suberpower/skills/executing-plans/scripts
 P=docs/suberpowers/plans/2026-10-07-upstream-sync-v6.4.2.md
 $E/task-start "$P" 0          # 기대: "brief: …/task-0-brief.md" 와 "base: <40자 SHA>" 두 줄
-B=$(git rev-parse HEAD); $E/task-done "$P" 0 "$B" -- true; echo "exit $?"    # 기대: exit 0, ledger에 완료 줄 추가
+B=$(git rev-parse HEAD); $E/task-done "$P" 0 "$B" -- echo "1 passed"; echo "exit $?"    # 기대: exit 0, ledger(progress.md)에 완료 줄 추가 (출력 없는 명령은 upstream 결함으로 exit 1)
 $E/task-done "$P" 0 "$B" -- false; echo "exit $?"   # 기대: exit 1, ledger 변화 없음
 rm -rf .suberpowers
 ```
