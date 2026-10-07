@@ -70,7 +70,7 @@
 git fetch --no-tags https://github.com/obra/superpowers.git \
   refs/tags/v6.4.2:refs/tags/upstream-v6.4.2
 git tag upstream-base 6fd4507659784c351abbd2bc264c7162cfd386dc
-git rev-parse --short upstream-v6.4.2   # 기대: 8ca22db
+git rev-parse --short "upstream-v6.4.2^{commit}"   # 기대: 8ca22db (annotated tag라 ^{commit} 필요)
 ```
 
 로컬 tag는 push하지 않는다 (`git push --tags` 금지).
