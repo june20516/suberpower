@@ -14,7 +14,7 @@ task마다 새로운 implementer subagent를 dispatch하고, 각 task 후에는 
 **진행 서술:** tool 호출 사이의 서술은 많아야 짧은 한 줄로 하세요 — 기록은
 ledger와 tool 결과가 담고 있습니다.
 
-**지속적인 실행:** task 사이에 your human partner에게 확인받기 위해 멈추지 마세요. plan의 모든 task를 멈추지 않고 실행하세요. 멈춰야 할 유일한 이유는 아래에 적은 네 가지, 또는 모든 task 완료입니다. "계속할까요?" 같은 질문이나 진행 요약은 사용자의 시간을 낭비합니다 — 그들은 plan을 실행해달라고 요청한 것이므로, 그냥 실행하세요.
+**지속적인 실행:** task 사이에 your human partner에게 확인받기 위해 멈추지 마세요. plan의 모든 task를 멈추지 않고 실행하세요. 멈춰야 할 유일한 이유는 아래에 적은 네 가지, 또는 모든 task 완료입니다. "계속할까요?" 같은 질문이나 진행 요약은 your human partner의 시간을 낭비합니다 — plan을 실행해달라고 요청받았으니, 그냥 실행하세요.
 
 **멈추지 말고 결정하세요.** 실행 중인 plan은 사람을 기다리지 않습니다. 충돌,
 모호함, plan의 결함, 넘어도 되는지 물어보고 싶었던 한도 — 직접 결정하세요.
@@ -22,7 +22,7 @@ spec이 구속력 있는 기준이고, plan은 그 spec을 풀어낸 논증이�
 못하는 것은 당신의 판단으로 정합니다. 모든 결정을 ledger에
 `Ruling: <무엇을 결정했는가> — <이유> — <틀렸을 때 치르는 비용>` 형식으로
 기록하고 계속 진행하세요. 잘못된 결정은 your human partner가 보고 되돌릴 수 있는
-재작업을 남길 뿐이지만, 질문 하나에 멈춰 선 세션은 그들의 하루를 통째로 날리고
+재작업을 남길 뿐이지만, 질문 하나에 멈춰 선 세션은 your human partner의 하루를 통째로 날리고
 아무것도 얻지 못합니다.
 
 당신을 멈춰 세우는 것은 다음 네 가지뿐입니다: 되돌릴 수 없거나 파괴적인 작업,
@@ -71,7 +71,7 @@ digraph process {
         "review package 생성, task reviewer dispatch (./task-reviewer-prompt.md)" [shape=box];
         "Spec ✅이고 quality가 Approved인가?" [shape=diamond];
         "지적 사항이 plan 텍스트와 충돌하는가?" [shape=diamond];
-        "충돌을 결정하고 ledger에 기록" [shape=box];
+        "충돌에 대해 결정하고 ledger에 기록" [shape=box];
         "수정 라운드 R/5: R≤3 implementer 재개, R≥4 더 강력한 모델의 새 implementer" [shape=box];
         "범위 한정 re-review dispatch (./re-review-prompt.md)" [shape=box];
         "모든 지적 사항이 해결되었는가?" [shape=diamond];
@@ -79,14 +79,14 @@ digraph process {
         "미해결 지적 사항을 하나씩 판결" [shape=box];
         "후속 작업이 기대는 지적 사항이 있는가?" [shape=diamond];
         "결정하고 계속 진행. 어느 길도 추측뿐일 때만 멈춤" [shape=box];
-        "지적 사항을 결정과 함께 ledger에 보류" [shape=box];
+        "결정과 함께 ledger에 보류로 기록" [shape=box];
         "ledger에 완료 기록, todo 완료 표시" [shape=box];
     }
 
     "준비: worktree, ledger 확인, plan 읽기, 사전 점검" [shape=box];
     "남은 task가 있는가?" [shape=diamond];
     "최종 code reviewer dispatch (../requesting-code-review/code-reviewer.md)" [shape=box];
-    "최종 지적 사항? 수정 dispatch 한 번, 범위 한정 re-review 한 번, 남은 것 판결" [shape=box];
+    "최종 지적 사항? 수정 dispatch 단 한 번, 범위 한정 re-review 한 번, 남은 것 판결" [shape=box];
     "최종 review 깨끗함: 이 plan의 작업 공간 삭제" [shape=box];
     "suberpower:finishing-a-development-branch 사용" [shape=box style=filled fillcolor=lightgreen];
 
@@ -99,8 +99,8 @@ digraph process {
     "review package 생성, task reviewer dispatch (./task-reviewer-prompt.md)" -> "Spec ✅이고 quality가 Approved인가?";
     "Spec ✅이고 quality가 Approved인가?" -> "ledger에 완료 기록, todo 완료 표시" [label="예"];
     "Spec ✅이고 quality가 Approved인가?" -> "지적 사항이 plan 텍스트와 충돌하는가?" [label="아니오"];
-    "지적 사항이 plan 텍스트와 충돌하는가?" -> "충돌을 결정하고 ledger에 기록" [label="예"];
-    "충돌을 결정하고 ledger에 기록" -> "수정 라운드 R/5: R≤3 implementer 재개, R≥4 더 강력한 모델의 새 implementer";
+    "지적 사항이 plan 텍스트와 충돌하는가?" -> "충돌에 대해 결정하고 ledger에 기록" [label="예"];
+    "충돌에 대해 결정하고 ledger에 기록" -> "수정 라운드 R/5: R≤3 implementer 재개, R≥4 더 강력한 모델의 새 implementer";
     "지적 사항이 plan 텍스트와 충돌하는가?" -> "수정 라운드 R/5: R≤3 implementer 재개, R≥4 더 강력한 모델의 새 implementer" [label="아니오"];
     "수정 라운드 R/5: R≤3 implementer 재개, R≥4 더 강력한 모델의 새 implementer" -> "범위 한정 re-review dispatch (./re-review-prompt.md)";
     "범위 한정 re-review dispatch (./re-review-prompt.md)" -> "모든 지적 사항이 해결되었는가?";
@@ -110,13 +110,13 @@ digraph process {
     "R = 5인가?" -> "미해결 지적 사항을 하나씩 판결" [label="예 - breaker 작동"];
     "미해결 지적 사항을 하나씩 판결" -> "후속 작업이 기대는 지적 사항이 있는가?";
     "후속 작업이 기대는 지적 사항이 있는가?" -> "결정하고 계속 진행. 어느 길도 추측뿐일 때만 멈춤" [label="예"];
-    "후속 작업이 기대는 지적 사항이 있는가?" -> "지적 사항을 결정과 함께 ledger에 보류" [label="아니오"];
-    "지적 사항을 결정과 함께 ledger에 보류" -> "ledger에 완료 기록, todo 완료 표시";
+    "후속 작업이 기대는 지적 사항이 있는가?" -> "결정과 함께 ledger에 보류로 기록" [label="아니오"];
+    "결정과 함께 ledger에 보류로 기록" -> "ledger에 완료 기록, todo 완료 표시";
     "ledger에 완료 기록, todo 완료 표시" -> "남은 task가 있는가?";
     "남은 task가 있는가?" -> "implementer subagent dispatch (./implementer-prompt.md)" [label="예"];
     "남은 task가 있는가?" -> "최종 code reviewer dispatch (../requesting-code-review/code-reviewer.md)" [label="아니오"];
-    "최종 code reviewer dispatch (../requesting-code-review/code-reviewer.md)" -> "최종 지적 사항? 수정 dispatch 한 번, 범위 한정 re-review 한 번, 남은 것 판결";
-    "최종 지적 사항? 수정 dispatch 한 번, 범위 한정 re-review 한 번, 남은 것 판결" -> "최종 review 깨끗함: 이 plan의 작업 공간 삭제";
+    "최종 code reviewer dispatch (../requesting-code-review/code-reviewer.md)" -> "최종 지적 사항? 수정 dispatch 단 한 번, 범위 한정 re-review 한 번, 남은 것 판결";
+    "최종 지적 사항? 수정 dispatch 단 한 번, 범위 한정 re-review 한 번, 남은 것 판결" -> "최종 review 깨끗함: 이 plan의 작업 공간 삭제";
     "최종 review 깨끗함: 이 plan의 작업 공간 삭제" -> "suberpower:finishing-a-development-branch 사용";
 }
 ```
@@ -163,12 +163,12 @@ Task 1을 dispatch하기 전에, 확인하는 대로 무엇을 확인했는지 �
 
 - 서로 모순되거나 plan의 Global Constraints와 모순되는 task
 - plan이 명시적으로 요구하지만 review 기준은 결함으로 보는 것(아무것도
-  assert하지 않는 테스트, 로직 블록의 그대로 복제)
+  assert하지 않는 테스트, 로직 블록을 그대로 복제한 것)
 
 이 점검의 산출물은 판정이 아니라 표입니다. 파일이나 인터페이스를 공유하는 task
 쌍마다 한 행: 두 task, 한쪽이 만드는 것과 다른 쪽이 소비하는 것, 그리고 발견한
-것. task마다 한 행: 그 task의 텍스트가 스스로 일관적인지 — 명시한 테스트와
-명시한 코드, 만드는 파일과 나중에 건드리는 파일. 이런 행 없이 "점검 결과
+것. task마다 한 행: 그 task의 텍스트가 스스로 일관적인지 — 명시한 테스트를
+명시한 코드와, 만드는 파일을 나중에 건드리는 파일과 대조한 결과. 이런 행 없이 "점검 결과
 깨끗함"이라고 하는 것은 실제로 점검한 것이 아닙니다.
 
 표를 ledger에 기록하세요. 발견한 모든 것을 실행 시작 전에 결정하세요 — 각
@@ -217,7 +217,7 @@ implementer에는 가장 저렴한 등급을 쓰세요. 단일 파일의 기계�
 
 ## Task 루프
 
-**작은 동형 작업은 묶으세요.** plan에 각각이 같은 종류의 작고 독립적인 편집인
+**같은 형태의 작은 작업은 묶으세요.** plan에 각각이 같은 종류의 작고 독립적인 편집인
 task가 여러 개 있다면 — 여러 파일에 반복되는 같은 한 줄 수정, 상수 변경, 필드
 추가 — task마다 subagent를 하나씩 dispatch하지 마세요. 모든 파일과 그 변경을
 나열한 **하나의** dispatch brief를 작성해 묶음 전체를 subagent 하나에 보내고,
@@ -364,7 +364,7 @@ review가 spec ❌, Critical 또는 Important 지적 사항, 또는 실제 공�
 보내세요. 그 implementer의 context는 온전합니다: task, 코드, 자신의 선택을 알고
 있습니다. harness가 살아 있는 subagent에게 메시지를 더 보낼 수 없다면, brief
 경로, report 파일 경로, 지적 사항을 담아 새 implementer를 dispatch하세요 —
-어느 쪽이든 report 파일이 지속되는 기억입니다.
+어느 쪽이든 report 파일이 영속적인 기억입니다.
 
 **라운드 4-5 — 더 강력한 모델로 새 implementer를 dispatch하세요** (모델 선택
 섹션에 따라). brief 경로, report 파일 경로, 미해결 지적 사항과 함께 다음 문구를
@@ -375,9 +375,9 @@ review가 spec ❌, Critical 또는 Important 지적 사항, 또는 실제 공�
 
 **매 라운드, 어느 쪽이든:** implementer는 수정하고, 수정한 코드를 커버하는
 테스트를 다시 실행하고, 같은 report 파일에 수정 보고서를 덧붙이고, 짧은 계약
-형식으로 회신합니다. reviewer를 다시 dispatch하기 전에, 수정 보고서에 커버링
-테스트, 실행한 명령, 출력이 들어 있는지 확인하세요. 세 가지가 모두 있을 때
-re-review를 dispatch하세요. 수정 메시지에 커버링 테스트 파일을 명시하세요 — 한
+형식으로 회신합니다. reviewer를 다시 dispatch하기 전에, 수정 보고서에 수정한
+코드를 커버하는 테스트, 실행한 명령, 출력이 들어 있는지 확인하세요. 세 가지가 모두 있을 때
+re-review를 dispatch하세요. 수정 메시지에 커버하는 테스트 파일을 명시하세요 — 한
 줄 수정에 전체 suite는 필요 없습니다.
 
 **re-review는 범위가 한정됩니다.** `bash scripts/review-package PLAN_FILE FIX_BASE HEAD`를
@@ -442,14 +442,14 @@ dispatch하세요. ledger의 연기된 Minor 줄과 보류된 줄을 알려 주�
 브랜치 전체에 대한 최종 review가 지적 사항을 반환하면, 전체 지적 사항 목록과
 함께 **단 하나의** 수정 subagent를 dispatch하세요 — 지적 사항마다 수정자를 하나씩
 두지 마세요. 지적 사항별 수정자는 각자 context를 다시 쌓고 suite를 다시
-실행합니다. 실제 세션에서 최종 review 수정 물결의 비용이 모든 task를 합친 것보다
-컸습니다. 그런 다음 그 수정 물결에 대해 정확히 한 번의 범위 한정 re-review를
+실행합니다. 실제 세션에서 최종 review 일괄 수정의 비용이 모든 task를 합친 것보다
+컸습니다. 그런 다음 그 일괄 수정에 대해 정확히 한 번의 범위 한정 re-review를
 실행하세요(수정 범위에 대한 `bash scripts/review-package PLAN_FILE FIX_BASE HEAD`,
 [re-review-prompt.md](re-review-prompt.md)). 남은 지적 사항은 task 루프의 breaker와
 같은 방식으로 판결하세요: 결정과 함께 보류하거나, 후속 작업이 기대는 것은
 결정하고 무엇을 결정했는지 ledger에 기록하세요. 여기서도 앞서 말한 네 가지
-경우만 당신을 멈춰 세웁니다. 두 번째 수정 물결은 없습니다 — 남은, 후속 작업이
-기대는 지적 사항은 finishing-a-development-branch가 선택지를 제시할 때 your human
+경우만 당신을 멈춰 세웁니다. 두 번째 일괄 수정은 없습니다 — 후속 작업이 기대는
+지적 사항이 남아 있다면, 그것은 finishing-a-development-branch가 선택지를 제시할 때 your human
 partner에게 드러납니다.
 
 ## 마무리
@@ -458,8 +458,8 @@ partner에게 드러납니다.
 보류된 지적 사항, breaker 판결, 전부 — 을 모아 최종 메시지의 "Rulings I made(내가
 내린 결정)" 아래에 내린 순서대로, 각각 틀렸을 때 치르는 비용과 함께 적으세요.
 이 목록은 빠짐이 없어야 합니다: ledger에 결정이 있으면 목록에도 있습니다. 이
-목록은 당신이 your human partner를 대신해 내린 결정이 그들에게 닿는 유일한
-통로입니다 — 그들은 이 목록을 읽고 당신이 잘못 판단한 것을 다시 작업합니다.
+목록은 당신이 your human partner를 대신해 내린 결정이 your human partner에게 닿는
+유일한 통로입니다 — your human partner는 이 목록을 읽고 당신이 잘못 판단한 것을 다시 작업합니다.
 작업 공간과 함께 사라진 결정은 몰래 내린 결정입니다.
 
 브랜치 전체에 대한 최종 review가 깨끗하고 그 수정이 merge되면, 이 plan의 작업
@@ -472,7 +472,7 @@ suberpower:finishing-a-development-branch를 사용하세요.
 
 | 핑계 | 현실 |
 |--------|---------|
-| "spec 준수는 이 정도면 충분히 가깝다" | reviewer가 spec 격차를 발견했다 = 완료 아님. 수정하거나, 한도에 도달해 판결하세요 — 출구는 그 둘뿐입니다. |
+| "spec 준수는 이 정도면 충분히 가깝다" | reviewer가 spec 공백을 발견했다 = 완료 아님. 수정하거나, 한도에 도달해 판결하세요 — 출구는 그 둘뿐입니다. |
 | "dispatch는 오버헤드니 내가 직접 고치겠다" | controller의 수정은 당신의 context를 오염시키고 review를 건너뜁니다. implementer를 재개하세요. |
 | "한 라운드만 더 하면 수렴할 것이다" | 한도를 넘긴 라운드는 수렴하지 않습니다 — 실패가 구조적입니다. 판결하고 경로를 정하세요. |
 | "reviewer는 어차피 또 새로운 걸 찾아낼 것이다" | 범위 한정 re-review는 수정을 검증할 뿐, 범위 밖으로 벗어날 수 없습니다. 건드리지 않은 코드에 대한 새 지적 사항은 루프가 아니라 ledger로 갑니다. |
@@ -508,7 +508,7 @@ Implementer: [잠시 후]
 
 [review-package PLAN_FILE BASE HEAD 실행, 출력된 경로와 함께 task reviewer dispatch]
 Task reviewer: Spec ✅ - 모든 요구사항 충족, 추가된 것 없음.
-  Strengths: 좋은 테스트 커버리지, 깔끔함. Issues: 없음. Task quality: Approved.
+  Strengths: 좋은 테스트 커버리지, 깔끔함. Issues: None. Task quality: Approved.
 
 [Ledger: Task 1: complete (commits a1b2c3d..d4e5f6a, review clean)]
 

@@ -18,6 +18,8 @@
 
 영문 뒤에는 조사를 그대로 붙입니다: `dispatch하고`, `commit하세요`, `review하며`.
 
+**heading은 각 파일의 기존 관례를 우선합니다.** 이미 heading이 번역된 파일은 새 heading도 번역하고, 출력 형식 heading·판정 토큰·ledger 토큰은 영문으로 둡니다.
+
 ### description 작성 규칙
 
 한국어로 **트리거 조건을 서술하고 `사용`을 포함**합니다. 트리거 절 뒤에 대시로 부연을 붙이는 형태도 씁니다. (upstream은 `"Use when..."`으로 시작하는 형식)
@@ -78,6 +80,17 @@
 | source of truth | `기준점` | |
 | over/under-building | `과잉 구현과 구현 누락` | |
 | scene-setting | `배경 설명` | `장면 설정` 금지 |
+| finding (review) | `지적 사항` | |
+| fix round | `수정 라운드` | |
+| verdict | `판정` | reviewer가 내리는 것. 판정 토큰(`Approved`, `ADDRESSED` 등)은 영문 유지 |
+| adjudicate | `판결` | controller가 내리는 것. `판정`(verdict)과 구분 |
+| ruling | `결정` | ledger 토큰 `Ruling:`은 영문 유지 |
+| fix report | `수정 보고서` | |
+| scoped re-review | `범위 한정 re-review` | |
+| gap (spec) | `공백` | `격차` 사용 안 함 |
+| pre-flight (review) | `사전 점검` | |
+| park (finding) | `보류` | ledger 토큰 `parked`는 영문 유지 |
+| fix wave | `일괄 수정` | `수정 물결` 금지 (직역투) |
 
 ---
 

@@ -66,7 +66,7 @@ Subagent (general-purpose):
 
     implementer는 수정한 코드를 커버하는 테스트를 다시 실행했고 그 결과를 report
     파일에 덧붙였습니다. 보고서는 검증되지 않은 주장으로 취급하세요: 수정
-    보고서가 커버링 테스트를 명시하고 그 출력을 보여 주는지 확인하고, 주장을
+    보고서가 수정한 코드를 커버하는 테스트를 명시하고 그 출력을 보여 주는지 확인하고, 주장을
     diff와 대조해 검증하세요. 그 보고를 확인하려고 test suite를 다시 실행하지
     마세요. 코드를 읽다가 기존 실행 결과로는 답할 수 없는 구체적인 의문이 생길
     때만 테스트를 실행하세요 — 그때도 집중된 테스트 하나만 실행하고, 패키지 전체
@@ -103,11 +103,11 @@ Subagent (general-purpose):
 
 **Placeholders:**
 - `[MODEL]` — REQUIRED: SKILL.md의 '모델 선택'에 따른 reviewer model. 작은
-  수정 diff에 대한 scoped re-review에는 저가~중간 등급이면 충분합니다
+  수정 diff에 대한 범위 한정 re-review에는 저가~중간 등급이면 충분합니다
 - `[BRIEF_FILE]` — task brief 파일 (implementer가 작업한 것과 같은 파일)
 - `[FINDINGS]` — 이전 review의 Critical/Important 지적 사항과 spec 공백을
   그대로 복사해 bullet 하나에 하나씩
-- `[REPORT_FILE]` — implementer의 보고서 파일 (수정 보고서가 덧붙여진 것)
+- `[REPORT_FILE]` — implementer의 report 파일 (수정 보고서가 덧붙여진 것)
 - `[FIX_BASE_SHA]` — 이전 review가 본 head
 - `[HEAD_SHA]` — 현재 commit
 - `[DIFF_FILE]` — `bash scripts/review-package PLAN_FILE FIX_BASE HEAD`가 출력한 경로
