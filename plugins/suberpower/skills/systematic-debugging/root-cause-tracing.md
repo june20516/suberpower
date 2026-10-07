@@ -162,7 +162,7 @@ digraph principle {
 
 ## 실제 영향
 
-debugging session(2025-10-03)에서:
+debugging 세션(2025-10-03)에서:
 - 5단계 추적을 통해 root cause 발견
 - source에서 fix (getter 검증)
 - 4개 layer의 방어 추가

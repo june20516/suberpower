@@ -15,7 +15,7 @@ claude plugin install suberpower@suberpower
 
 ## 구성
 
-- `plugins/suberpower/skills/` — 한국어로 번역된 스킬 14종
+- `plugins/suberpower/skills/` — 한국어로 번역된 스킬 15종
 - `plugins/suberpower/hooks/` — SessionStart 훅 (매 세션 시작 시 `using-suberpowers` 주입)
 
 ## 유지보수 문서

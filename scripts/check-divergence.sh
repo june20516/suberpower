@@ -51,7 +51,7 @@ NONAUTO_ITEMS='D-002|manual|upstream이 using-git-worktrees 또는 finishing-a-d
 D-005|assisted|새로 번역한 부분의 한국어가 자연스러운가? 직역투·비문·용어 불일치가 없는가?
 D-006|assisted|원문의 강조 등급이 유지되었는가? 대문자 강조가 평서문으로 풀린 곳은 없는가?
 D-007|assisted|번역하지 말아야 할 것(heading·기술 용어·상태값)을 번역하지 않았는가? 용어집 대응표를 따랐는가?
-D-008|manual|upstream이 diagnosing의 github-issues.md나 SKILL.md 5단계를 변경했다면, 사람이 변경 의도를 읽고 upstream 보고 경로에 반영했는가?'
+D-008|manual|upstream이 diagnosing의 github-issues.md, SKILL.md 5단계, 승인 관문 bullet, 위험 신호 표의 "upstream에 바로 올리자" 행 중 하나라도 변경했다면, 사람이 변경 의도를 읽고 upstream 보고 경로에 반영했는가? 포크 승인 관문과 위험 신호 행은 유지되었는가?'
 
 SKILLS="plugins/suberpower/skills"
 

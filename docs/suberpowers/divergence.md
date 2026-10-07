@@ -158,7 +158,7 @@ upstream은 `"Use when..."`으로 **시작**합니다. 이 포크는 **한국어
 
 **근거:** 동기화 중 가장 흔한 사고가 "upstream 파일을 그대로 복사"입니다. 이 검사가 그것을 잡습니다.
 
-**검증 (`auto`):** 각 SKILL.md의 한글 문자 수가 **400자 이상** (현재 최솟값 531자, `requesting-code-review`).
+**검증 (`auto`):** 각 SKILL.md의 한글 문자 수가 **400자 이상** (현재 최솟값 577자, `requesting-code-review`).
 
 **검증 (`assisted`):** 새로 번역한 부분의 한국어가 자연스러운가? 직역투·비문·용어 불일치가 없는가?
 
@@ -232,9 +232,9 @@ github-issues.md 본문, SKILL.md 5단계, SKILL.md 승인 관문은 D-008 보�
 - `github-issues.md`에 `**별도로** 다시 승인` 존재 (upstream 별도 승인 관문)
 - `github-issues.md`에 `## 검색` 절이 있고, 그 절에서 `obra/superpowers`가 `june20516/suberpower`보다 먼저 등장
 
-**검증 (`manual`):** 이번 동기화에서 upstream이 diagnosing의 `github-issues.md`나 SKILL.md 5단계를 변경했다면, 사람이 변경 의도를 읽고 upstream 보고 경로에 반영했는가?
+**검증 (`manual`):** 이번 동기화에서 upstream이 diagnosing의 `github-issues.md`, SKILL.md 5단계, 엄격한 규칙의 승인 관문 bullet, 위험 신호 표의 "upstream에 바로 올리자" 행 중 하나라도 변경했다면, 사람이 변경 의도를 읽고 upstream 보고 경로에 반영했는가? 포크 쪽 승인 관문(`포크 issue 승인은 upstream 보고 승인이 아닙니다`)과 위험 신호 행이 유지되었는가?
 
-**동기화 시:** upstream이 `github-issues.md`나 SKILL.md 5단계를 바꿔도 **자동 적용하지 마세요.** 바뀐 명령·플래그·URL·한계(예: 8,000자, 라벨, 템플릿 이름)는 upstream 보고 경로(`## upstream 보고 (선택)`)와 upstream 검색에만 옮기고, 포크 경로에는 포크에 실제로 있는 것만 반영합니다. 검색 순서(upstream → 포크), 포크 우선 생성, upstream 보고의 선택·영어·별도 승인은 유지합니다. upstream 양식(`templates/issue.md`)의 heading이 바뀌면 `## upstream 보고 (선택)`이 인용하는 원문 heading도 함께 고칩니다.
+**동기화 시:** upstream이 `github-issues.md`, SKILL.md 5단계, 승인 관문 bullet, 위험 신호 표의 해당 행을 바꿔도 **자동 적용하지 마세요.** 바뀐 명령·플래그·URL·한계(예: 8,000자, 라벨, 템플릿 이름)는 upstream 보고 경로(`## upstream 보고 (선택)`)와 upstream 검색에만 옮기고, 포크 경로에는 포크에 실제로 있는 것만 반영합니다. 검색 순서(upstream → 포크), 포크 우선 생성, upstream 보고의 선택·영어·별도 승인은 유지합니다. 승인 관문 bullet은 D-008 보호 구역 안에 두고, 위험 신호 행은 표가 끊기지 않도록 마커 없이 행 문자열(`upstream에 바로 올리자`)을 유지합니다. upstream 양식(`templates/issue.md`)의 heading이 바뀌면 `## upstream 보고 (선택)`이 인용하는 원문 heading도 함께 고칩니다.
 
 ---
 

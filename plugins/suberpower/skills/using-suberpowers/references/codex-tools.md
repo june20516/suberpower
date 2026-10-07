@@ -15,7 +15,7 @@ preset은 V1로 동작합니다). 어떤 표든 — 이 문서를 포함해 — 
 
 - **Spawn:** 자식에게 깨끗한 context를 주려면
   `spawn_agent {fork_turns: "none"}`을 쓰세요. 기본값 `"all"`은 당신의
-  transcript 전체를 자식에 복사합니다. Codex 0.145+에서는
+  transcript 전체를 자식에게 복사합니다. Codex 0.145+에서는
   `~/.codex/agents/` 아래의 role 파일이 `agent_type`으로 격리된 fork에 붙습니다.
   전체 히스토리 fork도 `model`과 `reasoning_effort` override를 받습니다(거기서
   거부되는 것은 `agent_type`뿐입니다) — 격리된 fork가 SDD 기본값인 것은 context
