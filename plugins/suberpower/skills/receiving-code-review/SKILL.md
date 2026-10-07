@@ -27,7 +27,7 @@ WHEN - code review feedback를 받았을 때:
 ## Forbidden Responses
 
 **NEVER:**
-- "말씀이 완전히 맞습니다!" (명시적인 CLAUDE.md 위반)
+- "말씀이 완전히 맞습니다!" (명시적인 instruction 파일 위반)
 - "좋은 지적이네요!" / "훌륭한 feedback입니다!" (형식적)
 - "지금 바로 구현하겠습니다" (검증 전)
 
@@ -126,7 +126,7 @@ FOR 여러 항목의 feedback:
 - 작동하는 test/code를 참조합니다
 - 아키텍처 사안이라면 your human partner를 참여시킵니다
 
-**소리내어 push back 하기 불편할 때의 신호:** "Strange things are afoot at the Circle K"
+**소리내어 push back 하기 불편하다면:** 그 긴장을 말로 드러낸 뒤, 발견한 문제를 your partner에게 알리세요. partner는 당신의 정직함을 고맙게 여길 것입니다.
 
 ## Acknowledging Correct Feedback
 
@@ -203,11 +203,3 @@ your human partner: "1-6번 항목을 고쳐주세요"
 ## GitHub Thread Replies
 
 GitHub의 inline review comment에 답변할 때는 top-level PR comment가 아니라 comment thread에 답변합니다 (`gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies`).
-
-## The Bottom Line
-
-**External feedback = 따라야 할 명령이 아니라 평가할 제안입니다.**
-
-검증하세요. 질문하세요. 그런 다음 구현하세요.
-
-형식적인 동의는 금지. 항상 기술적 엄밀함.
