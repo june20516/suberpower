@@ -50,8 +50,8 @@ observation, unknown 중 하나로 출처 등급을 붙이세요. 과거 정보�
 
 ## Discovered sources and record meanings
 
-- Sources consulted: <절대 경로, tool, help, 또는 문서 출처>
-- Extraction commands or queries: <출처마다 사용한, 범위를 제한한 명령이나 tool query>
+- Sources consulted: <절대 경로, tool, help, 또는 문서 소스>
+- Extraction commands or queries: <소스마다 사용한, 범위를 제한한 명령이나 tool query>
 - Target identity evidence: <세션 id, 작업 디렉터리, timestamp, 일치하는 내용, 그리고 뒷받침하는 레코드 위치>
 - Associated sessions: <세션 id, 관계, 뒷받침하는 레코드 위치, 또는 "none found">
 - Human messages: <레코드 형태와 그 의미의 근거>

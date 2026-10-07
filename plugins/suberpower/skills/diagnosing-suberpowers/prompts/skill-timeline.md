@@ -9,10 +9,10 @@ Dimension: Skill timeline
 2. case 파일에서 확립된 skill 호출과 귀속(attribution)의 의미를 사용해,
    모든 명시적 호출, 활성 skill 귀속, `SKILL.md`라는 이름의 파일 읽기를
    나열하세요. 줄, skill 이름, 그것이 일어난 사람의 turn을 기록하세요.
-3. 진단 대상 플러그인 `suberpower`가 아닌 plugin, skill, agent type, MCP
+3. 진단 대상 plugin `suberpower`가 아닌 plugin, skill, agent type, MCP
    server, hook 중 사용된 것을 모두 나열하세요. case 파일에 기록된, 근거 있는
    tool, 귀속, agent dispatch, MCP, hook의 의미만 사용하고, `suberpower` 이외의
-   것과 연관된 값을 식별하세요. 원본 Superpowers 플러그인이 함께 설치되어
+   것과 연관된 값을 식별하세요. 원본 Superpowers plugin이 함께 설치되어
    있었다면 그 네임스페이스로 된 skill 호출도 `suberpower` 이외의 plugin으로
    다루세요.
 4. 사람의 turn마다 요청 텍스트를 설치된 suberpowers skill의 트리거 설명과

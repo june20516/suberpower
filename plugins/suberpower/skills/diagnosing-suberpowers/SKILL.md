@@ -32,7 +32,7 @@ finding도 없습니다. 모든 숫자는 transcript나 당신이 실행한 명�
    "none"). subagent transcript를 빠짐없이 찾으세요.
    `~/.claude/suberpowers/diagnosing/<session-id>/`를 만들고 your human
    partner에게 그 경로를 알린 뒤, 그곳에 `templates/case.md`를 채우세요.
-   환경과 skill 관찰은 이 템플릿의 출처 규칙을 따릅니다.
+   환경과 skill 관찰은 이 템플릿의 출처 등급 규칙을 따릅니다.
 3. **Triage.** 보고된 문제 주변 구간은 직접 읽으세요. 그다음 차원마다 분석
    subagent를 하나씩 병렬로 dispatch하고, 각각에 case 파일 경로,
    `prompts/analyst-common.md`, 그리고 `prompts/`의 차원 파일 하나를 주세요:
@@ -107,10 +107,12 @@ finding도 없습니다. 모든 숫자는 transcript나 당신이 실행한 명�
   partner가 수정을 재촉해도 이 규칙은 면제되지 않습니다. issue 단계를 가리키고
   bundle을 요청 시 만들 수 있다고 언급하세요. your human partner에게 조언하는
   것도 금지입니다.
+<!-- DIVERGENCE:D-008 start -->
 - **승인 관문.** your human partner가 scrub log와 파일 목록을 보기 전에는
   압축하지 마세요. 정확한 문구를 승인받기 전에는 어느 저장소에도 issue나
   comment를 올리지 마세요. 포크 issue 승인은 upstream 보고 승인이 아닙니다.
   upstream에 올릴 영어 본문은 따로 승인받으세요.
+<!-- DIVERGENCE:D-008 end -->
 - **분석 전에 문제 파악.** your human partner가 답하기 전에는 2–7단계 중
   어느 것도 시작하지 마세요. 자리에 없다면 질문을 적어 두고 멈추세요. 당신이
   대신 재구성한 진술은 답이 아닙니다. 이미 범위가 정해진 요청 — 특정 event

@@ -210,9 +210,9 @@ upstream은 `"Use when..."`으로 **시작**합니다. 이 포크는 **한국어
 
 ## D-008 · diagnosing 이슈 흐름 (upstream→포크 검색, 포크 우선 보고)
 
-**범위:** `plugins/suberpower/skills/diagnosing-suberpowers/references/github-issues.md` (본문 전체), `plugins/suberpower/skills/diagnosing-suberpowers/SKILL.md` (5단계 GitHub issues)
+**범위:** `plugins/suberpower/skills/diagnosing-suberpowers/references/github-issues.md` (본문 전체), `plugins/suberpower/skills/diagnosing-suberpowers/SKILL.md` (5단계 GitHub issues, 엄격한 규칙의 승인 관문, 위험 신호 표의 "upstream에 바로 올리자" 행)
 **정책:** `MANUAL_MERGE`
-**검증 등급:** `auto`
+**검증 등급:** `auto` + `manual`
 
 upstream은 `obra/superpowers`에서 검색하고 일치가 없으면 그곳에 바로 issue를 만듭니다. 이 포크는 흐름을 이렇게 바꿨습니다.
 
@@ -220,14 +220,19 @@ upstream은 `obra/superpowers`에서 검색하고 일치가 없으면 그곳에 
 2. 보고는 포크 쪽이 기본: upstream에서 일치해도 일치한 포크 issue에 덧붙이거나, 없으면 포크에 새로 생성 (라벨·`diagnosis_report.md` 템플릿 없음, 내용은 한국어 가능, upstream에서만 일치했다면 그 링크를 본문에 기재)
 3. upstream 보고: 포크 쪽 기록이 생긴 뒤, report가 인용한 증거와 D-항목 범위가 겹치는지 사실만 밝히고(원인 판단·권고 없음) **선택 동작**으로만 제안 — 일치한 upstream issue에 comment 또는 새 issue. 승인하면 영어로 옮긴 별도 본문을 보여 주고 **별도 승인** 후 게시 (한국어 포크에서 관찰했다는 사실과 포크 issue 링크 명시, 새 issue는 upstream 원문 양식 heading 사용)
 
-두 범위 모두 D-008 보호 구역 마커(start·end 한 쌍)로 감쌌습니다.
+github-issues.md 본문, SKILL.md 5단계, SKILL.md 승인 관문은 D-008 보호 구역 마커(start·end 한 쌍)로 감쌌습니다. 위험 신호 행은 표 안이라 마커를 두면 표가 끊기므로 행 문자열 검사로 보호합니다.
 
 **근거:** 포크를 쓰다가 생긴 문제는 번역이나 포크 고유 수정(이 문서의 D-항목)이 원인일 수 있습니다. upstream에 바로 보고하면 원작자에게 오보가 될 위험이 있습니다. upstream 보고는 영어로, 선택 동작으로, 별도 승인을 받아서만 합니다 — 2026-10-07 사용자 결정.
 
 **검증 (`auto`):**
 - `github-issues.md`와 `SKILL.md` 각각에 D-008 마커 짝이 맞음
+- SKILL.md D-008 보호 구역 안에 `포크 issue 승인은 upstream 보고 승인이 아닙니다` 존재 (승인 관문)
+- SKILL.md 위험 신호 표 행(`|`로 시작하는 줄)에 `upstream에 바로 올리자` 존재
 - `github-issues.md`에 `june20516/suberpower` 존재
-- `github-issues.md`의 `## 검색` 절에서 `obra/superpowers`가 `june20516/suberpower`보다 먼저 등장
+- `github-issues.md`에 `**별도로** 다시 승인` 존재 (upstream 별도 승인 관문)
+- `github-issues.md`에 `## 검색` 절이 있고, 그 절에서 `obra/superpowers`가 `june20516/suberpower`보다 먼저 등장
+
+**검증 (`manual`):** 이번 동기화에서 upstream이 diagnosing의 `github-issues.md`나 SKILL.md 5단계를 변경했다면, 사람이 변경 의도를 읽고 upstream 보고 경로에 반영했는가?
 
 **동기화 시:** upstream이 `github-issues.md`나 SKILL.md 5단계를 바꿔도 **자동 적용하지 마세요.** 바뀐 명령·플래그·URL·한계(예: 8,000자, 라벨, 템플릿 이름)는 upstream 보고 경로(`## upstream 보고 (선택)`)와 upstream 검색에만 옮기고, 포크 경로에는 포크에 실제로 있는 것만 반영합니다. 검색 순서(upstream → 포크), 포크 우선 생성, upstream 보고의 선택·영어·별도 승인은 유지합니다. upstream 양식(`templates/issue.md`)의 heading이 바뀌면 `## upstream 보고 (선택)`이 인용하는 원문 heading도 함께 고칩니다.
 

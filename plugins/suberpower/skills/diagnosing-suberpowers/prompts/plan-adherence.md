@@ -8,7 +8,7 @@ Dimension: Plan adherence
 아닙니다.
 
 1. 합의된 plan을 찾으세요: 대화에서 합의된 설계나 plan(사람의 "yes/ok/go
-   ahead" 직전의 assistant 텍스트를 찾으세요), 세션 중에 작성된 spec이나
+   ahead" 또는 "응/좋아/진행해" 직전의 assistant 텍스트를 찾으세요), 세션 중에 작성된 spec이나
    plan 파일(`docs/`, `plans/`, `specs/` 아래, 또는 사람이 지목한 파일에 쓰는
    tool 호출), case 파일에서 의미가 확립된 todo 목록 레코드, 또는 assistant
    텍스트 안의 번호 매긴 checklist. plan의 각 단계를 `path:line`과 함께

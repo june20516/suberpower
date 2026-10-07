@@ -129,6 +129,18 @@
 | seat (비용 맥락의 실행 단위) | `자리` | 맥락 없이 처음 나오면 `자리(실행 단위)`로 한 번 풀어 씀. 예: `review 자리` |
 | bounded stretch / bounded wait | `기한을 정한 대기` | 동사형 `기한을 정해 기다리다`. 한 번의 대기는 `대기 구간`. SDD 표기가 정본 |
 | Superpowers (브랜드, 문서 첫 등장) | `Superpowers(suberpowers 포크)` | 이후 등장은 `suberpowers`. 단, upstream 자체를 가리키면(예: 포크 이전 문서) `Superpowers` |
+| finding (diagnosing 분석 결과) | `finding` | 영문 유지. 반환 형식 토큰 `finding:`과 일치. review의 `지적 사항`(finding (review))과 구분 |
+| stumble | `막힘` | diagnosing 분석 차원 |
+| intake (problem intake) | `문제 파악` | |
+| dimension (분석 차원) | `차원` | 라벨 `Dimension:`은 영문 유지 |
+| wall-clock | `실제 소요 시간` | |
+| provenance | `출처` | provenance label → `출처 등급`, provenance rules → `출처 등급 규칙`. source(`소스`)와 구분 |
+| source (데이터·파일시스템 소스) | `소스` | provenance(`출처`)와 구분 |
+| scrub / scrubber / scrub auditor | `scrub` / `scrubber` / `scrub auditor` | 영문 유지. 역할명 짝을 맞춤 |
+| bundle / audit | `bundle` / `audit` | 영문 유지 |
+| proprietary term | `비공개 용어` | `독점 용어` 금지 (monopoly로 읽힘). placeholder `<PROPRIETARY-n>`은 영문 유지 |
+| archive (zip/tar) | `압축` / `압축 파일` | archive 전용. condensed(줄여 옮긴 transcript)는 `축약한` / `줄여 옮긴` |
+| historical anchor | `과거 기준 위치` | source of truth의 `기준점`과 구분 |
 
 ---
 

@@ -113,10 +113,12 @@ partner가 브라우저에서 첨부할 수 있도록 bundle 경로를 주세요
 https://github.com/june20516/suberpower/issues/new?title=<url-encoded title>&body=<url-encoded body>
 ```
 
+`gh` 없이 만들었다면 issue가 생긴 뒤 그 URL을 알려 달라고 하세요. upstream
+보고 본문의 포크 issue 링크에 필요합니다.
+
 GitHub는 약 8,000자를 넘는 URL을 거부합니다. 넘으면 title만 담은 링크를 주고,
 본문은 파일에서 붙여 넣으라고 안내하세요. 한국어는 URL 인코딩하면 글자당 9자가
-되므로 금방 넘습니다. 이 경우 issue가 생긴 뒤 그 URL을 알려 달라고 하세요.
-다음 절의 사실 확인에 필요합니다.
+되므로 금방 넘습니다.
 
 ## upstream 보고 (선택)
 
@@ -140,6 +142,8 @@ GitHub는 약 8,000자를 넘는 URL을 거부합니다. 넘으면 title만 담�
 2. **제안.** upstream에서 일치한 issue가 있었다면 그 issue에 comment로 덧붙이기를,
    없었다면 새 upstream issue 만들기를 선택 동작으로 한 번 제안하세요. your
    human partner가 거절하거나 답하지 않으면 여기서 멈춥니다.
+   upstream 검색이 모든 단계에서 실패했다면, 제안 전에 다시 검색하거나 upstream
+   중복 확인을 하지 못했다는 사실을 함께 알리세요.
 3. **영어 본문.** 승인하면 포크 쪽 기록의 내용을 영어로 옮겨 작업 공간에 별도
    파일로 쓰세요(comment는 예: `comment-upstream.en.md`, issue는 예:
    `issue-upstream.en.md`). 두 경우 모두:
@@ -157,6 +161,8 @@ GitHub는 약 8,000자를 넘는 URL을 거부합니다. 넘으면 title만 담�
      Environment 표의 `Superpowers version` 행. 포크 양식의
      `Is this a suberpowers issue…` 문구는 포크 issue용입니다. 출처 문장은
      `## What happened?`의 첫 문단에 두세요.
+   - 그 밖에 양식 문구의 `suberpowers`도 모두 `Superpowers`로 쓰세요. skill
+     이름 `diagnosing-suberpowers`와 출처 문장은 그대로 둡니다.
    - footer 첫 문장은
      `Filed with the diagnosing-suberpowers skill (Korean fork of Superpowers).`로
      쓰고, 둘째 문장은 양식 그대로 두세요.

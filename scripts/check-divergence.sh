@@ -50,14 +50,15 @@ is_acked() {
 NONAUTO_ITEMS='D-002|manual|upstream이 using-git-worktrees 또는 finishing-a-development-branch의 worktree 정리 판정을 변경했다면, 사람이 변경 의도를 읽고 반영 여부를 판단했는가?
 D-005|assisted|새로 번역한 부분의 한국어가 자연스러운가? 직역투·비문·용어 불일치가 없는가?
 D-006|assisted|원문의 강조 등급이 유지되었는가? 대문자 강조가 평서문으로 풀린 곳은 없는가?
-D-007|assisted|번역하지 말아야 할 것(heading·기술 용어·상태값)을 번역하지 않았는가? 용어집 대응표를 따랐는가?'
+D-007|assisted|번역하지 말아야 할 것(heading·기술 용어·상태값)을 번역하지 않았는가? 용어집 대응표를 따랐는가?
+D-008|manual|upstream이 diagnosing의 github-issues.md나 SKILL.md 5단계를 변경했다면, 사람이 변경 의도를 읽고 upstream 보고 경로에 반영했는가?'
 
 SKILLS="plugins/suberpower/skills"
 
 if [ "$LIST_ONLY" -eq 1 ]; then
   printf '\033[1mauto\033[0m      D-001 D-002 D-003 D-004 D-005 D-008\n'
   printf '\033[1massisted\033[0m  D-005 D-006 D-007\n'
-  printf '\033[1mmanual\033[0m    D-002\n\n'
+  printf '\033[1mmanual\033[0m    D-002 D-008\n\n'
   printf '근거와 검증 방법: docs/suberpowers/divergence.md\n'
   exit 0
 fi
@@ -182,11 +183,15 @@ done
 head_ "D-008 · diagnosing 이슈 흐름 (MANUAL_MERGE)"
 
 DIAG="$SKILLS/diagnosing-suberpowers"
+DIAG_SKILL="$DIAG/SKILL.md"
 GH_ISSUES="$DIAG/references/github-issues.md"
 UPSTREAM_REPO='obra/superpowers'
 FORK_REPO='june20516/suberpower'
+SKILL_GATE='포크 issue 승인은 upstream 보고 승인이 아닙니다'
+SKILL_RED_FLAG='upstream에 바로 올리자'
+ISSUES_GATE='**별도로** 다시 승인'
 
-for f in "$GH_ISSUES" "$DIAG/SKILL.md"; do
+for f in "$GH_ISSUES" "$DIAG_SKILL"; do
   if [ ! -f "$f" ]; then bad "파일 없음: $f"; continue; fi
   s=$(grep -c 'DIVERGENCE:D-008 start' "$f")
   e=$(grep -c 'DIVERGENCE:D-008 end' "$f")
@@ -194,20 +199,40 @@ for f in "$GH_ISSUES" "$DIAG/SKILL.md"; do
   else bad "D-008 마커 짝 불일치: $f (start ${s}, end ${e}) — upstream 판본으로 덮었는지 확인하세요"; fi
 done
 
+if [ -f "$DIAG_SKILL" ]; then
+  # 승인 관문의 별도 승인 문장은 D-008 보호 구역 안에 있어야 합니다
+  gate_in_block=$(awk -v gate="$SKILL_GATE" '
+    /DIVERGENCE:D-008 start/ { inside = 1; next }
+    /DIVERGENCE:D-008 end/   { inside = 0; next }
+    inside && index($0, gate) { found = 1 }
+    END { print found + 0 }
+  ' "$DIAG_SKILL")
+  if [ "$gate_in_block" -eq 1 ]; then ok "SKILL.md 승인 관문의 upstream 별도 승인 문장 유지 (D-008 보호 구역)"
+  else bad "SKILL.md 승인 관문에 '$SKILL_GATE' 없음 (D-008 보호 구역 안) — upstream 판본으로 덮었는지 확인하세요"; fi
+
+  # 위험 신호 표 행은 표 안이라 마커를 둘 수 없으므로 표 행 존재만 검사합니다
+  if grep -E '^\|' "$DIAG_SKILL" | grep -qF "$SKILL_RED_FLAG"; then ok "SKILL.md 위험 신호 표에 포크 우선 보고 행 유지"
+  else bad "SKILL.md 위험 신호 표에 '$SKILL_RED_FLAG' 행 없음 — upstream 표로 되돌아갔는지 확인하세요"; fi
+fi
+
 if [ -f "$GH_ISSUES" ]; then
   if grep -qF "$FORK_REPO" "$GH_ISSUES"; then ok "포크 저장소 유지: $FORK_REPO"
   else bad "포크 저장소 소실: $FORK_REPO — 포크 우선 보고 흐름이 upstream 판본으로 덮였는지 확인하세요"; fi
 
+  if grep -qF "$ISSUES_GATE" "$GH_ISSUES"; then ok "github-issues.md upstream 별도 승인 문장 유지"
+  else bad "github-issues.md에 '$ISSUES_GATE' 없음 — upstream 별도 승인 관문이 사라졌는지 확인하세요"; fi
+
   # '## 검색' 절 안에서 각 저장소가 처음 등장하는 줄 번호를 비교합니다
   order=$(awk -v up="$UPSTREAM_REPO" -v fork="$FORK_REPO" '
-    /^## / { in_search = ($0 ~ /^## 검색/) }
+    /^## / { in_search = ($0 ~ /^## 검색/); if (in_search) has_heading = 1 }
     in_search && !up_line   && index($0, up)   { up_line = NR }
     in_search && !fork_line && index($0, fork) { fork_line = NR }
-    END { print up_line + 0, fork_line + 0 }
+    END { print has_heading + 0, up_line + 0, fork_line + 0 }
   ' "$GH_ISSUES")
-  up_line=${order% *}
-  fork_line=${order#* }
-  if [ "$up_line" -eq 0 ] || [ "$fork_line" -eq 0 ]; then
+  read -r has_search up_line fork_line <<< "$order"
+  if [ "$has_search" -eq 0 ]; then
+    bad "'## 검색' 절 없음 — heading이 upstream 판본(## Search 등)으로 덮였는지 확인하세요"
+  elif [ "$up_line" -eq 0 ] || [ "$fork_line" -eq 0 ]; then
     bad "검색 절에 두 저장소가 모두 있지 않음 (upstream 줄 ${up_line}, 포크 줄 ${fork_line})"
   elif [ "$up_line" -lt "$fork_line" ]; then
     ok "검색 순서 유지: $UPSTREAM_REPO(${up_line}행) → $FORK_REPO(${fork_line}행)"

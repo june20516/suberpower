@@ -11,7 +11,8 @@ Dimension: Quality evidence
    명시된 프로젝트의 runner)을 결과 줄과 함께 찾으세요. 실패한 실행과 그다음
    assistant가 한 일을 보고하세요.
 2. 주장 뒤의 검증: 완료, 수정됨, 통과, 검증됨, 동작함, 끝남을 주장하는
-   assistant 텍스트를 찾으세요. 각각에 대해 같은 turn 안에서 거슬러 올라가
+   assistant 텍스트를 찾으세요(영어 표현 done, fixed, passing, verified, works,
+   complete도 찾으세요). 각각에 대해 같은 turn 안에서 거슬러 올라가
    그것을 보여 주는 tool 결과(test 실행, 명령 출력, diff)를 찾으세요. 그
    turn 안에 뒷받침하는 결과가 없는 주장을 보고하세요.
 3. Commit: 모든 `git commit`을 메시지와 함께 찾고, 각 메시지를 직전 turn의

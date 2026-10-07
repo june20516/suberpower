@@ -25,7 +25,7 @@ suberpowers가 설치된 상태에서 잘못 진행된 coding agent 세션을 sc
 - `environment.json` — 환경 섹션의 기계 판독용 사본.
 - `timeline.md` — turn별 timeline.
 - `findings/<dimension>.md` — 차원별 분석가 finding 원본.
-- `transcripts/<session-id>.md` — 조사한 각 세션을 turn별로 압축해 옮긴 것
+- `transcripts/<session-id>.md` — 조사한 각 세션을 turn별로 줄여 옮긴 것
   (원본 JSONL은 절대 넣지 않음). 수준별 tool 결과 본문:
 
   | Level | Tool-result bodies |
@@ -40,7 +40,7 @@ suberpowers가 설치된 상태에서 잘못 진행된 coding agent 세션을 sc
 
 `report.md` §1–2부터 읽고, 그다음 §7(관여 여부)과 거기서 인용한 증거 줄,
 그다음 `transcripts/`의 해당 turn을 읽으세요. `path:line` 참조는 보고자
-머신의 원본 파일을 가리킵니다. 압축된 transcript에도 같은 줄 번호가 `[L<n>]`
+머신의 원본 파일을 가리킵니다. 축약한 transcript에도 같은 줄 번호가 `[L<n>]`
 marker로 보존되어 있습니다.
 
 ## Redaction
@@ -62,7 +62,7 @@ scrub한 뒤, 이 bundle만 사용해 export된 중요한 finding을 모두 점�
 report, case, environment, findings, README, 그리고 로컬 issue 초안이 있다면
 그것까지 서로 대조해 맞추세요. scrub-log의 횟수를 log 자신을 제외한 최종
 파일 기준으로 갱신하세요. 낡은 export 진술은 지우고, bundle 준비와 압축 파일
-전달을 구분하세요. 원래 위치 기준점(historical anchor)에서 bundle에 포함된
+전달을 구분하세요. 과거 기준 위치(historical anchor)에서 bundle에 포함된
 증거로 가는 대응표를 유지하세요.
 
 독립적인 개인정보 audit 결과를 증거 유용성과 분리해 기록하세요:
