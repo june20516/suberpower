@@ -84,7 +84,7 @@ else
 fi
 
 # ---------------------------------------------------------------- D-002
-head_ "D-002 · using-git-worktrees 전면 재작성 (MANUAL_MERGE)"
+head_ "D-002 · using-git-worktrees 전면 재작성과 전역 worktree 경로 인식 (MANUAL_MERGE)"
 
 WT="$SKILLS/using-git-worktrees/SKILL.md"
 if [ -f "$WT" ]; then
@@ -101,6 +101,7 @@ else
 fi
 
 # finishing-a-development-branch의 worktree 정리 판정이 전역 경로를 인식하는지
+#   보호 구역 안의 설명 문장이 아니라 판정 조건 줄(WORKTREE_PATH가 있는 줄)을 검사합니다
 FIN="$SKILLS/finishing-a-development-branch/SKILL.md"
 GLOBAL_WT='~/.claude/suberpowers/worktrees/'
 if [ -f "$FIN" ]; then
@@ -109,7 +110,7 @@ if [ -f "$FIN" ]; then
   in_block=$(awk -v path="$GLOBAL_WT" '
     /DIVERGENCE:D-002 start/ { inside = 1; next }
     /DIVERGENCE:D-002 end/   { inside = 0; next }
-    inside && index($0, path) { found = 1 }
+    inside && index($0, "WORKTREE_PATH") && index($0, path) { found = 1 }
     END { print found + 0 }
   ' "$FIN")
   if ! grep -qF "$GLOBAL_WT" "$FIN"; then
@@ -117,9 +118,15 @@ if [ -f "$FIN" ]; then
   elif [ "$fin_start" -eq 0 ] || [ "$fin_start" -ne "$fin_end" ]; then
     bad "finishing D-002 마커 짝 불일치 (start ${fin_start}, end ${fin_end})"
   elif [ "$in_block" -ne 1 ]; then
-    bad "finishing 전역 경로가 D-002 보호 구역 밖에만 있음"
+    bad "finishing 판정 조건 줄(D-002 보호 구역 안, WORKTREE_PATH)에 전역 경로 없음"
   else
-    ok "finishing 전역 경로 유지: $GLOBAL_WT (D-002 보호 구역 안)"
+    ok "finishing 전역 경로 유지: $GLOBAL_WT (D-002 보호 구역의 판정 조건 줄)"
+  fi
+  # 합리화 표의 정리 대상 행은 마커 밖에 있으므로 표 행 존재만 느슨하게 검사합니다
+  if grep -E '^\|' "$FIN" | grep -qF "$GLOBAL_WT"; then
+    ok "finishing 합리화 표 행에 전역 경로 유지"
+  else
+    bad "finishing 합리화 표 행에 전역 경로 없음 — upstream 판본으로 되돌아갔는지 확인하세요"
   fi
 else
   bad "파일 없음: $FIN"

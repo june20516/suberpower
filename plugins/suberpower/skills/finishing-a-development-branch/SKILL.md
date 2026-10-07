@@ -40,7 +40,7 @@ WORKTREE_PATH=$(git rev-parse --show-toplevel)
 | 상태 | 메뉴 | 정리 |
 |-------|------|---------|
 | `GIT_DIR == GIT_COMMON` (일반 repo) | 표준 3개 옵션 | 정리할 worktree 없음 |
-| `GIT_DIR != GIT_COMMON`, 명명된 branch | 표준 3개 옵션 | 출처 기반 (Step 6 참조) |
+| `GIT_DIR != GIT_COMMON`, 이름이 있는 branch | 표준 3개 옵션 | 출처(provenance) 기반 (Step 6 참조) |
 | `GIT_DIR != GIT_COMMON`, detached HEAD | 축소된 2개 옵션 (merge 없음) | 외부 관리 — 그대로 둠 |
 
 ## Step 3: 베이스 branch 결정
@@ -52,7 +52,7 @@ merge 전에 확인하세요: 잘못된 베이스로 merge하면 되돌리는 �
 
 ## Step 4: 옵션 제시
 
-**일반 repo와 명명된 branch worktree — 다음 3개 옵션을 정확히 제시합니다:**
+**일반 repo와 이름이 있는 branch worktree — 다음 3개 옵션을 정확히 제시합니다:**
 
 ```
 구현이 완료되었습니다. 무엇을 하시겠습니까?
@@ -158,15 +158,15 @@ git branch -D <feature-branch>
 ## Step 6: Workspace 정리
 
 **Option 1과 확인된 폐기에서만 실행됩니다.** Option 2와 3은 항상 worktree를
-보존합니다. 두 호출 경로 모두 이미 메인 repo 루트로 디렉터리를 옮긴 상태이며
-— worktree 제거는 worktree 밖에서 실행해야 합니다 — 그 디렉터리 이동 전에
+보존합니다. 두 호출 경로 모두 이미 메인 repo 루트로 디렉터리를 옮겼습니다
+(worktree 제거는 worktree 밖에서 실행해야 하기 때문입니다). 정리에는 그 이동 전
 Step 2에서 기록한 `GIT_DIR`/`GIT_COMMON`/`WORKTREE_PATH` 값을 사용합니다.
 
 **`GIT_DIR == GIT_COMMON`인 경우:** 일반 repo이며 정리할 worktree가 없습니다. 완료.
 
 <!-- DIVERGENCE:D-002 start -->
 **`WORKTREE_PATH`가 `~/.claude/suberpowers/worktrees/`(`$HOME/.claude/suberpowers/worktrees/`), `.worktrees/`, 또는 `worktrees/` 하위에 있는 경우:**
-Superpowers(suberpowers 포크)가 이 worktree를 생성했으므로 — 정리는 우리의
+Superpowers(suberpowers 포크)가 이 worktree를 생성했으므로 정리는 우리의
 책임입니다. `suberpower:using-git-worktrees`는 worktree를 항상 전역 경로
 `~/.claude/suberpowers/worktrees/<project>/<branch>`에 생성합니다. 이 경로를
 놓치면 이 포크가 만든 worktree가 정리되지 않고 남습니다.
@@ -191,9 +191,9 @@ worktree 제거가 거부되었습니다 — 다음 파일은 한 번도 commit�
 
 <file list>
 
-1. 정리 전에 <branch>에 commit
-2. <main repo root>로 이동
-3. 삭제 (복구 불가)
+1. 이 파일들을 정리 전에 <branch>에 commit
+2. 이 파일들을 <main repo root>로 옮기기
+3. 이 파일들을 삭제 (복구 불가)
 
 어떻게 하시겠습니까?
 ```
@@ -221,7 +221,7 @@ worktree 제거가 거부되었습니다 — 다음 파일은 한 번도 commit�
 | "이 기능은 끝난 것 같으니 폐기를 제안하자" | 메뉴는 적힌 그대로가 전부입니다. 폐기는 your human partner가 분명한 말로 요청할 때에만 일어납니다. |
 | "'응, 없애 줘'도 확인으로 친다" | 입력된 단어 `discard`만이 삭제를 승인합니다. |
 | "PR이 올라갔으니 이제 worktree는 잡동사니다" | PR 피드백은 그 worktree에서 고칩니다. 작업이 반영될 때까지 남겨 둡니다. |
-| "이 다른 worktree는 오래된 것 같으니 같이 정리하자" | `~/.claude/suberpowers/worktrees/`, `.worktrees/`, `worktrees/` 하위의 worktree만 정리하세요. 그 외는 모두 호스트의 것입니다. |
+| "이 다른 worktree는 오래된 것 같으니 같이 정리하자" | Step 6은 이번 작업의 `WORKTREE_PATH` 하나만 정리합니다. 그것도 `~/.claude/suberpowers/worktrees/`, `.worktrees/`, `worktrees/` 하위일 때만입니다. 다른 worktree는 경로와 무관하게 건드리지 마세요. |
 | "제거가 거부됐다 — `--force`는 정리를 마무리할 뿐이다" | 거부는 그 worktree에만 있는 파일이 있다는 뜻입니다. `--force`는 그 파일을 영구히 파괴합니다. your human partner에게 보여주고 질문하세요. |
 | "merge된 결과의 실패는 아마 flaky일 것이다" | merge된 결과가 실패하면 모든 것이 멈춥니다. 조사하는 동안 branch와 worktree는 그대로 둡니다. |
 | "베이스 branch는 당연히 main이다" | 분기 지점을 확인하거나 질문하세요. 잘못된 베이스로 merge하면 되돌리는 비용이 큽니다. |
