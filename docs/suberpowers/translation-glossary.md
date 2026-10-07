@@ -18,7 +18,7 @@
 
 영문 뒤에는 조사를 그대로 붙입니다: `dispatch하고`, `commit하세요`, `review하며`.
 
-**heading은 각 파일의 기존 관례를 우선합니다.** 이미 heading이 번역된 파일은 새 heading도 번역하고, 출력 형식 heading·판정 토큰·ledger 토큰은 영문으로 둡니다.
+**heading은 각 파일의 기존 관례를 우선합니다.** 이미 heading이 번역된 파일은 새 heading도 번역하고, 출력 형식 heading·판정 토큰·ledger 토큰은 영문으로 둡니다. 새로 추가되는 파일은 같은 skill 디렉터리의 기존 파일 관례를 따르고, skill 자체가 새것이면 heading을 번역합니다(포크 다수 관례).
 
 ### description 작성 규칙
 
