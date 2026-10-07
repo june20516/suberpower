@@ -4,6 +4,7 @@
 #
 # 사용법:
 #   ./scripts/sync-structure-check.sh <fork-file> <upstream-path>
+#   저장소 루트에서 실행 (upstream 경로는 저장소 기준)
 #
 # 비교 항목 (코드펜스 밖 기준):
 #   heading 수      ^#{1,6}<공백>
@@ -17,7 +18,7 @@ set -uo pipefail
 UPSTREAM_REF="upstream-v6.4.2"
 
 if [ $# -ne 2 ]; then
-  printf '사용법: %s <fork-file> <upstream-path>\n' "$0"
+  printf '사용법: %s <fork-file> <upstream-path>\n' "$0" >&2
   exit 2
 fi
 
@@ -25,21 +26,41 @@ FORK_FILE="$1"
 UPSTREAM_PATH="$2"
 
 if [ ! -f "$FORK_FILE" ]; then
-  printf '포크 파일을 찾을 수 없습니다: %s\n' "$FORK_FILE"
+  printf '포크 파일을 찾을 수 없습니다: %s\n' "$FORK_FILE" >&2
   exit 2
 fi
 
 UPSTREAM_CONTENT="$(git show "${UPSTREAM_REF}:${UPSTREAM_PATH}" 2>/dev/null)" || {
-  printf 'upstream 파일을 읽을 수 없습니다: %s:%s\n' "$UPSTREAM_REF" "$UPSTREAM_PATH"
+  printf 'upstream 파일을 읽을 수 없습니다: %s:%s\n' "$UPSTREAM_REF" "$UPSTREAM_PATH" >&2
   exit 2
 }
 
 # 표준입력 마크다운에서 "heading 수 코드펜스 수 목록 수"를 출력합니다.
 count_structure() {
   awk '
-    /^[[:space:]]*```/ { fences++; in_fence = !in_fence; next }
-    in_fence { next }
-    /^#{1,6} / { headings++; next }
+    {
+      line = $0
+      ticks = 0
+      if (match(line, /^[[:space:]]*```+/)) {
+        fence = substr(line, RSTART, RLENGTH)
+        gsub(/[[:space:]]/, "", fence)
+        ticks = length(fence)
+        rest = substr(line, RSTART + RLENGTH)
+      }
+    }
+    in_fence {
+      # 여는 펜스 이상 길이의 백틱만으로 된 줄(뒤에 공백만 허용)일 때만 닫습니다.
+      if (ticks >= open_ticks && rest ~ /^[[:space:]]*$/) {
+        fences++
+        in_fence = 0
+      }
+      next
+    }
+    ticks > 0 { fences++; in_fence = 1; open_ticks = ticks; next }
+    /^#+ / {
+      if (match($0, /^#+/) && RLENGTH <= 6) headings++
+      next
+    }
     /^[[:space:]]*([-*]|[0-9]+\.) / { items++ }
     END { printf "%d %d %d\n", headings, fences, items }
   '
